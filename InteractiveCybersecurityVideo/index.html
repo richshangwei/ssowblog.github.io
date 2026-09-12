@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>資安事件互動影片 POC</title>
+  <style>
+    :root { color-scheme: light; --navy:#10233f; --blue:#2367d1; --cyan:#00a6a6; --paper:#f4f7fb; --line:#dce5f0; --red:#c53b42; --green:#138a62; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif; color:var(--navy); background:radial-gradient(circle at 15% 0%,#e8f3ff 0,transparent 38%),var(--paper); }
+    main { width:min(1080px,calc(100% - 32px)); margin:32px auto; }
+    .eyebrow { margin:0 0 8px; color:var(--blue); font-size:.82rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+    h1 { margin:0; font-size:clamp(1.55rem,3vw,2.35rem); letter-spacing:-.03em; }
+    .lead { margin:10px 0 22px; color:#52647d; }
+    .card { overflow:hidden; border:1px solid rgba(16,35,63,.08); border-radius:22px; background:#fff; box-shadow:0 22px 70px rgba(39,70,108,.13); }
+    .stage { position:relative; aspect-ratio:16/9; background:#07111f; }
+    video { width:100%; height:100%; display:block; }
+    .progress-dots { position:absolute; left:18px; top:16px; display:flex; gap:8px; z-index:2; }
+    .dot { width:10px; height:10px; border-radius:99px; background:rgba(255,255,255,.42); box-shadow:0 0 0 1px rgba(0,0,0,.12); transition:.2s; }
+    .dot.done { width:28px; background:#32d6a1; }
+    .overlay { position:absolute; inset:0; display:grid; place-items:center; padding:clamp(16px,4vw,42px); background:linear-gradient(125deg,rgba(5,17,34,.78),rgba(11,37,66,.58)); backdrop-filter:blur(7px); }
+    .overlay[hidden] { display:none; }
+    .quiz { width:min(710px,100%); padding:clamp(20px,4vw,34px); border-radius:20px; background:rgba(255,255,255,.97); box-shadow:0 18px 70px rgba(0,0,0,.3); }
+    .qmeta { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; color:var(--blue); font-size:.82rem; font-weight:800; }
+    .pill { padding:5px 10px; border-radius:99px; background:#e8f1ff; }
+    .quiz h2 { margin:0 0 18px; font-size:clamp(1.2rem,2.5vw,1.75rem); line-height:1.38; }
+    .answers { display:grid; gap:10px; }
+    .choice { display:flex; align-items:flex-start; gap:11px; width:100%; padding:13px 15px; border:1px solid var(--line); border-radius:13px; color:var(--navy); background:#fff; text-align:left; font-weight:700; cursor:pointer; transition:.16s ease; }
+    .choice:hover,.choice:focus-within { border-color:var(--blue); box-shadow:0 7px 20px rgba(35,103,209,.12); }
+    .choice input { width:19px; height:19px; margin:1px 0 0; accent-color:var(--blue); flex:0 0 auto; }
+    .text-answer { width:100%; padding:13px 15px; border:1px solid var(--line); border-radius:13px; color:var(--navy); background:#fff; font:inherit; font-weight:700; }
+    .text-answer:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(35,103,209,.12); outline:none; }
+    button { font:inherit; }
+    .answer { width:100%; padding:13px 15px; border:1px solid var(--line); border-radius:13px; color:var(--navy); background:#fff; text-align:left; font-weight:700; cursor:pointer; transition:.16s ease; }
+    .answer:hover,.answer:focus-visible { border-color:var(--blue); transform:translateY(-1px); box-shadow:0 7px 20px rgba(35,103,209,.12); outline:none; }
+    .answer:disabled { cursor:default; transform:none; }
+    .answer.correct { border-color:#4fc49a; background:#e8faf3; color:#0c704f; }
+    .answer.wrong { border-color:#e2969a; background:#fff0f1; color:#a62d34; }
+    .choice.correct,.text-answer.correct { border-color:#4fc49a; background:#e8faf3; color:#0c704f; }
+    .choice.wrong,.text-answer.wrong { border-color:#e2969a; background:#fff0f1; color:#a62d34; }
+    .feedback { margin-top:15px; padding:13px 15px; border-radius:12px; font-weight:700; line-height:1.55; }
+    .feedback.ok { color:#0c704f; background:#e8faf3; }
+    .feedback.no { color:#9b2830; background:#fff0f1; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+    .primary,.secondary { padding:11px 16px; border-radius:11px; border:0; font-weight:800; cursor:pointer; }
+    .primary { color:#fff; background:var(--blue); }
+    .secondary { color:var(--navy); background:#e8eef6; }
+    .footer { display:grid; grid-template-columns:1fr auto; align-items:center; gap:16px; padding:16px 20px; }
+    .status { margin:0; color:#52647d; font-size:.92rem; }
+    .reset { border:0; background:transparent; color:var(--blue); font-weight:800; cursor:pointer; }
+    .start { position:absolute; inset:0; display:grid; place-items:center; background:linear-gradient(120deg,rgba(5,17,34,.86),rgba(23,75,122,.48)); }
+    .start[hidden] { display:none; }
+    .start button { padding:14px 24px; border:1px solid rgba(255,255,255,.55); border-radius:99px; color:#fff; background:rgba(255,255,255,.14); backdrop-filter:blur(8px); font-weight:900; cursor:pointer; }
+    @media (max-width:640px) { main{width:min(100% - 18px,1080px);margin:14px auto}.footer{grid-template-columns:1fr}.stage{aspect-ratio:16/11}.quiz{max-height:100%;overflow:auto}.answer{padding:11px 12px} }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">H5P Interactive Video · POC</p>
+    <h1>資安事件：發現病毒後的正確處置</h1>
+    <p class="lead">觀看 10 秒短片，完成單選、複選與填答共 4 題。答錯時會引導回看片段。</p>
+    <section class="card" aria-label="互動影片播放器">
+      <div class="stage">
+        <video id="video" preload="metadata" poster="poster.jpg" playsinline controls>
+          <source src="video.mp4" type="video/mp4">
+          您的瀏覽器不支援 HTML5 影片。
+        </video>
+        <div class="progress-dots" aria-label="答題進度"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="start" id="start"><button type="button" id="startBtn">▶ 開始互動影片</button></div>
+        <div class="overlay" id="overlay" hidden>
+          <section class="quiz" role="dialog" aria-modal="true" aria-labelledby="questionTitle">
+            <div class="qmeta"><span class="pill" id="questionNumber"></span><span>影片已暫停</span></div>
+            <h2 id="questionTitle"></h2>
+            <div class="answers" id="answers"></div>
+            <div class="feedback" id="feedback" hidden aria-live="polite"></div>
+            <div class="actions" id="actions"></div>
+          </section>
+        </div>
+      </div>
+      <div class="footer"><p class="status" id="status">尚未開始 · 0 / 4 題完成</p><button class="reset" id="reset" type="button">重新體驗</button></div>
+    </section>
+  </main>
+  <script>
+    const video=document.querySelector('#video');
+    const overlay=document.querySelector('#overlay');
+    const start=document.querySelector('#start');
+    const dots=[...document.querySelectorAll('.dot')];
+    const status=document.querySelector('#status');
+    const questions=[
+      {type:'single',typeLabel:'單選題',time:1.30,review:0,title:'電腦出現病毒警示時，第一個動作應該是什麼？',answers:[
+        {text:'立刻中斷網路連線',correct:true,feedback:'正確！先斷網可降低惡意程式繼續連線或向其他設備擴散的機會。'},
+        {text:'先登入電子郵件通知同事',correct:false,feedback:'不建議。保持連線可能增加擴散或資料外傳風險，應先斷網。'},
+        {text:'先用同一台電腦修改所有密碼',correct:false,feedback:'不建議。影片指出換密碼應使用其他裝置。'}]},
+      {type:'multiple',typeLabel:'複選題',time:3.35,review:1.38,title:'依照剛才的影片，哪些操作可以中斷電腦的網路連線？',hint:'可複選',answers:[
+        {text:'拔除有線網路線',correct:true},
+        {text:'關閉 Wi-Fi',correct:true},
+        {text:'只關閉瀏覽器視窗',correct:false},
+        {text:'只把螢幕關掉',correct:false}],correctFeedback:'正確！影片示範拔除網路線與關閉 Wi-Fi。',wrongFeedback:'尚未完全正確。關閉瀏覽器或螢幕，都不等於中斷網路。'},
+      {type:'single',typeLabel:'單選題',time:5.42,review:3.50,title:'完成斷網後，影片建議的下一個步驟是什麼？',answers:[
+        {text:'進入安全模式並執行掃描',correct:true,feedback:'正確！影片的第二步是安全模式與掃描。'},
+        {text:'立即恢復網路測試是否正常',correct:false,feedback:'不正確。影片並未要求此時恢復網路。'},
+        {text:'繼續使用原本的應用程式',correct:false,feedback:'不正確。影片要求先進行掃描處置。'}]},
+      {type:'fill',typeLabel:'填答題',time:9.15,review:7.46,title:'請填入影片口訣中缺少的字：斷、＿＿、換',placeholder:'請輸入答案',accepted:['掃','掃毒'],correctFeedback:'正確！完整口訣是「斷、掃、換」。',wrongFeedback:'答案不正確。請回看片尾口訣；可填「掃」或「掃毒」。'}
+    ];
+    let current=-1, completed=new Set(), locked=false;
+    function updateStatus(){status.textContent=`${completed.size===questions.length?'已完成':'進行中'} · ${completed.size} / ${questions.length} 題完成`;dots.forEach((d,i)=>d.classList.toggle('done',completed.has(i)));}
+    function showQuestion(index){
+      current=index;locked=true;video.pause();
+      const q=questions[index];
+      const box=document.querySelector('#answers');
+      const feedback=document.querySelector('#feedback');
+      const actions=document.querySelector('#actions');
+      document.querySelector('#questionNumber').textContent=`第 ${index+1} 題 / 共 ${questions.length} 題 · ${q.typeLabel}`;
+      document.querySelector('#questionTitle').textContent=q.title;
+      box.replaceChildren();actions.replaceChildren();feedback.hidden=true;feedback.className='feedback';
+      if(q.type==='single'){
+        q.answers.forEach((a,i)=>{const b=document.createElement('button');b.type='button';b.className='answer';b.textContent=`${String.fromCharCode(65+i)}. ${a.text}`;b.addEventListener('click',()=>finishAnswer(index,a.correct,a.feedback,{selectedIndex:i}));box.append(b)});
+      }
+      if(q.type==='multiple'){
+        q.answers.forEach((a,i)=>{const label=document.createElement('label');label.className='choice';const input=document.createElement('input');input.type='checkbox';input.value=i;const text=document.createElement('span');text.textContent=`${String.fromCharCode(65+i)}. ${a.text}`;label.append(input,text);box.append(label)});
+        const submit=document.createElement('button');submit.type='button';submit.className='primary';submit.textContent='送出複選答案';submit.addEventListener('click',()=>{const chosen=[...box.querySelectorAll('input:checked')].map(input=>Number(input.value));if(!chosen.length){showInputMessage('請至少選擇一個答案。');return}const correct=q.answers.every((a,i)=>a.correct===chosen.includes(i));finishAnswer(index,correct,correct?q.correctFeedback:q.wrongFeedback,{chosen});});actions.append(submit);
+      }
+      if(q.type==='fill'){
+        const input=document.createElement('input');input.className='text-answer';input.type='text';input.placeholder=q.placeholder;input.autocomplete='off';input.setAttribute('aria-label','填答內容');box.append(input);
+        const submit=document.createElement('button');submit.type='button';submit.className='primary';submit.textContent='送出填答';submit.addEventListener('click',()=>{const value=normalise(input.value);if(!value){showInputMessage('請先填寫答案。');return}const correct=q.accepted.some(answer=>normalise(answer)===value);finishAnswer(index,correct,correct?q.correctFeedback:q.wrongFeedback,{input});});actions.append(submit);input.addEventListener('keydown',event=>{if(event.key==='Enter')submit.click()});
+      }
+      overlay.hidden=false;(box.querySelector('button,input'))?.focus();
+    }
+    function normalise(value){return value.trim().replace(/\s+/g,'').toLocaleLowerCase('zh-Hant');}
+    function showInputMessage(message){const feedback=document.querySelector('#feedback');feedback.textContent=message;feedback.className='feedback no';feedback.hidden=false;}
+    function finishAnswer(qIndex,correct,message,detail){
+      const q=questions[qIndex];
+      const box=document.querySelector('#answers');
+      if(q.type==='single'){
+        [...box.querySelectorAll('.answer')].forEach((button,i)=>{button.disabled=true;if(q.answers[i].correct)button.classList.add('correct');if(!correct&&i===detail.selectedIndex)button.classList.add('wrong')});
+      }
+      if(q.type==='multiple'){
+        [...box.querySelectorAll('.choice')].forEach((label,i)=>{const input=label.querySelector('input');input.disabled=true;if(q.answers[i].correct)label.classList.add('correct');if(!q.answers[i].correct&&detail.chosen.includes(i))label.classList.add('wrong')});
+      }
+      if(q.type==='fill'){detail.input.disabled=true;detail.input.classList.add(correct?'correct':'wrong');}
+      const feedback=document.querySelector('#feedback');feedback.textContent=message;feedback.className=`feedback ${correct?'ok':'no'}`;feedback.hidden=false;
+      const actions=document.querySelector('#actions');actions.replaceChildren();
+      const next=document.createElement('button');next.type='button';next.className='primary';next.textContent=correct?'繼續播放':'回看片段';next.addEventListener('click',()=>{if(correct){completed.add(qIndex);overlay.hidden=true;locked=false;video.currentTime=q.time+.12;updateStatus();video.play()}else{overlay.hidden=true;locked=false;video.currentTime=q.review;video.play()}});actions.append(next);
+      if(!correct){const retry=document.createElement('button');retry.type='button';retry.className='secondary';retry.textContent='直接再答一次';retry.addEventListener('click',()=>showQuestion(qIndex));actions.append(retry)}
+    }
+    video.addEventListener('timeupdate',()=>{if(locked)return;for(let i=0;i<questions.length;i++){if(!completed.has(i)&&video.currentTime>=questions[i].time){showQuestion(i);break}}});
+    video.addEventListener('ended',()=>{status.textContent=completed.size===questions.length?`完成！${questions.length} / ${questions.length} 題皆已作答`:'影片結束，仍有題目未完成';});
+    document.querySelector('#startBtn').addEventListener('click',()=>{start.hidden=true;updateStatus();video.play()});
+    document.querySelector('#reset').addEventListener('click',()=>{completed.clear();current=-1;locked=false;overlay.hidden=true;start.hidden=false;video.pause();video.currentTime=0;dots.forEach(d=>d.classList.remove('done'));status.textContent=`尚未開始 · 0 / ${questions.length} 題完成`});
+  </script>
+</body>
+</html>
