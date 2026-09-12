@@ -1,0 +1,408 @@
+/* ICD-10 疼痛部位標示 ── 選取診斷碼，在人體圖上標示可能的疼痛部位 */
+:root {
+  --ink: #1a1a1a;
+  --muted: #5f6b66;
+  --faint: #8b9a94;
+  --line: #d9e1dc;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --orange: #e8590c;
+  --orange-dark: #c2410c;
+  --orange-soft: #ffd8a8;
+  --danger: #c92a2a;
+  --shadow: 0 18px 50px rgba(37, 52, 47, 0.12);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  background:
+    linear-gradient(120deg, rgba(232, 89, 12, .14), transparent 38%),
+    linear-gradient(280deg, rgba(255, 216, 168, .18), transparent 42%),
+    var(--paper);
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ── 版面 ── */
+.app-shell {
+  display: grid;
+  grid-template-columns: minmax(250px, 310px) minmax(0, 1fr) minmax(260px, 340px);
+  gap: clamp(12px, 1.8vw, 24px);
+  width: min(1560px, calc(100vw - 28px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(16px, 2.6vw, 32px) 0;
+  align-items: start;
+}
+
+.side {
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: clamp(16px, 2.6vw, 32px);
+  max-height: calc(100vh - clamp(32px, 5vw, 64px));
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-color: #b8c7bf transparent;
+  scrollbar-width: thin;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px 16px;
+  box-shadow: var(--shadow);
+}
+
+.panel-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.panel-heading h2 { margin: 0; font-size: 15px; letter-spacing: .04em; }
+.count { color: var(--faint); font-size: 12px; }
+
+.brand h1 { margin: 0 0 6px; font-size: 20px; letter-spacing: .04em; }
+.brand p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+.tips ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; line-height: 1.8; }
+.tips strong { color: var(--orange-dark); }
+
+.empty { color: var(--faint); font-size: 12.5px; line-height: 1.6; margin: 4px 0; }
+
+/* ── 診斷碼搜尋 ── */
+.search {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  margin-bottom: 8px;
+}
+
+.search:focus { outline: 2px solid rgba(232, 89, 12, .45); outline-offset: 1px; }
+
+.region-list { display: grid; gap: 3px; max-height: 300px; overflow-y: auto; }
+
+.code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 9px;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.code-row:hover { background: #fff3e6; }
+
+.code-row .code {
+  font-family: "Consolas", "SF Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange-dark);
+  background: #fff3e6;
+  border-radius: 6px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.code-row .label { font-size: 13px; color: var(--ink); line-height: 1.4; }
+
+/* ── 目前選取 ── */
+.current-item {
+  border: 1px solid var(--orange);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff7ef;
+}
+
+.current-item b {
+  display: block;
+  font-family: "Consolas", "SF Mono", monospace;
+  font-size: 18px;
+  color: var(--orange-dark);
+}
+
+.current-item span { font-size: 13px; color: var(--muted); }
+
+.current-item.picked b { color: var(--orange-dark); }
+
+/* ── 部位推測診斷 ── */
+.suggest h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--orange-dark);
+  line-height: 1.5;
+}
+
+.suggest-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.suggest-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 6px 8px;
+  cursor: pointer;
+  background: #fff;
+  transition: background .15s;
+}
+
+.suggest-list li:hover { background: #fff3e6; border-color: #ffd8a8; }
+
+.suggest-list .code {
+  font-family: "Consolas", "SF Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange-dark);
+  background: #fff3e6;
+  border-radius: 6px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.suggest-list .label { font-size: 13px; color: var(--ink); flex: 1; line-height: 1.4; }
+
+.suggest-list .count { font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+/* ── 診斷資訊 ── */
+.detail h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--orange-dark);
+  line-height: 1.5;
+}
+
+.region-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.region-tags li {
+  background: #fff3e6;
+  border: 1px solid #ffd8a8;
+  color: var(--orange-dark);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.region-tags li:hover { background: #ffe3c4; }
+
+.note { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 10px 0 0; }
+
+/* ── 主舞台 ── */
+.stage { min-width: 0; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.segmented {
+  display: inline-flex;
+  background: #eef1ee;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.segmented button {
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.segmented button.is-active {
+  background: #fff;
+  color: var(--orange-dark);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.switch input { accent-color: var(--orange); }
+
+.spacer { flex: 1; }
+
+.ghost-button {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.ghost-button:hover { border-color: var(--orange); color: var(--orange-dark); }
+
+/* ── 人體圖 ── */
+.body-map {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.body-view {
+  position: relative;
+  display: none;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.body-view.is-active { display: block; }
+
+.body-view img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.body-view svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.body-region {
+  fill: rgba(255, 255, 255, 0);
+  stroke: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  transition: fill .2s;
+}
+
+.body-region:hover { fill: rgba(232, 89, 12, .18); }
+
+.body-region.is-pain {
+  fill: rgba(232, 89, 12, .55);
+  stroke: rgba(194, 65, 12, .8);
+  stroke-width: 1.5;
+}
+
+.body-region.is-secondary {
+  fill: rgba(255, 216, 168, .5);
+  stroke: rgba(232, 89, 12, .5);
+  stroke-width: 1;
+}
+
+.body-region.is-focus {
+  fill: rgba(232, 89, 12, .75);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.region-label {
+  font-size: 12px;
+  font-weight: 700;
+  fill: #fff;
+  stroke: rgba(0,0,0,.35);
+  stroke-width: 3px;
+  paint-order: stroke;
+  pointer-events: none;
+}
+
+/* ── 圖例 ── */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.legend-title { font-size: 12.5px; color: var(--muted); font-weight: 700; }
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.legend-item i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* ── 右欄 ── */
+.button-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.hint { color: var(--faint); font-size: 12px; line-height: 1.6; margin: 10px 0 0; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  z-index: 100;
+}
+
+/* ── 響應式 ── */
+@media (max-width: 1100px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .side { position: static; max-height: none; }
+}
