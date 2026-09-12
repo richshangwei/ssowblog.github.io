@@ -102,7 +102,7 @@
         {text:'繼續使用原本的應用程式',correct:false,feedback:'不正確。影片要求先進行掃描處置。'}]},
       {type:'fill',typeLabel:'填答題',time:9.15,review:7.46,title:'請填入影片口訣中缺少的字：斷、＿＿、換',placeholder:'請輸入答案',accepted:['掃','掃毒'],correctFeedback:'正確！完整口訣是「斷、掃、換」。',wrongFeedback:'答案不正確。請回看片尾口訣；可填「掃」或「掃毒」。'}
     ];
-    let current=-1, completed=new Set(), locked=false;
+    let current=-1, completed=new Set(), scored=new Set(), correctCount=0, wrongCount=0, locked=false;
     function updateStatus(){status.textContent=`${completed.size===questions.length?'已完成':'進行中'} · ${completed.size} / ${questions.length} 題完成`;dots.forEach((d,i)=>d.classList.toggle('done',completed.has(i)));}
     function showQuestion(index){
       current=index;locked=true;video.pause();
@@ -127,6 +127,30 @@
       overlay.hidden=false;(box.querySelector('button,input'))?.focus();
     }
     function normalise(value){return value.trim().replace(/\s+/g,'').toLocaleLowerCase('zh-Hant');}
+    function showResult(){
+      const total=scored.size||questions.length;
+      const percent=Math.round(correctCount/total*100);
+      const grade=percent>=80?'表現優異！':percent>=60?'表現不錯！':'建議再複習一次';
+      const box=document.querySelector('#answers');
+      const feedback=document.querySelector('#feedback');
+      const actions=document.querySelector('#actions');
+      document.querySelector('#questionNumber').textContent='結果';
+      document.querySelector('#questionTitle').textContent='作答結果';
+      box.replaceChildren();actions.replaceChildren();
+      const summary=document.createElement('p');
+      summary.style.cssText='margin:0 0 6px;font-size:clamp(1.5rem,4vw,2.4rem);font-weight:900;color:var(--navy);';
+      summary.textContent=`答對 ${correctCount} 題 / 答錯 ${wrongCount} 題`;
+      const pct=document.createElement('p');
+      pct.style.cssText='margin:0 0 4px;font-size:clamp(1.1rem,3vw,1.6rem);font-weight:800;color:var(--blue);';
+      pct.textContent=`正確率 ${percent}%`;
+      const note=document.createElement('p');
+      note.style.cssText='margin:0;color:#52647d;font-weight:700;';
+      note.textContent=grade;
+      box.append(summary,pct,note);
+      feedback.hidden=true;
+      const again=document.createElement('button');again.type='button';again.className='primary';again.textContent='重新體驗';again.addEventListener('click',()=>document.querySelector('#reset').click());actions.append(again);
+      overlay.hidden=false;
+    }
     function showInputMessage(message){const feedback=document.querySelector('#feedback');feedback.textContent=message;feedback.className='feedback no';feedback.hidden=false;}
     function finishAnswer(qIndex,correct,message,detail){
       const q=questions[qIndex];
@@ -140,13 +164,16 @@
       if(q.type==='fill'){detail.input.disabled=true;detail.input.classList.add(correct?'correct':'wrong');}
       const feedback=document.querySelector('#feedback');feedback.textContent=message;feedback.className=`feedback ${correct?'ok':'no'}`;feedback.hidden=false;
       const actions=document.querySelector('#actions');actions.replaceChildren();
-      const next=document.createElement('button');next.type='button';next.className='primary';next.textContent=correct?'繼續播放':'回看片段';next.addEventListener('click',()=>{if(correct){completed.add(qIndex);overlay.hidden=true;locked=false;video.currentTime=q.time+.12;updateStatus();video.play()}else{overlay.hidden=true;locked=false;video.currentTime=q.review;video.play()}});actions.append(next);
+      if(!scored.has(qIndex)){scored.add(qIndex);if(correct)correctCount++;else wrongCount++;}
+      if(correct)completed.add(qIndex);
+      if(correct&&completed.size===questions.length){video.pause();showResult();return;}
+      const next=document.createElement('button');next.type='button';next.className='primary';next.textContent=correct?'繼續播放':'回看片段';next.addEventListener('click',()=>{if(correct){overlay.hidden=true;locked=false;updateStatus();video.currentTime=q.time+.12;video.play()}else{overlay.hidden=true;locked=false;video.currentTime=q.review;video.play()}});actions.append(next);
       if(!correct){const retry=document.createElement('button');retry.type='button';retry.className='secondary';retry.textContent='直接再答一次';retry.addEventListener('click',()=>showQuestion(qIndex));actions.append(retry)}
     }
     video.addEventListener('timeupdate',()=>{if(locked)return;for(let i=0;i<questions.length;i++){if(!completed.has(i)&&video.currentTime>=questions[i].time){showQuestion(i);break}}});
-    video.addEventListener('ended',()=>{status.textContent=completed.size===questions.length?`完成！${questions.length} / ${questions.length} 題皆已作答`:'影片結束，仍有題目未完成';});
+    video.addEventListener('ended',()=>{status.textContent=completed.size===questions.length?`完成！${questions.length} / ${questions.length} 題皆已作答`:'影片結束，仍有題目未完成';showResult();});
     document.querySelector('#startBtn').addEventListener('click',()=>{start.hidden=true;updateStatus();video.play()});
-    document.querySelector('#reset').addEventListener('click',()=>{completed.clear();current=-1;locked=false;overlay.hidden=true;start.hidden=false;video.pause();video.currentTime=0;dots.forEach(d=>d.classList.remove('done'));status.textContent=`尚未開始 · 0 / ${questions.length} 題完成`});
+    document.querySelector('#reset').addEventListener('click',()=>{completed.clear();scored.clear();correctCount=0;wrongCount=0;current=-1;locked=false;overlay.hidden=true;start.hidden=false;video.pause();video.currentTime=0;dots.forEach(d=>d.classList.remove('done'));status.textContent=`尚未開始 · 0 / ${questions.length} 題完成`});
   </script>
 </body>
 </html>
