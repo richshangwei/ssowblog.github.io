@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P09 文件式長頁｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P09 文件式長頁 Document ======================================
+           版面結構：像一份可從頭讀到尾的公務文件，左側目錄、右側登入卡
+           登入區位置：右側 sticky 卡片，讀到哪一段都能直接登入
+           公告呈現：手風琴＋完整欄位，強調「讀得懂」而不是「掃得快」
+           導覽方式：左側目錄錨點（適合列印與截圖存查）
+           視覺語言：襯線標題、白紙感、線條分段，適合公文與稽核情境
+           ================================================================= */
+        :root { --pt-brand: #1f3a5f; }
+
+        body { background: #f0efe9; }
+
+        .p-sheet { max-width: 1200px; margin: 0 auto; background: #fff; border-left: 1px solid #ddd9cf; border-right: 1px solid #ddd9cf; }
+        .p-head { border-bottom: 3px double var(--pt-ink); padding: 1.4rem 1.6rem 1rem; }
+        .p-head .pt-portal-name { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif; font-size: 1.9rem; }
+        .p-head .pt-org { letter-spacing: .2em; }
+        .p-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-size: .82rem; color: var(--pt-muted); margin-top: .8rem; }
+
+        .p-body { display: grid; grid-template-columns: 200px 1fr 340px; gap: 1.5rem; padding: 1.5rem 1.6rem 2.5rem; align-items: start; }
+
+        .p-toc { position: sticky; top: 1rem; font-size: .88rem; }
+        .p-toc p { font-weight: 800; margin: 0 0 .4rem; font-size: .8rem; letter-spacing: .14em; color: var(--pt-muted); }
+        .p-toc ul { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--pt-line); }
+        .p-toc a { display: block; padding: .3rem .7rem; color: var(--pt-ink); text-decoration: none; border-left: 2px solid transparent; margin-left: -2px; }
+        .p-toc a:hover { color: var(--pt-brand); border-left-color: var(--pt-brand); }
+
+        .p-article h2 {
+            font-family: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif;
+            font-size: 1.3rem; font-weight: 800; margin: 0 0 .4rem;
+            border-bottom: 1px solid var(--pt-line); padding-bottom: .35rem;
+        }
+        .p-article section { margin-bottom: 1.8rem; scroll-margin-top: 1rem; }
+        .p-article .p-lead { color: #3c4a58; font-size: .94rem; margin: 0 0 .9rem; }
+
+        .p-aside { position: sticky; top: 1rem; }
+        .p-login { border: 2px solid var(--pt-ink); border-radius: .3rem; padding: 1.1rem 1.2rem; background: #fff; }
+        .p-login h2 { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif; font-size: 1.15rem; font-weight: 800; margin: 0 0 .8rem; }
+        .p-aside .p-note { font-size: .8rem; color: var(--pt-muted); margin-top: .8rem; }
+
+        .p-foot { border-top: 3px double var(--pt-ink); padding: 1.25rem 1.6rem 2rem; }
+
+        @media (max-width: 1199.98px) {
+            .p-body { grid-template-columns: 1fr 320px; }
+            .p-toc { display: none; }
+        }
+        @media (max-width: 991.98px) {
+            .p-body { grid-template-columns: 1fr; padding: 1.1rem 1rem 2rem; }
+            .p-aside { position: static; order: -1; }
+            .p-head { padding: 1.1rem 1rem .9rem; }
+            .p-head .pt-portal-name { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <div class="p-sheet">
+        <header class="p-head">
+            <div id="slotIdentity"></div>
+            <div class="p-meta">
+                <span>文件性質：登入入口說明（原型）</span>
+                <span>維護單位：[資訊室／維護單位]</span>
+                <span>服務時段：[服務時段]</span>
+                <span>最後更新：[文件更新時間]</span>
+            </div>
+        </header>
+
+        <div class="p-body">
+            <nav class="p-toc" aria-label="本頁目錄">
+                <p>目錄</p>
+                <ul>
+                    <li><a href="#sec-alert">目前需要注意的事</a></li>
+                    <li><a href="#sec-status">服務狀態</a></li>
+                    <li><a href="#sec-notice">公告</a></li>
+                    <li><a href="#sec-systems">可進入的系統</a></li>
+                    <li><a href="#sec-help">需要協助</a></li>
+                </ul>
+            </nav>
+
+            <main class="p-article">
+                <section id="sec-alert">
+                    <h2>目前需要注意的事</h2>
+                    <p class="p-lead">若下方沒有出現重大影響訊息，表示目前沒有已知會中斷作業的事件（以示範資料為準）。</p>
+                    <div id="slotAlerts"></div>
+                </section>
+
+                <section id="sec-status">
+                    <h2>服務狀態</h2>
+                    <p class="p-lead">各系統目前的服務狀態。未取得資料時顯示「狀態未確認」，不代表服務正常。</p>
+                    <div id="slotStatus"></div>
+                </section>
+
+                <section id="sec-notice">
+                    <h2>公告</h2>
+                    <p class="p-lead">每則公告都包含影響對象、時間、處理狀態、您現在可以做什麼、已確認的替代方式與最後更新時間。</p>
+                    <div id="slotNotices"></div>
+                </section>
+
+                <section id="sec-systems">
+                    <h2>可進入的系統</h2>
+                    <p class="p-lead">此處僅列出可公開顯示的系統與服務說明。</p>
+                    <div id="slotSystems"></div>
+                </section>
+
+                <section id="sec-help">
+                    <h2>需要協助</h2>
+                    <p class="p-lead">以下入口都不需要先登入，適合在無法登入時使用。</p>
+                    <div id="slotHelp"></div>
+                </section>
+            </main>
+
+            <aside class="p-aside">
+                <div class="p-login">
+                    <h2>登入</h2>
+                    <div id="slotLogin"></div>
+                    <div id="slotResult"></div>
+                </div>
+                <p class="p-note">此頁可直接列印或截圖存查；展示控制列不會被列印。</p>
+            </aside>
+        </div>
+
+        <footer class="p-foot" id="slotFooter"></footer>
+    </div>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function () {
+            Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp',
+                    systems: '#slotSystems', footer: '#slotFooter'
+                },
+                variants: { status: 'table', notices: 'accordion', help: 'links', systems: 'table' },
+                noticeLimit: 0
+            });
+        });
+    </script>
+</body>
+
+</html>

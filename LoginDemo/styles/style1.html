@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>風格一：飯店雙欄 — 振興醫院登入</title>
+    <style>
+        /* ===== 風格一：飯店式雙欄 (Hotel Split) ===== */
+        :root {
+            --ch-primary: #003366; --ch-primary-dark: #002244;
+            --ch-secondary: #C19A6B; --ch-secondary-dark: #a07a4d;
+            --ch-success: #558B2F; --ch-danger: #A31D1D;
+            --ch-light: #F9F7F2; --ch-dark: #2C2C2C;
+            --ch-font-sans: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+            --ch-font-serif: "Noto Serif TC", "Times New Roman", "PMingLiU", serif;
+            --ch-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body { font-family: var(--ch-font-sans); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; color: var(--ch-dark); line-height: 1.6; }
+        .bg-layer { position: fixed; inset: 0; z-index: -3; background-size: cover; background-position: center; transition: background-image 0.9s ease-in-out; background-image: linear-gradient(135deg, #003366 0%, #00528a 55%, #335c85 100%); }
+        .bg-pattern { position: absolute; inset: 0; z-index: -2; pointer-events: none; background: radial-gradient(circle at 18% 22%, rgba(193,154,107,0.22), transparent 42%), radial-gradient(circle at 82% 78%, rgba(193,154,107,0.14), transparent 46%); }
+        .bg-overlay { position: absolute; inset: 0; z-index: -1; background: linear-gradient(120deg, rgba(0,25,51,0.45), rgba(0,25,51,0.15)); }
+        .bg-layer.theme-sun { background-image: linear-gradient(135deg, #4a2c1a 0%, #003366 100%); }
+        .bg-layer.theme-mon { background-image: linear-gradient(135deg, #002244 0%, #00528a 100%); }
+        .bg-layer.theme-tue { background-image: linear-gradient(135deg, #003a4d 0%, #558B2F 120%); }
+        .bg-layer.theme-wed { background-image: linear-gradient(135deg, #003366 0%, #335c85 100%); }
+        .bg-layer.theme-thu { background-image: linear-gradient(135deg, #1a2d3a 0%, #00528a 100%); }
+        .bg-layer.theme-fri { background-image: linear-gradient(135deg, #003366 0%, #C19A6B 140%); }
+        .bg-layer.theme-sat { background-image: linear-gradient(135deg, #2a3b1a 0%, #003366 100%); }
+        /* --- 節日設計風格 --- */
+        .bg-layer.theme-newyear { background-image: linear-gradient(135deg, #5a1010 0%, #003366 100%); }
+        .bg-layer.theme-lunar { background-image: linear-gradient(135deg, #8c1c13 0%, #5a0b08 100%); }
+        .bg-layer.theme-christmas { background-image: linear-gradient(135deg, #0c2e23 0%, #1a5c3a 100%); }
+        .bg-layer.theme-midautumn { background-image: linear-gradient(135deg, #1a2a3a 0%, #335c85 100%); }
+        .bg-layer.theme-anniversary { background-image: linear-gradient(135deg, #003366 0%, #a07a4d 130%); }
+        /* 端午：粽葉綠 + 龍舟暖陽，呼應節慶氛圍 */
+        .bg-layer.theme-dragonboat { background-image: linear-gradient(135deg, #1f5c3d 0%, #2e7d52 45%, #c97f3a 130%); }
+        /* 節慶時以 SVG 圖樣作為背景裝飾紋理（提供圖片時由 JS 覆蓋為實圖） */
+        .bg-layer.is-festival .bg-pattern { opacity: 1; }
+        .bg-layer.theme-dragonboat .bg-pattern {
+            background-image:
+                radial-gradient(circle at 12% 20%, rgba(255,233,180,0.28), transparent 40%),
+                radial-gradient(circle at 88% 80%, rgba(31,92,61,0.5), transparent 45%);
+        }
+        .login-wrapper { width: min(980px, 92vw); min-height: 580px; display: grid; grid-template-columns: 1.05fr 1fr; background: #fff; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 18px 48px rgba(0,51,102,0.22); animation: rise 0.7s var(--ch-transition); }
+        @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        /* 公司 Logo 圖（置換 Logo 後顯示）*/
+        .brand-logo-img { max-height: 52px; max-width: 180px; object-fit: contain; display: block; }
+        /* 節慶橫幅 */
+        .festival-banner { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); animation: fadeUp 0.6s 0.15s both; }
+        .festival-banner .fb-icon { font-size: 1.3rem; }
+        .festival-banner .fb-label { font-family: var(--ch-font-serif); font-weight: 700; font-size: 1rem; color: #fff; letter-spacing: 1px; }
+        .festival-banner .fb-wish { font-size: 0.8rem; color: rgba(255,255,255,0.85); margin-left: auto; }
+        .panel { padding: 48px 44px; display: flex; flex-direction: column; }
+        .panel-left { background: linear-gradient(160deg, var(--ch-primary) 0%, #002a52 100%); color: #fff; position: relative; overflow: hidden; }
+        .panel-left::after { content: ""; position: absolute; right: -120px; bottom: -120px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(193,154,107,0.35), transparent 70%); }
+        .brand { display: flex; align-items: center; gap: 16px; margin-bottom: 26px; animation: fadeUp 0.6s 0.1s both; }
+        .brand-eyebrow { font-size: 0.66rem; letter-spacing: 2.5px; color: var(--ch-secondary); font-weight: 600; }
+        .company-name { font-family: var(--ch-font-serif); font-size: 1.85rem; font-weight: 700; letter-spacing: 3px; line-height: 1.2; margin: 2px 0; }
+        .company-slogan { font-size: 0.85rem; color: rgba(255,255,255,0.72); letter-spacing: 1px; }
+        .ch-blockquote { border-left: 3px solid var(--ch-secondary); padding: 12px 18px; margin-bottom: 28px; font-family: var(--ch-font-serif); font-size: 1.05rem; line-height: 1.7; color: #fff; background: rgba(255,255,255,0.06); border-radius: 0 0.5rem 0.5rem 0; animation: fadeUp 0.6s 0.2s both; }
+        .ch-blockquote .quote-sub { font-size: 0.82rem; color: rgba(255,255,255,0.7); font-family: var(--ch-font-sans); }
+        .announcement { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(193,154,107,0.25); border-radius: 0.75rem; padding: 18px 20px; backdrop-filter: blur(6px); display: flex; flex-direction: column; animation: fadeUp 0.6s 0.3s both; }
+        .announcement-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(193,154,107,0.3); }
+        .announcement-head h2 { font-family: var(--ch-font-serif); font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .announcement-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ch-secondary); box-shadow: 0 0 0 3px rgba(193,154,107,0.25); }
+        .announcement-date { font-size: 0.76rem; color: rgba(255,255,255,0.7); }
+        .announcement-list { list-style: none; overflow-y: auto; max-height: 188px; padding-right: 4px; }
+        .announcement-list li { padding: 11px 0; border-bottom: 1px dashed rgba(255,255,255,0.18); font-size: 0.88rem; line-height: 1.55; color: rgba(255,255,255,0.92); transition: padding-left var(--ch-transition); }
+        .announcement-list li:hover { padding-left: 4px; }
+        .announcement-list li:last-child { border-bottom: none; }
+        .announcement-list .tag { display: inline-block; font-size: 0.66rem; padding: 2px 9px; border-radius: 999px; margin-right: 8px; background: rgba(255,255,255,0.2); color: #fff; }
+        .announcement-list .tag.urgent { background: var(--ch-danger); }
+        .announcement-list .tag.event { background: var(--ch-secondary); color: #2c1a00; }
+        .panel-footer { margin-top: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+        .panel-right { justify-content: center; background: #fff; }
+        .login-card { width: 100%; animation: fadeUp 0.6s 0.25s both; }
+        .login-eyebrow { font-size: 0.7rem; letter-spacing: 3px; color: var(--ch-secondary); font-weight: 600; margin-bottom: 6px; }
+        .login-title { font-family: var(--ch-font-serif); font-size: 1.85rem; color: var(--ch-primary); letter-spacing: 1px; }
+        .login-subtitle { color: #7a7a7a; margin: 6px 0 30px; font-size: 0.9rem; }
+        .login-form { display: flex; flex-direction: column; gap: 20px; }
+        .field { display: flex; flex-direction: column; gap: 7px; }
+        .field-label { font-size: 0.82rem; font-weight: 600; color: var(--ch-primary); }
+        .field-input { position: relative; display: flex; align-items: center; }
+        .field-icon { position: absolute; left: 14px; font-size: 0.95rem; opacity: 0.55; pointer-events: none; }
+        .field-input input { width: 100%; padding: 13px 14px 13px 42px; border: 1.5px solid #d9d2c4; border-radius: 0.5rem; font-size: 0.95rem; background: var(--ch-light); transition: var(--ch-transition); outline: none; }
+        .field-input input:focus { border-color: var(--ch-secondary); background: #fff; box-shadow: 0 0 0 0.22rem rgba(193,154,107,0.25); }
+        .toggle-password { position: absolute; right: 12px; border: none; background: transparent; color: var(--ch-secondary-dark); font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+        .field-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; margin-top: -4px; }
+        .checkbox { display: flex; align-items: center; gap: 7px; cursor: pointer; color: #555; }
+        .checkbox input { width: 16px; height: 16px; accent-color: var(--ch-primary); }
+        .link-forgot { color: var(--ch-secondary-dark); text-decoration: none; font-weight: 500; }
+        .link-forgot:hover { color: var(--ch-primary); text-decoration: underline; }
+        .form-message { min-height: 18px; font-size: 0.82rem; color: var(--ch-danger); }
+        .form-message.success { color: var(--ch-success); }
+        .btn-login { margin-top: 6px; padding: 14px; border: none; border-radius: 0.5rem; background: linear-gradient(180deg, var(--ch-primary), var(--ch-primary-dark)); color: #fff; font-size: 1.05rem; letter-spacing: 6px; font-weight: 600; cursor: pointer; transition: transform 0.15s, box-shadow var(--ch-transition); }
+        .btn-login:hover { box-shadow: 0 12px 28px rgba(0,51,102,0.35); transform: translateY(-2px); }
+        .btn-login:disabled { opacity: 0.65; cursor: not-allowed; }
+        .login-foot { margin-top: 30px; text-align: center; font-size: 0.72rem; color: #a8a298; }
+        .back-link { position: fixed; top: 18px; left: 18px; z-index: 10; color: #fff; background: rgba(0,0,0,0.25); padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: 0.82rem; backdrop-filter: blur(4px); }
+        @media (max-width: 768px) { .login-wrapper { grid-template-columns: 1fr; width: 94vw; min-height: auto; } .panel-left { display: none; } .panel { padding: 38px 28px; } }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← 返回款式選擇</a>
+    <div id="bgLayer" class="bg-layer"><div class="bg-pattern"></div><div class="bg-overlay"></div></div>
+    <main class="login-wrapper">
+        <section class="panel panel-left" aria-label="醫院資訊與公告">
+            <div class="brand">
+                <div id="brandLogo" aria-hidden="true">
+                    <svg viewBox="0 0 56 56" width="52" height="52" fill="none">
+                        <circle cx="28" cy="28" r="25" stroke="#C19A6B" stroke-width="2" fill="rgba(255,255,255,0.06)" />
+                        <path d="M28 15v26M15 28h26" stroke="#C19A6B" stroke-width="4.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="brand-eyebrow">CHENG HSIN GENERAL HOSPITAL</p>
+                    <h1 class="company-name">振興醫院</h1>
+                    <p class="company-slogan">員工資訊整合入口</p>
+                </div>
+            </div>
+            <!-- 節慶橫幅：依節日自動顯示（無節日時隱藏） -->
+            <div class="festival-banner" id="festivalBanner" style="display:none"></div>
+            <blockquote class="ch-blockquote">以人為本，視病猶親<br /><span class="quote-sub">打造飯店級的醫療照護體驗</span></blockquote>
+            <div class="announcement">
+                <div class="announcement-head"><h2><span class="dot"></span>系統公告</h2><span class="announcement-date" id="todayLabel"></span></div>
+                <ul class="announcement-list" id="announcementList"></ul>
+            </div>
+            <footer class="panel-footer"><span id="greeting"></span></footer>
+        </section>
+        <section class="panel panel-right" aria-label="登入">
+            <div class="login-card">
+                <p class="login-eyebrow">WELCOME BACK</p>
+                <h2 class="login-title">歡迎回來</h2>
+                <p class="login-subtitle">請輸入您的帳號密碼以登入系統</p>
+                <form id="loginForm" class="login-form" novalidate>
+                    <div class="field"><label class="field-label" for="username">帳號</label>
+                        <div class="field-input"><span class="field-icon">&#128100;</span><input type="text" id="username" name="username" placeholder="請輸入員工編號或帳號" required /></div></div>
+                    <div class="field"><label class="field-label" for="password">密碼</label>
+                        <div class="field-input"><span class="field-icon">&#128274;</span><input type="password" id="password" name="password" placeholder="請輸入密碼" required /><button type="button" class="toggle-password" id="togglePassword">顯示</button></div></div>
+                    <div class="field-row"><label class="checkbox"><input type="checkbox" id="remember" /><span>記住我</span></label><a href="#" class="link-forgot">忘記密碼？</a></div>
+                    <p class="form-message" id="formMessage" role="alert"></p>
+                    <button type="submit" class="btn-login">登 入</button>
+                </form>
+                <p class="login-foot">© <span id="year"></span> 振興醫院 Cheng Hsin General Hospital. 版權所有</p>
+            </div>
+        </section>
+    </main>
+    <script src="../shared/login-core.js"></script>
+</body>
+</html>

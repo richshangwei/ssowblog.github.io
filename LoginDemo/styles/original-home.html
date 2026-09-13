@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>振興醫院｜員工入口登入</title>
+    <style>
+        :root {
+            --primary: #073b66;
+            --primary-strong: #052a4a;
+            --accent: #b8864b;
+            --accent-soft: #f3eadf;
+            --surface: #ffffff;
+            --surface-soft: #f6f8fb;
+            --surface-muted: #eef3f7;
+            --ink: #172331;
+            --muted: #5f6b78;
+            --line: #d8e0e8;
+            --danger: #b42318;
+            --success: #167044;
+            --warning: #9a5b13;
+            --focus: rgba(184, 134, 75, 0.28);
+            --shadow: 0 22px 60px rgba(7, 59, 102, 0.16);
+            --font: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            min-height: 100%;
+            background: var(--surface-soft);
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: var(--font);
+            color: var(--ink);
+            background:
+                linear-gradient(135deg, rgba(7, 59, 102, 0.08), transparent 36%),
+                linear-gradient(315deg, rgba(184, 134, 75, 0.12), transparent 34%),
+                var(--surface-soft);
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .shell {
+            width: min(1180px, calc(100% - 40px));
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 32px 0;
+            display: grid;
+            align-items: center;
+        }
+
+        .login-stage {
+            display: grid;
+            grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.1fr);
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid rgba(216, 224, 232, 0.9);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .login-panel {
+            padding: 40px;
+            background: linear-gradient(180deg, var(--primary), var(--primary-strong));
+            color: #fff;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+
+        .brand-mark {
+            width: 50px;
+            height: 50px;
+            flex: 0 0 50px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-name {
+            margin: 0;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .brand-sub {
+            margin: 2px 0 0;
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 0.88rem;
+        }
+
+        .login-heading {
+            margin: 0 0 8px;
+            font-size: 2rem;
+            line-height: 1.2;
+        }
+
+        .login-copy {
+            margin: 0 0 28px;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .login-form {
+            display: grid;
+            gap: 18px;
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .field label {
+            font-size: 0.9rem;
+            font-weight: 650;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            width: 18px;
+            height: 18px;
+            transform: translateY(-50%);
+            color: #6b7684;
+            pointer-events: none;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 46px 12px 44px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid rgba(216, 224, 232, 0.95);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .input-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--focus);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 8px;
+            color: var(--primary);
+            background: transparent;
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+
+        .password-toggle:hover,
+        .password-toggle:focus-visible {
+            background: var(--surface-muted);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+
+        .remember {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+            cursor: pointer;
+        }
+
+        .remember input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+        }
+
+        .text-link {
+            color: #f5d7ad;
+            font-weight: 650;
+        }
+
+        .text-link:hover,
+        .text-link:focus-visible {
+            text-decoration: underline;
+            outline: none;
+        }
+
+        .form-message {
+            min-height: 22px;
+            margin: 0;
+            color: #ffd2cc;
+            font-size: 0.9rem;
+        }
+
+        .login-button {
+            min-height: 50px;
+            border: 0;
+            border-radius: 8px;
+            color: var(--primary-strong);
+            background: linear-gradient(180deg, #fff7ea, #e7bd7d);
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 140ms ease, box-shadow 160ms ease;
+        }
+
+        .login-button:hover,
+        .login-button:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+            outline: none;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 26px;
+        }
+
+        .quick-action {
+            min-height: 44px;
+            padding: 10px 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 8px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+            font-weight: 650;
+        }
+
+        .quick-action:hover,
+        .quick-action:focus-visible {
+            background: rgba(255, 255, 255, 0.14);
+            outline: none;
+        }
+
+        .portal-panel {
+            padding: 32px;
+            display: grid;
+            gap: 18px;
+            background: var(--surface-soft);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 4px;
+        }
+
+        .eyebrow {
+            margin: 0 0 6px;
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .portal-title {
+            margin: 0;
+            color: var(--primary-strong);
+            font-size: 1.35rem;
+        }
+
+        .portal-date {
+            min-width: 130px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 16px;
+        }
+
+        .section {
+            min-width: 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            color: var(--primary-strong);
+            font-size: 1rem;
+        }
+
+        .section-title a {
+            min-height: 32px;
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-size: 0.84rem;
+            font-weight: 750;
+        }
+
+        .section-title a:hover,
+        .section-title a:focus-visible {
+            text-decoration: underline;
+            outline: none;
+        }
+
+        .notice-list,
+        .link-list,
+        .device-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .notice,
+        .resource,
+        .device-info,
+        .status-row {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+        }
+
+        .notice {
+            padding: 14px;
+            display: grid;
+            gap: 7px;
+        }
+
+        .notice-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .badge {
+            flex: 0 0 auto;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .badge.urgent {
+            color: #fff;
+            background: var(--danger);
+        }
+
+        .badge.feature {
+            color: var(--primary-strong);
+            background: #dcecff;
+        }
+
+        .badge.manual {
+            color: #5c3511;
+            background: var(--accent-soft);
+        }
+
+        .notice h3 {
+            min-width: 0;
+            margin: 0;
+            overflow-wrap: anywhere;
+            color: var(--ink);
+            font-size: 0.96rem;
+        }
+
+        .notice p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .notice time {
+            color: #7d8792;
+            font-size: 0.78rem;
+        }
+
+        .resource {
+            min-height: 58px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: border-color 160ms ease, transform 140ms ease;
+        }
+
+        .resource:hover,
+        .resource:focus-visible {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .resource strong {
+            display: block;
+            color: var(--ink);
+            font-size: 0.92rem;
+        }
+
+        .resource span {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .icon-box {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            color: var(--primary);
+            background: var(--surface-muted);
+        }
+
+        .status-panel {
+            display: grid;
+            gap: 10px;
+        }
+
+        .status-row {
+            min-height: 48px;
+            padding: 11px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .status-row span:first-child {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .status-good,
+        .status-warn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: 800;
+            font-size: 0.86rem;
+        }
+
+        .status-good { color: var(--success); }
+        .status-warn { color: var(--warning); }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 16%, transparent);
+        }
+
+        .device-info {
+            padding: 13px 14px;
+            display: grid;
+            gap: 9px;
+        }
+
+        .device-line {
+            display: grid;
+            grid-template-columns: 84px minmax(0, 1fr);
+            gap: 10px;
+            font-size: 0.86rem;
+        }
+
+        .device-line dt {
+            color: var(--muted);
+        }
+
+        .device-line dd {
+            min-width: 0;
+            margin: 0;
+            overflow-wrap: anywhere;
+            color: var(--ink);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .footer-note {
+            margin: 2px 0 0;
+            color: var(--muted);
+            font-size: 0.78rem;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        @media (max-width: 980px) {
+            .shell {
+                width: min(100% - 28px, 760px);
+                align-items: start;
+            }
+
+            .login-stage {
+                grid-template-columns: 1fr;
+            }
+
+            .login-panel,
+            .portal-panel {
+                padding: 28px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .shell {
+                width: 100%;
+                padding: 0;
+            }
+
+            .login-stage {
+                min-height: 100vh;
+                border: 0;
+                border-radius: 0;
+            }
+
+            .login-panel,
+            .portal-panel {
+                padding: 24px 18px;
+            }
+
+            .brand {
+                margin-bottom: 28px;
+            }
+
+            .login-heading {
+                font-size: 1.65rem;
+            }
+
+            .form-row,
+            .topbar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .portal-date {
+                min-width: 0;
+                text-align: left;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <div class="login-stage">
+            <section class="login-panel" aria-labelledby="loginTitle">
+                <div class="brand">
+                    <div class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3v18" />
+                            <path d="M3 12h18" />
+                            <circle cx="12" cy="12" r="9" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="brand-name">振興醫院</p>
+                        <p class="brand-sub">員工資訊整合入口</p>
+                    </div>
+                </div>
+
+                <h1 class="login-heading" id="loginTitle">登入內部系統</h1>
+                <p class="login-copy">請使用員工帳號登入，系統會依權限開啟院內服務與作業平台。</p>
+
+                <form class="login-form" id="loginForm" novalidate>
+                    <div class="field">
+                        <label for="account">帳號</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 21a8 8 0 0 0-16 0" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <input id="account" name="account" type="text" autocomplete="username" placeholder="員工編號或網域帳號" required />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="password">密碼</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect width="18" height="11" x="3" y="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" required />
+                            <button class="password-toggle" type="button" id="togglePassword" aria-label="顯示密碼">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="remember" for="remember">
+                            <input id="remember" type="checkbox" />
+                            <span>記住此裝置</span>
+                        </label>
+                        <a href="#" class="text-link">忘記密碼</a>
+                    </div>
+
+                    <p class="form-message" id="formMessage" role="alert"></p>
+                    <button class="login-button" type="submit">登入</button>
+                </form>
+
+                <nav class="quick-actions" aria-label="登入前快速連結">
+                    <a class="quick-action" href="#">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-1.5Z" /><path d="M8 7h6" /><path d="M8 11h8" /></svg>
+                        教學手冊
+                    </a>
+                    <a class="quick-action" href="styles/style14.html">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 7a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7Z" /><path d="M2 12h20" /><path d="M12 2v20" /></svg>
+                        滿版劇場 DEMO
+                    </a>
+                </nav>
+            </section>
+
+            <section class="portal-panel" aria-label="登入前資訊">
+                <div class="topbar">
+                    <div>
+                        <p class="eyebrow">Internal Portal</p>
+                        <h2 class="portal-title">登入前資訊中心</h2>
+                    </div>
+                    <time class="portal-date" id="todayText"></time>
+                </div>
+
+                <div class="info-grid">
+                    <section class="section" aria-labelledby="noticeTitle">
+                        <div class="section-title">
+                            <h2 id="noticeTitle">公告與新功能</h2>
+                            <a href="#">全部公告</a>
+                        </div>
+                        <div class="notice-list">
+                            <article class="notice">
+                                <div class="notice-head">
+                                    <span class="badge urgent">重要</span>
+                                    <h3>人事差勤系統今晚 22:00 維護</h3>
+                                </div>
+                                <p>維護期間暫停簽核、補卡與加班申請，請提前完成待辦事項。</p>
+                                <time datetime="2026-06-24">2026/06/24</time>
+                            </article>
+                            <article class="notice">
+                                <div class="notice-head">
+                                    <span class="badge feature">新功能</span>
+                                    <h3>新版公告中心支援分眾推播</h3>
+                                </div>
+                                <p>可依部門、職務與系統權限顯示不同公告，減少無關訊息干擾。</p>
+                                <time datetime="2026-06-20">2026/06/20</time>
+                            </article>
+                            <article class="notice">
+                                <div class="notice-head">
+                                    <span class="badge manual">手冊</span>
+                                    <h3>新版登入與忘記密碼操作說明</h3>
+                                </div>
+                                <p>包含雙因素驗證、密碼規則、首次登入與常見錯誤排除。</p>
+                                <time datetime="2026-06-18">2026/06/18</time>
+                            </article>
+                        </div>
+                    </section>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <h2>常用入口</h2>
+                            <a href="#">更多服務</a>
+                        </div>
+                        <div class="link-list">
+                            <a class="resource" href="#">
+                                <span>
+                                    <strong>新功能介紹頁</strong>
+                                    <span>系統更新、流程變更與版本紀錄</span>
+                                </span>
+                                <span class="icon-box" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                                </span>
+                            </a>
+                            <a class="resource" href="#">
+                                <span>
+                                    <strong>IT 服務台</strong>
+                                    <span>報修、帳號解鎖與權限申請</span>
+                                </span>
+                                <span class="icon-box" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /></svg>
+                                </span>
+                            </a>
+                            <a class="resource" href="#">
+                                <span>
+                                    <strong>資安宣導</strong>
+                                    <span>釣魚信、密碼規範與遠端連線規則</span>
+                                </span>
+                                <span class="icon-box" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <section class="section" aria-labelledby="statusTitle">
+                        <div class="section-title">
+                            <h2 id="statusTitle">服務狀態</h2>
+                        </div>
+                        <div class="status-panel">
+                            <div class="status-row">
+                                <span>單一登入 SSO</span>
+                                <strong class="status-good"><span class="status-dot"></span>正常</strong>
+                            </div>
+                            <div class="status-row">
+                                <span>院內網路</span>
+                                <strong class="status-good"><span class="status-dot"></span>正常</strong>
+                            </div>
+                            <div class="status-row">
+                                <span>電子表單</span>
+                                <strong class="status-warn"><span class="status-dot"></span>排程維護</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section" aria-labelledby="deviceTitle">
+                        <div class="section-title">
+                            <h2 id="deviceTitle">電腦重要資訊</h2>
+                        </div>
+                        <dl class="device-info">
+                            <div class="device-line">
+                                <dt>IP 位址</dt>
+                                <dd id="ipText">由內部網路服務提供</dd>
+                            </div>
+                            <div class="device-line">
+                                <dt>電腦名稱</dt>
+                                <dd id="hostText">CHGH-CLIENT</dd>
+                            </div>
+                            <div class="device-line">
+                                <dt>瀏覽器</dt>
+                                <dd id="browserText">讀取中</dd>
+                            </div>
+                            <div class="device-line">
+                                <dt>作業系統</dt>
+                                <dd id="osText">讀取中</dd>
+                            </div>
+                        </dl>
+                        <p class="footer-note">IP 與電腦名稱通常需由內部後端或網域服務提供，前端僅能顯示瀏覽器可取得的資訊。</p>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const todayText = document.getElementById("todayText");
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("formMessage");
+        const password = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+        const browserText = document.getElementById("browserText");
+        const osText = document.getElementById("osText");
+
+        todayText.textContent = new Intl.DateTimeFormat("zh-TW", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            weekday: "long"
+        }).format(new Date());
+
+        togglePassword.addEventListener("click", () => {
+            const show = password.type === "password";
+            password.type = show ? "text" : "password";
+            togglePassword.setAttribute("aria-label", show ? "隱藏密碼" : "顯示密碼");
+        });
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const account = document.getElementById("account");
+            if (!account.value.trim() || !password.value.trim()) {
+                message.textContent = "請輸入帳號與密碼。";
+                (!account.value.trim() ? account : password).focus();
+                return;
+            }
+            message.textContent = "登入驗證送出中。";
+        });
+
+        const ua = navigator.userAgent;
+        const browser =
+            ua.includes("Edg/") ? "Microsoft Edge" :
+            ua.includes("Chrome/") ? "Google Chrome" :
+            ua.includes("Firefox/") ? "Mozilla Firefox" :
+            ua.includes("Safari/") ? "Safari" : "未知瀏覽器";
+        const os =
+            ua.includes("Windows") ? "Windows" :
+            ua.includes("Mac OS") ? "macOS" :
+            ua.includes("Android") ? "Android" :
+            ua.includes("iPhone") || ua.includes("iPad") ? "iOS / iPadOS" :
+            ua.includes("Linux") ? "Linux" : "未知系統";
+
+        browserText.textContent = browser;
+        osText.textContent = os;
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>風格七：療癒庭院｜振興醫院登入</title>
+    <style>
+        :root { --forest:#16483e; --leaf:#3b7563; --mint:#dcebe4; --sky:#dceaf0; --sun:#f0b44d; --white:#fffef9; --ink:#17342e; --muted:#60746e; --danger:#a63d35; --ok:#39734c; --r:28px; --sans:"Noto Sans TC","Microsoft JhengHei",sans-serif; }
+        * { box-sizing: border-box; }
+        html,body { min-height:100%; margin:0; }
+        body { min-height:100dvh; font-family:var(--sans); color:var(--ink); overflow-x:hidden; }
+        .bg-layer { position:fixed; inset:0; z-index:-2; background:linear-gradient(150deg,#dceaf0 0 48%,#dcebe4 48% 100%); transition:background .5s; }
+        .bg-layer.theme-fri,.bg-layer.theme-anniversary { background:linear-gradient(150deg,#e5edf1 0 48%,#eee5cf 48%); }
+        .bg-layer.theme-lunar,.bg-layer.theme-newyear { background:linear-gradient(150deg,#f0e2dd 0 48%,#e8d5cb 48%); }
+        .scene { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; }
+        .sun { position:absolute; width:280px; height:280px; border-radius:50%; right:8vw; top:-100px; background:rgba(240,180,77,.5); filter:blur(2px); }
+        .leaf { position:absolute; width:34vw; height:58vh; border-radius:100% 0 100% 0; background:rgba(22,72,62,.12); transform:rotate(18deg); }
+        .leaf.one { left:-12vw; bottom:-18vh; } .leaf.two { right:-15vw; bottom:-12vh; transform:rotate(210deg); background:rgba(59,117,99,.14); }
+        .back-link { position:fixed; left:24px; top:22px; z-index:4; padding:10px 15px; border-radius:999px; background:rgba(255,254,249,.72); color:var(--forest); text-decoration:none; font-size:.78rem; font-weight:800; backdrop-filter:blur(12px); }
+        .shell { width:min(1080px,calc(100% - 48px)); min-height:100dvh; margin:auto; padding:76px 0 40px; display:grid; grid-template-columns:.84fr 1.16fr; align-items:center; }
+        .story { position:relative; z-index:1; padding:40px 8vw 40px 0; animation:drift .75s ease both; }
+        .brand { display:flex; gap:13px; align-items:center; }
+        .brand-logo-img { max-width:190px; max-height:55px; object-fit:contain; filter:brightness(.45) sepia(.35) hue-rotate(95deg); }
+        .brand svg { width:48px; }
+        .company-name { color:var(--forest); font-size:1.35rem; font-weight:900; letter-spacing:.14em; }
+        .brand-en { margin:3px 0 0; color:var(--leaf); font-size:.65rem; font-weight:800; letter-spacing:.13em; }
+        h1 { margin:60px 0 20px; color:var(--forest); font-size:clamp(3.2rem,6vw,6.3rem); line-height:.98; letter-spacing:-.06em; }
+        h1 em { display:block; color:var(--leaf); font-style:normal; font-weight:400; }
+        .story-copy { max-width:430px; color:var(--muted); line-height:1.9; }
+        .today { margin-top:38px; display:flex; gap:14px; align-items:center; color:var(--forest); font-size:.83rem; }
+        .today::before { content:""; width:34px; height:2px; background:var(--sun); }
+        .card { position:relative; padding:48px; border-radius:var(--r); background:rgba(255,254,249,.86); box-shadow:0 26px 70px rgba(22,72,62,.16); backdrop-filter:blur(18px); animation:drift .75s .1s ease both; }
+        .card h2 { margin:0; color:var(--forest); font-size:1.75rem; }
+        .subtitle { margin:8px 0 28px; color:var(--muted); font-size:.86rem; }
+        .festival-banner { margin-bottom:22px; padding:12px 14px; border-radius:14px; background:var(--mint); color:var(--forest); font-size:.8rem; }
+        .festival-banner .fb-wish { margin-left:8px; color:var(--muted); }
+        .fields { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .field-label { display:block; margin-bottom:7px; color:var(--forest); font-size:.76rem; font-weight:800; }
+        .field-input { position:relative; }
+        .field-input input { width:100%; padding:14px 46px 14px 15px; border:1.5px solid #bed2c8; border-radius:14px; outline:0; background:#fff; color:var(--ink); font:inherit; }
+        .field-input input:focus { border-color:var(--leaf); box-shadow:0 0 0 4px rgba(59,117,99,.12); }
+        .toggle-password { position:absolute; right:12px; top:50%; transform:translateY(-50%); border:0; background:none; color:var(--leaf); font-weight:800; cursor:pointer; }
+        .field-row { margin-top:15px; display:flex; justify-content:space-between; gap:16px; font-size:.8rem; }
+        .checkbox { display:flex; align-items:center; gap:7px; color:var(--muted); }
+        .checkbox input { accent-color:var(--leaf); }
+        .link-forgot { color:var(--forest); font-weight:800; text-decoration:none; }
+        .form-message { min-height:20px; margin:14px 0 8px; color:var(--danger); font-size:.78rem; }
+        .form-message.success { color:var(--ok); }
+        .btn-login { width:100%; padding:15px; border:0; border-radius:14px; background:var(--forest); color:#fff; font:800 .95rem var(--sans); letter-spacing:.25em; cursor:pointer; transition:transform .18s,background .18s; }
+        .btn-login:hover { background:var(--leaf); transform:translateY(-2px); } .btn-login:active { transform:translateY(1px); }
+        .ann { margin:30px -20px -20px; padding:24px 20px 20px; border-top:1px solid #b9d0c5; border-radius:0 0 calc(var(--r) - 2px) calc(var(--r) - 2px); background:rgba(220,235,228,.58); }
+        .ann-head { margin-bottom:13px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .ann h3 { margin:0; color:var(--forest); font-size:1rem; }
+        .ann-date { color:var(--leaf); font-size:.7rem; font-weight:800; white-space:nowrap; }
+        .announcement-list { max-height:190px; margin:0; padding:0; overflow:auto; list-style:none; }
+        .announcement-list li { padding:9px 0; border-top:1px solid rgba(59,117,99,.2); color:var(--ink); font-size:.78rem; line-height:1.55; }
+        .announcement-list li:first-child { margin-bottom:5px; padding:13px 15px; border:0; border-radius:14px; background:var(--forest); color:#fff; font-size:.86rem; font-weight:700; }
+        .announcement-list .tag { margin-right:6px; color:var(--leaf); font-weight:900; }
+        .announcement-list li:first-child .tag { color:var(--sun); }
+        @keyframes drift { from { opacity:0; transform:translateY(20px); } }
+        @media(max-width:840px){ .shell{width:min(100% - 28px,620px);grid-template-columns:1fr;padding-top:90px}.story{padding:25px 12px 42px}h1{margin-top:42px}.card{padding:30px}.fields{grid-template-columns:1fr}.sun{right:-90px} }
+        @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+    </style>
+</head>
+<body>
+    <a class="back-link" href="../index.html">返回款式選擇</a>
+    <div id="bgLayer" class="bg-layer"></div><div class="scene"><i class="sun"></i><i class="leaf one"></i><i class="leaf two"></i></div>
+    <main class="shell">
+        <section class="story">
+            <div class="brand"><span id="brandLogo"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="25" stroke="#3b7563" stroke-width="2"/><path d="M28 15v26M15 28h26" stroke="#3b7563" stroke-width="5"/></svg></span><div><div class="company-name">振興醫院</div><p class="brand-en">CHENG HSIN GENERAL HOSPITAL</p></div></div>
+            <h1>專注每一次<em>溫柔照護</em></h1>
+            <p class="story-copy">從一個安心的入口開始，讓資訊、團隊與照護工作自然連結。</p>
+            <div class="today"><span id="greeting"></span><span id="todayLabel"></span></div>
+        </section>
+        <section class="card" aria-labelledby="loginTitle">
+            <h2 id="loginTitle">歡迎回來</h2><p class="subtitle">登入員工資訊整合入口</p>
+            <div class="festival-banner" id="festivalBanner" style="display:none"></div>
+            <form id="loginForm" novalidate>
+                <div class="fields">
+                    <div><label class="field-label" for="username">帳號</label><div class="field-input"><input id="username" name="username" type="text" autocomplete="username" placeholder="員工編號或帳號" required></div></div>
+                    <div><label class="field-label" for="password">密碼</label><div class="field-input"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" required><button class="toggle-password" id="togglePassword" type="button">顯示</button></div></div>
+                </div>
+                <div class="field-row"><label class="checkbox"><input id="remember" type="checkbox">記住我</label><a class="link-forgot" href="#">忘記密碼？</a></div>
+                <p class="form-message" id="formMessage" role="alert"></p><button class="btn-login" type="submit">登 入 系 統</button>
+            </form>
+            <aside class="ann"><div class="ann-head"><h3>院內重要公告</h3><span class="ann-date" id="todayLabelAnn"></span></div><ul class="announcement-list" id="announcementList"></ul></aside>
+        </section>
+    </main>
+    <script src="../shared/login-core.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>風格五：深色豪華 — 振興醫院登入</title>
+    <style>
+        /* ===== 風格五：Dark Luxe 深色豪華 ===== */
+        :root {
+            --ch-primary: #003366; --ch-secondary: #C19A6B; --ch-secondary-light: #d9b889;
+            --ch-success: #8bc34a; --ch-danger: #ff7a7a;
+            --ink: #0d1420; --ink-2: #141d2e; --line: rgba(193,154,107,0.4);
+            --ch-font-sans: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+            --ch-font-serif: "Noto Serif TC", "Times New Roman", serif;
+            --tr: 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body { font-family: var(--ch-font-sans); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; color: #f0ece3; padding: 24px; }
+        /* 深色基底，主題色作為光暈疊加 */
+        .bg-layer { position: fixed; inset: 0; z-index: -2; background: var(--ink); transition: background 0.9s ease; }
+        .bg-glow { position: fixed; inset: 0; z-index: -1; pointer-events: none; transition: background-image 0.9s ease; background-image: radial-gradient(circle at 25% 20%, rgba(0,82,138,0.5), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.22), transparent 50%); }
+        .bg-layer.theme-sun ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(74,44,26,0.6), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.22), transparent 50%); }
+        .bg-layer.theme-tue ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(85,139,47,0.45), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.22), transparent 50%); }
+        .bg-layer.theme-fri ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(0,51,102,0.5), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.4), transparent 50%); }
+        .bg-layer.theme-lunar ~ .bg-glow, .bg-layer.theme-newyear ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(140,28,19,0.5), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.3), transparent 50%); }
+        .bg-layer.theme-christmas ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(12,46,35,0.6), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.25), transparent 50%); }
+        .bg-layer.theme-anniversary ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(0,51,102,0.5), transparent 45%), radial-gradient(circle at 80% 85%, rgba(193,154,107,0.45), transparent 50%); }
+        /* 端午：粽葉綠 + 龍舟暖陽光暈 */
+        .bg-layer.theme-dragonboat ~ .bg-glow { background-image: radial-gradient(circle at 25% 20%, rgba(31,92,61,0.6), transparent 45%), radial-gradient(circle at 80% 85%, rgba(201,127,58,0.4), transparent 50%); }
+        .shell { width: min(900px, 100%); display: grid; grid-template-columns: 1fr 300px; gap: 0; background: linear-gradient(160deg, var(--ink-2), var(--ink)); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.55); animation: rise 0.7s var(--tr); }
+        @keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        /* 左：登入 */
+        .login { padding: 48px 46px; display: flex; flex-direction: column; justify-content: center; }
+        .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; animation: fadeUp 0.6s 0.1s both; }
+        .brand-line { width: 40px; height: 1px; background: var(--line); }
+        .brand-logo-img { max-height: 46px; max-width: 180px; object-fit: contain; display: block; }
+        /* 節慶橫幅（深色金線風） */
+        .festival-banner { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; padding: 9px 16px; border-radius: 999px; background: rgba(193,154,107,0.12); border: 1px solid var(--line); animation: fadeUp 0.6s 0.14s both; }
+        .festival-banner .fb-icon { font-size: 1.2rem; }
+        .festival-banner .fb-label { font-family: var(--ch-font-serif); font-weight: 700; font-size: 0.95rem; color: var(--ch-secondary-light); letter-spacing: 1px; }
+        .festival-banner .fb-wish { font-size: 0.76rem; color: rgba(240,236,227,0.6); }
+        .brand-eyebrow { font-size: 0.64rem; letter-spacing: 3px; color: var(--ch-secondary); font-weight: 600; }
+        .company-name { font-family: var(--ch-font-serif); font-size: 1.7rem; letter-spacing: 4px; color: #fff; margin-top: 2px; }
+        .login-title { font-family: var(--ch-font-serif); font-size: 2rem; color: #fff; letter-spacing: 1px; animation: fadeUp 0.6s 0.18s both; }
+        .login-title em { color: var(--ch-secondary-light); font-style: normal; }
+        .login-subtitle { font-size: 0.85rem; color: rgba(240,236,227,0.6); margin: 8px 0 30px; animation: fadeUp 0.6s 0.24s both; }
+        .login-form { display: flex; flex-direction: column; gap: 18px; animation: fadeUp 0.6s 0.3s both; }
+        .field-label { font-size: 0.78rem; font-weight: 600; color: var(--ch-secondary-light); letter-spacing: 1px; margin-bottom: 7px; display: block; }
+        .field-input { position: relative; display: flex; align-items: center; }
+        .field-input input { width: 100%; padding: 13px 14px; border: 1px solid rgba(193,154,107,0.3); border-radius: 8px; background: rgba(255,255,255,0.04); color: #fff; font-size: 0.93rem; outline: none; transition: var(--tr); }
+        .field-input input::placeholder { color: rgba(240,236,227,0.4); }
+        .field-input input:focus { border-color: var(--ch-secondary); background: rgba(193,154,107,0.08); box-shadow: 0 0 0 0.2rem rgba(193,154,107,0.18); }
+        .toggle-password { position: absolute; right: 12px; border: none; background: transparent; color: var(--ch-secondary-light); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .field-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; }
+        .checkbox { display: flex; align-items: center; gap: 7px; cursor: pointer; color: rgba(240,236,227,0.75); }
+        .checkbox input { accent-color: var(--ch-secondary); }
+        .link-forgot { color: var(--ch-secondary-light); text-decoration: none; }
+        .form-message { min-height: 16px; font-size: 0.8rem; color: var(--ch-danger); }
+        .form-message.success { color: var(--ch-success); }
+        .btn-login { margin-top: 6px; padding: 14px; border: 1px solid var(--ch-secondary); border-radius: 8px; background: linear-gradient(135deg, var(--ch-secondary), #a07a4d); color: #1a1206; font-size: 1rem; letter-spacing: 6px; font-weight: 700; cursor: pointer; transition: var(--tr), transform 0.15s; }
+        .btn-login:hover { box-shadow: 0 12px 30px rgba(193,154,107,0.4); transform: translateY(-2px); background: linear-gradient(135deg, var(--ch-secondary-light), var(--ch-secondary)); }
+        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+        .login-foot { margin-top: 28px; font-size: 0.7rem; color: rgba(240,236,227,0.4); letter-spacing: 0.5px; }
+        /* 右：公告細欄 */
+        .aside { padding: 40px 28px; background: rgba(0,0,0,0.25); border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+        .aside-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+        .aside-head h2 { font-family: var(--ch-font-serif); font-size: 1rem; color: var(--ch-secondary-light); letter-spacing: 1px; }
+        .announcement-date { font-size: 0.7rem; color: rgba(240,236,227,0.5); }
+        .announcement-list { list-style: none; overflow-y: auto; max-height: 280px; display: flex; flex-direction: column; gap: 12px; }
+        .announcement-list li { font-size: 0.82rem; line-height: 1.55; color: rgba(240,236,227,0.85); padding-left: 12px; border-left: 2px solid var(--line); transition: var(--tr); }
+        .announcement-list li:hover { border-left-color: var(--ch-secondary); padding-left: 16px; color: #fff; }
+        .announcement-list .tag { display: inline-block; font-size: 0.62rem; padding: 1px 7px; border-radius: 999px; margin-right: 6px; background: rgba(193,154,107,0.25); color: var(--ch-secondary-light); }
+        .announcement-list .tag.urgent { background: rgba(255,90,90,0.25); color: #ffb3b3; }
+        .announcement-list .tag.event { background: rgba(193,154,107,0.4); color: #fff; }
+        .aside-foot { margin-top: auto; padding-top: 16px; font-size: 0.74rem; color: rgba(240,236,227,0.5); }
+        .back-link { position: fixed; top: 18px; left: 18px; z-index: 10; color: var(--ch-secondary-light); background: rgba(0,0,0,0.4); border: 1px solid var(--line); padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: 0.82rem; }
+        @media (max-width: 820px) { .shell { grid-template-columns: 1fr; } .aside { border-left: none; border-top: 1px solid var(--line); } }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← 返回款式選擇</a>
+    <div id="bgLayer" class="bg-layer"></div>
+    <div class="bg-glow"></div>
+    <div class="shell">
+        <section class="login">
+            <div class="brand">
+                <span id="brandLogo"><span class="brand-line"></span></span>
+                <div><p class="brand-eyebrow">CHENG HSIN GENERAL HOSPITAL</p><div class="company-name">振興醫院</div></div>
+            </div>
+            <div class="festival-banner" id="festivalBanner" style="display:none"></div>
+            <h1 class="login-title">歡迎<em>回來</em></h1>
+            <p class="login-subtitle">員工資訊整合入口 · 請輸入帳號密碼以登入系統</p>
+            <form id="loginForm" class="login-form" novalidate>
+                <div><label class="field-label" for="username">帳號 ACCOUNT</label><div class="field-input"><input type="text" id="username" name="username" placeholder="請輸入員工編號或帳號" required /></div></div>
+                <div><label class="field-label" for="password">密碼 PASSWORD</label><div class="field-input"><input type="password" id="password" name="password" placeholder="請輸入密碼" required /><button type="button" class="toggle-password" id="togglePassword">顯示</button></div></div>
+                <div class="field-row"><label class="checkbox"><input type="checkbox" id="remember" /><span>記住我</span></label><a href="#" class="link-forgot">忘記密碼？</a></div>
+                <p class="form-message" id="formMessage" role="alert"></p>
+                <button type="submit" class="btn-login">登 入</button>
+            </form>
+            <p class="login-foot">© <span id="year"></span> 振興醫院 Cheng Hsin General Hospital. 版權所有</p>
+        </section>
+        <aside class="aside">
+            <div class="aside-head"><h2>系統公告</h2><span class="announcement-date" id="todayLabel"></span></div>
+            <ul class="announcement-list" id="announcementList"></ul>
+            <div class="aside-foot"><span id="greeting"></span></div>
+        </aside>
+    </div>
+    <script src="../shared/login-core.js"></script>
+</body>
+</html>

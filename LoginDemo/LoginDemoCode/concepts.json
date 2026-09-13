@@ -1,0 +1,162 @@
+[
+  {
+    "id": "01-clinical-blue",
+    "name": "澄藍秩序",
+    "en": "CLINICAL CLARITY",
+    "description": "以澄藍識別橫幅、明確資訊分區與充裕留白，建立安心而有效率的系統入口。",
+    "colors": {
+      "bg": "#eef4fa",
+      "surface": "#ffffff",
+      "ink": "#142c45",
+      "muted": "#587087",
+      "line": "#d9e4ef",
+      "accent": "#175db0",
+      "onAccent": "#ffffff",
+      "soft": "#e8f1fc"
+    }
+  },
+  {
+    "id": "02-midnight-command",
+    "name": "午夜指揮所",
+    "en": "MIDNIGHT COMMAND",
+    "description": "深海藍與訊號青綠，搭配固定識別側欄和儀表式資訊分區，帶出專注的控制台氛圍。",
+    "colors": {
+      "bg": "#101a29",
+      "surface": "#172539",
+      "ink": "#edf5ff",
+      "muted": "#a3b4ca",
+      "line": "#32445c",
+      "accent": "#70e1ce",
+      "onAccent": "#102b2b",
+      "soft": "#223d46"
+    }
+  },
+  {
+    "id": "03-paper-journal",
+    "name": "紙感院刊",
+    "en": "THE SYSTEM JOURNAL",
+    "description": "以院刊編輯版型、米白紙色與酒紅色標記，讓系統名稱成為醒目刊頭，登入與消息井然排列。",
+    "colors": {
+      "bg": "#f3eee5",
+      "surface": "#fcf9f3",
+      "ink": "#342c28",
+      "muted": "#77695e",
+      "line": "#d4c8b8",
+      "accent": "#8b3436",
+      "onAccent": "#ffffff",
+      "soft": "#efe0d8"
+    }
+  },
+  {
+    "id": "04-garden-courtyard",
+    "name": "庭院綠境",
+    "en": "GARDEN COURTYARD",
+    "description": "深綠庭院與奶油白表單相映，讓系統入口清楚而從容。",
+    "colors": {
+      "bg": "#f1f2e9",
+      "surface": "#fffef8",
+      "ink": "#203d2b",
+      "muted": "#657365",
+      "line": "#d8dfce",
+      "accent": "#294f38",
+      "onAccent": "#ffffff",
+      "soft": "#e5eddf"
+    }
+  },
+  {
+    "id": "05-cobalt-signal",
+    "name": "鈷藍信號",
+    "en": "COBALT SIGNAL",
+    "description": "鮮明鈷藍側欄搭配黃色情報帶，以強烈秩序辨識系統與登入任務。",
+    "colors": {
+      "bg": "#e8ecf4",
+      "surface": "#ffffff",
+      "ink": "#101a36",
+      "muted": "#65708a",
+      "line": "#d4dbea",
+      "accent": "#224ce5",
+      "onAccent": "#ffffff",
+      "soft": "#e8eeff"
+    }
+  },
+  {
+    "id": "06-wisteria-journal",
+    "name": "紫藤雅緻",
+    "en": "WISTERIA JOURNAL",
+    "description": "淡紫柔光、置中系統標題與雜誌三欄，平衡登入、公告與服務資訊。",
+    "colors": {
+      "bg": "#f3f0f6",
+      "surface": "#ffffff",
+      "ink": "#382e49",
+      "muted": "#777080",
+      "line": "#e2dce9",
+      "accent": "#795aa3",
+      "onAccent": "#ffffff",
+      "soft": "#eee6f6"
+    }
+  },
+  {
+    "id": "07-nordic-space",
+    "name": "北歐留白",
+    "en": "NORDIC SPACE",
+    "description": "霧白、松綠與大幅留白，將系統識別與工作資訊安放在清楚的秩序中。",
+    "colors": {
+      "bg": "#f5f7f4",
+      "surface": "#ffffff",
+      "ink": "#243c33",
+      "muted": "#68786f",
+      "line": "#dce4dc",
+      "accent": "#355c49",
+      "onAccent": "#ffffff",
+      "soft": "#eaf0e9"
+    }
+  },
+  {
+    "id": "08-urban-tiles",
+    "name": "都會磁磚",
+    "en": "URBAN TILES",
+    "description": "青綠主視覺、杏橘功能磁磚與俐落模組，將每日入口變成鮮明的工作桌面。",
+    "colors": {
+      "bg": "#eaece6",
+      "surface": "#ffffff",
+      "ink": "#123e39",
+      "muted": "#63736b",
+      "line": "#d4ddd3",
+      "accent": "#13665c",
+      "onAccent": "#ffffff",
+      "soft": "#e7f1e9"
+    }
+  },
+  {
+    "id": "09-precision-blueprint",
+    "name": "精密藍圖",
+    "en": "PRECISION BLUEPRINT",
+    "description": "深藍製圖底紋、細線框與技術字距，建立具秩序感的資訊工作台。",
+    "colors": {
+      "bg": "#0c2f60",
+      "surface": "#123b70",
+      "ink": "#f2f7ff",
+      "muted": "#bed0e8",
+      "line": "#40618d",
+      "accent": "#b8ddff",
+      "onAccent": "#082a50",
+      "soft": "#234b7e"
+    }
+  },
+  {
+    "id": "10-terracotta-light",
+    "name": "陶土日光",
+    "en": "TERRACOTTA LIGHT",
+    "description": "暖陶土、細緻拱廊與奶油紙色，讓登入頁呈現安定、從容的接待空間。",
+    "colors": {
+      "bg": "#f4eee5",
+      "surface": "#fffdf8",
+      "ink": "#49392d",
+      "muted": "#7b6b5c",
+      "line": "#dfd3c2",
+      "accent": "#944c35",
+      "onAccent": "#ffffff",
+      "soft": "#efe0d0"
+    }
+  }
+]

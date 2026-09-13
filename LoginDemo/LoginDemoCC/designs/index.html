@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>登入頁十款風格</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        :root { --ink: #16202b; --muted: #63748a; --line: #e2e8f0; --brand: #0f4c81; }
+        body {
+            background: #f4f7fa; color: var(--ink);
+            font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+        }
+        a { text-decoration: none; }
+
+        .page-head { background: linear-gradient(120deg, #0b3d62, #14618f); color: #fff; padding: 2rem 0 1.75rem; }
+
+        .card-s { background: #fff; border: 1px solid var(--line); border-radius: .7rem; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
+        .thumb { position: relative; height: 210px; overflow: hidden; border-bottom: 1px solid var(--line); background: #dde4ec; display: block; }
+        .thumb iframe { width: 1400px; height: 1050px; border: 0; transform: scale(.30); transform-origin: top left; pointer-events: none; }
+        .thumb .cover { position: absolute; inset: 0; z-index: 1; }
+        .thumb .no {
+            position: absolute; top: .5rem; left: .5rem; z-index: 2;
+            background: rgba(11,61,98,.94); color: #fff; font-weight: 800; font-size: .74rem;
+            letter-spacing: .1em; border-radius: .3rem; padding: .1rem .5rem;
+        }
+        .body-s { padding: .9rem 1rem 1rem; flex: 1; display: flex; flex-direction: column; }
+        .body-s h2 { font-size: 1.05rem; font-weight: 800; margin-bottom: .1rem; }
+        .body-s .sub { font-size: .82rem; color: var(--muted); margin-bottom: .6rem; }
+        .body-s p { font-size: .86rem; margin-bottom: .5rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .6rem; }
+        .tag { font-size: .72rem; border: 1px solid var(--line); border-radius: 999px; padding: .05rem .55rem; color: var(--muted); }
+        .cost { font-size: .8rem; color: #8a5a10; background: #fdf6e8; border: 1px solid #f0e2c4; border-radius: .4rem; padding: .45rem .6rem; margin-bottom: .7rem; }
+        .btn-open { background: var(--brand); color: #fff; font-weight: 700; width: 100%; }
+        .btn-open:hover { background: #0c3d68; color: #fff; }
+
+        .cmp th, .cmp td { font-size: .84rem; vertical-align: middle; }
+        .cmp th:first-child { white-space: nowrap; }
+
+        @media (max-width: 575.98px) { .thumb { height: 170px; } .thumb iframe { transform: scale(.24); } }
+    </style>
+</head>
+
+<body>
+
+    <header class="page-head">
+        <div class="container">
+            <p class="mb-1 small opacity-75">振興醫院｜員工資訊整合入口</p>
+            <h1 class="h3 fw-bold mb-2">登入頁：十款風格</h1>
+            <p class="mb-0 opacity-85" style="max-width:66ch">
+                十款共用同一份需求與同一份資料（<code class="text-white-50">assets/js/data.js</code>）與同一套資料處理
+                （<code class="text-white-50">designs/shared.js</code>），差別只在版面語言與資訊優先順序。
+                每一款都完整涵蓋帳密、忘記／變更密碼、公告（全系統／單一系統）、更版資訊、版本、維護者聯絡、
+                教學說明、登入端電腦與最後登入，以及明確的系統識別。
+            </p>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <div class="row g-3" id="cards"></div>
+
+        <section class="mt-5">
+            <h2 class="h5 fw-bold mb-3">一眼比較</h2>
+            <div class="table-responsive bg-white border rounded-3">
+                <table class="table table-bordered align-middle mb-0 cmp">
+                    <thead class="table-light">
+                        <tr>
+                            <th>款式</th><th>視覺語言</th><th>系統辨識</th><th>公告到達</th>
+                            <th>資訊密度</th><th>手機</th><th>最適合</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cmpBody"></tbody>
+                </table>
+            </div>
+            <p class="text-secondary small mt-3 mb-0">
+                要換系統只需改 <code>assets/js/data.js</code> 的 <code>system</code> 區塊（名稱、簡稱、代碼、環境、代表色），
+                十款會同時跟著變。<code>env</code> 設為 UAT／SIT／DEV 時，各款的識別區都會轉為警示樣式。
+            </p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script>
+        var DESIGNS = [
+            {
+                no: '01', file: '01-split-diagonal.html', name: '斜切雙欄 Split Diagonal',
+                sub: '左深色品牌斜切 + 右白色表單 + 抽屜資訊',
+                desc: '主畫面只放系統識別與登入，公告、更版、系統、教學各自收在右側 offcanvas 抽屜，點才出現。',
+                tags: ['乾淨', '雙欄', 'offcanvas'],
+                cost: '取捨：資訊要多點一次才看得到；斜切在超寬螢幕會佔掉一點空間。',
+                cmp: ['幾何切割／深藍金', '高', '中', '低', '佳', '一般員工入口']
+            },
+            {
+                no: '02', file: '02-metro-tiles.html', name: '磁磚看板 Metro Tiles',
+                sub: '直角實色方塊，用顏色分類資訊',
+                desc: '每類資訊一塊色磚：公告紅、更版綠、系統深灰、本機紫、教學棕，登入是唯一的白磚。',
+                tags: ['色塊', '直角', '一屏總覽'],
+                cost: '取捨：顏色多，若院內有既定配色規範可能要收斂；長公告會撐高磚塊。',
+                cmp: ['方塊色磚', '高', '高', '高', '中', '需要快速掃視的入口']
+            },
+            {
+                no: '03', file: '03-terminal.html', name: '終端機 Terminal',
+                sub: '全等寬字、命令列提示符、視窗標題列',
+                desc: '像 SSH 進了某台主機，視窗標題列固定寫著系統代碼與環境，公告排成 log 格式。',
+                tags: ['深色', '等寬字', '機房感'],
+                cost: '取捨：風格很挑人，非技術使用者可能不習慣；深綠配色在投影機下對比不足。',
+                cmp: ['終端機綠', '最高', '高', '最高', '一般', '資訊機房／維運系統']
+            },
+            {
+                no: '04', file: '04-glass.html', name: '玻璃擬態 Glassmorphism',
+                sub: '彩色漸層背景 + 半透明毛玻璃卡片',
+                desc: '系統識別做成浮在最上層的膠囊列，隨捲動固定；資訊用圓角 pill 分頁收納。',
+                tags: ['現代', '柔和', '漸層'],
+                cost: '取捨：毛玻璃在舊瀏覽器會退化成半透明色塊；彩色背景讓文字對比需要特別顧。',
+                cmp: ['毛玻璃漸層', '中', '中', '中', '佳', '對外形象較講究的入口']
+            },
+            {
+                no: '05', file: '05-newspaper.html', name: '報紙排版 Newspaper',
+                sub: '襯線字、報頭、雙欄文字、細分隔線',
+                desc: '系統名稱就是報頭，代碼與環境印在報眉；最新公告當頭條，其餘排成雙欄短訊。',
+                tags: ['襯線', '編輯感', '頭條'],
+                cost: '取捨：襯線字在小尺寸螢幕可讀性略降；版面偏正式，互動感較弱。',
+                cmp: ['報紙／襯線', '最高', '最高', '高', '中', '公告是重點的公務系統']
+            },
+            {
+                no: '06', file: '06-timeline.html', name: '時間軸 Timeline',
+                sub: '公告 + 更版 + 登入紀錄合成一條時間線',
+                desc: '把「哪一天發生什麼」統一呈現，可切換只看公告、只看更版；最後登入也是線上的一個點。',
+                tags: ['時序', '合併呈現', '可篩選'],
+                cost: '取捨：公告與更版混在一起，想單看某一類要先切換；項目多時時間軸會很長。',
+                cmp: ['時間軸', '中', '高', '中', '佳', '更版頻繁、想看演進的系統']
+            },
+            {
+                no: '07', file: '07-wizard.html', name: '步驟引導 Wizard',
+                sub: '① 確認系統 ② 看公告 ③ 輸入帳密',
+                desc: '針對「稽核時說不知道開的是哪個系統」，第一步就用大卡片強迫確認一次，並勾選確認。',
+                tags: ['分步', '強制確認', '稽核導向'],
+                cost: '取捨：多一兩次點擊，老手會嫌慢（已保留「略過公告直接登入」的捷徑）。',
+                cmp: ['精靈步驟', '最高', '高', '低', '最佳', '稽核要求最嚴的系統']
+            },
+            {
+                no: '08', file: '08-app-shell.html', name: '側欄應用 App Shell',
+                sub: '登入頁長得就像登入後的後台',
+                desc: '左側導覽、上方系統列、右側內容區；「尚未登入」用紅色標籤明確標示，版面與登入後一致。',
+                tags: ['後台感', '側欄', '一致性'],
+                cost: '取捨：登入前就出現導覽，可能讓人誤以為已登入（已用紅色標籤與鎖頭圖示緩解）。',
+                cmp: ['後台 App', '高', '中', '高', '佳', '與後台版面統一的入口']
+            },
+            {
+                no: '09', file: '09-brutalist.html', name: '粗野主義 Brutalist',
+                sub: '零圓角、3px 黑邊、硬投影、螢光黃',
+                desc: '系統名稱佔滿整行，代碼與環境做成蓋章式標籤；辨識度最高，最不可能跟別的系統搞混。',
+                tags: ['強烈', '高對比', '印象深'],
+                cost: '取捨：風格非常有個性，未必符合醫院既有形象；螢光黃大面積使用要節制。',
+                cmp: ['粗野／黑黃', '最高', '高', '高', '中', '需要極高辨識度的系統']
+            },
+            {
+                no: '10', file: '10-compact.html', name: '單屏密集 Compact',
+                sub: '四欄等高面板，1080p 不用捲動',
+                desc: '13px 表格化排版，每個面板各自捲動；系統識別壓成最上方一條高對比帶狀。',
+                tags: ['高密度', '免捲動', '老手取向'],
+                cost: '取捨：字最小，不適合視力較弱的使用者；小螢幕會退化成單欄堆疊。',
+                cmp: ['密集儀表', '高', '高', '最高', '一般', '每天登入多次的老手']
+            }
+        ];
+
+        jQuery(function ($) {
+            var cards = DESIGNS.map(function (d) {
+                return '' +
+                    '<div class="col-12 col-md-6 col-xl-4"><article class="card-s">' +
+                    '  <a class="thumb" href="' + d.file + '" target="_blank" rel="noopener">' +
+                    '    <span class="no">款式 ' + d.no + '</span><span class="cover"></span>' +
+                    '    <iframe src="' + d.file + '" title="' + d.name + ' 預覽" loading="lazy" tabindex="-1"></iframe>' +
+                    '  </a>' +
+                    '  <div class="body-s">' +
+                    '    <h2>' + d.name + '</h2>' +
+                    '    <div class="sub">' + d.sub + '</div>' +
+                    '    <div class="tags">' + d.tags.map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
+                    '    <p>' + d.desc + '</p>' +
+                    '    <div class="cost">' + d.cost + '</div>' +
+                    '    <a class="btn btn-open mt-auto" href="' + d.file + '" target="_blank" rel="noopener">開啟款式 ' + d.no + ' <i class="bi bi-box-arrow-up-right ms-1"></i></a>' +
+                    '  </div></article></div>';
+            }).join('');
+            $('#cards').html(cards);
+
+            $('#cmpBody').html(DESIGNS.map(function (d) {
+                return '<tr><th>' + d.no + ' ' + d.name.split(' ')[0] + '</th>' +
+                    d.cmp.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+            }).join(''));
+        });
+    </script>
+</body>
+
+</html>

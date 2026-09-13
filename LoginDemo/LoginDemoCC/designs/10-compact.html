@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>款式 10｜單屏密集</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        /* ===== 款式 10：單屏密集 Compact =====================================
+           目標：1080p 螢幕不用捲動就看完所有資訊。
+           手法：四欄等高面板、13px 表格化排版、面板內各自捲動、
+                 系統識別壓在最上方一條高對比帶狀。給每天登入十次的老手。
+           ================================================================= */
+        :root {
+            --ink: #18212c; --muted: #64748b; --line: #dde4ec; --brand: #0f3d5c; --accent: #c2410c;
+        }
+        html, body { height: 100%; }
+        body {
+            margin: 0; background: #eef2f6; color: var(--ink); font-size: 13px;
+            font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+            display: flex; flex-direction: column;
+        }
+        a { text-decoration: none; }
+
+        .idbar {
+            background: var(--brand); color: #fff; padding: .35rem .75rem;
+            display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; flex: 0 0 auto;
+            border-bottom: 3px solid var(--accent);
+        }
+        .idbar .nm { font-weight: 800; font-size: 1rem; }
+        .code { font-family: Consolas, monospace; font-size: .78rem; letter-spacing: .06em; border: 1px solid rgba(255,255,255,.4); border-radius: .25rem; padding: 0 .4rem; }
+        .env { background: #12714a; border-radius: .25rem; padding: 0 .45rem; font-weight: 800; font-size: .75rem; letter-spacing: .08em; }
+
+        .board {
+            flex: 1 1 auto; min-height: 0; display: grid; gap: 6px; padding: 6px;
+            grid-template-columns: 300px 1fr 1fr 300px;
+        }
+        .pan {
+            background: #fff; border: 1px solid var(--line); border-radius: .35rem;
+            display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+        }
+        .pan > .hd {
+            background: #f5f8fb; border-bottom: 1px solid var(--line); padding: .3rem .6rem;
+            font-weight: 800; font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+            display: flex; align-items: center; gap: .4rem; flex: 0 0 auto;
+        }
+        .pan > .bd { padding: .6rem; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
+        .pan > .bd::-webkit-scrollbar { width: 7px; }
+        .pan > .bd::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 7px; }
+
+        .stack { display: grid; gap: 6px; min-height: 0; }
+
+        .form-control { padding: .4rem .55rem; font-size: 13px; border-color: var(--line); }
+        .form-control:focus { border-color: var(--brand); box-shadow: 0 0 0 .18rem rgba(15,61,92,.16); }
+        .form-label { font-weight: 700; font-size: .76rem; color: var(--muted); margin-bottom: .15rem; }
+        .input-group-text { background: #f5f8fb; border-color: var(--line); cursor: pointer; color: var(--muted); padding: .2rem .5rem; }
+        .btn-go { background: var(--brand); color: #fff; font-weight: 800; padding: .45rem; border: none; font-size: 13px; letter-spacing: .06em; }
+        .btn-go:hover { background: #0a2b42; color: #fff; }
+        .form-check-input { width: .95rem; height: .95rem; }
+
+        table.t { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+        table.t th, table.t td { border-bottom: 1px solid var(--line); padding: .22rem .35rem; }
+        table.t th { color: var(--muted); font-weight: 500; text-align: left; width: 42%; white-space: nowrap; }
+        table.t td { font-weight: 600; word-break: break-word; }
+
+        .n-row { border-bottom: 1px solid var(--line); padding: .35rem 0; }
+        .n-row:last-child { border-bottom: none; }
+        .n-row .t { font-weight: 700; font-size: 12.8px; }
+        .n-row .c { color: #46536b; font-size: 12.2px; }
+        .n-row .m { color: var(--muted); font-size: 11.5px; font-family: Consolas, monospace; }
+        .tg { font-size: 10.5px; font-weight: 800; border-radius: .2rem; padding: 0 .3rem; margin-right: .25rem; }
+        .tg-danger { background: #fdecea; color: #96201a; } .tg-warning { background: #fdf0d9; color: #8a5312; }
+        .tg-info { background: #e3f0ff; color: #0b4f9e; } .tg-success { background: #dcf3e8; color: #12714a; }
+        .tg-scope { background: #eef2f6; color: #475569; }
+
+        .rel-block { border-bottom: 1px solid var(--line); padding: .35rem 0; }
+        .rel-block:last-child { border-bottom: none; }
+        .rel-head { display: flex; flex-wrap: wrap; gap: .35rem; align-items: baseline; }
+        .rel-ver { font-family: Consolas, monospace; font-weight: 800; color: var(--brand); font-size: 12.8px; }
+        .rel-now { background: #dcf3e8; color: #12714a; font-size: 10.5px; border-radius: .2rem; padding: 0 .3rem; font-weight: 800; }
+        .rel-date, .rel-sum { font-size: 11.5px; color: var(--muted); }
+        .rel-list { list-style: none; margin: .2rem 0 0; padding: 0; }
+        .rel-item { display: flex; gap: .35rem; font-size: 12.2px; padding: .08rem 0; }
+        .rel-tag { font-size: 10.5px; font-weight: 800; border-radius: .2rem; padding: 0 .3rem; white-space: nowrap; height: 1.1rem; }
+        .t-feature { background: #e3f0ff; color: #0b4f9e; } .t-fix { background: #fdecea; color: #96201a; }
+        .t-security { background: #ede9fe; color: #5b21b6; } .t-change { background: #eef2f6; color: #475569; }
+
+        .help-item { display: flex; gap: .4rem; align-items: baseline; padding: .22rem 0; color: var(--ink); border-bottom: 1px dashed var(--line); font-size: 12.5px; }
+        .help-item:last-child { border-bottom: none; }
+        .help-item i { color: var(--accent); }
+        .help-item small { display: none; }
+
+        .btn-sc { font-size: 11px; padding: 0 .4rem; border: 1px solid var(--line); background: #fff; border-radius: .2rem; color: var(--muted); }
+        .btn-sc.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+        @media (max-width: 1399.98px) {
+            .board { grid-template-columns: 280px 1fr 280px; }
+            .pan-release { grid-column: span 1; }
+        }
+        @media (max-width: 991.98px) {
+            body { display: block; height: auto; }
+            .board { grid-template-columns: 1fr; height: auto; }
+            .pan { max-height: 420px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 系統識別帶 -->
+    <div class="idbar">
+        <i class="bi bi-hospital"></i>
+        <span class="nm" id="sysName">—</span>
+        <span class="code" id="sysCode">—</span>
+        <span class="env" id="sysEnv">—</span>
+        <span class="opacity-75" id="org">—</span>
+        <span class="ms-auto opacity-75"><span id="ver">—</span>　<span id="clock">—</span></span>
+    </div>
+
+    <div class="board">
+
+        <!-- 欄 1：登入 + 本機 -->
+        <div class="stack" style="grid-template-rows: auto 1fr">
+            <section class="pan">
+                <div class="hd"><i class="bi bi-box-arrow-in-right"></i>登入</div>
+                <div class="bd">
+                    <form id="loginForm" novalidate>
+                        <div class="mb-2">
+                            <label class="form-label" for="account">帳號（員工編號）</label>
+                            <input type="text" class="form-control" id="account" placeholder="A12345" autocomplete="username" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label" for="password">密碼</label>
+                            <div class="input-group input-group-sm">
+                                <input type="password" class="form-control" id="password" placeholder="請輸入密碼" autocomplete="current-password" />
+                                <span class="input-group-text" id="tp" role="button" tabindex="0" aria-label="顯示密碼"><i class="bi bi-eye" id="tpi"></i></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rm" />
+                                <label class="form-check-label" for="rm" style="font-size:11.5px">記住此電腦</label>
+                            </div>
+                            <div style="font-size:11.5px"><a href="#">忘記密碼</a> · <a href="#">變更密碼</a></div>
+                        </div>
+                        <div id="msg" class="alert py-1 px-2 d-none" style="font-size:11.5px"></div>
+                        <button class="btn btn-go w-100" type="submit">登入 <span id="short"></span></button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="pan">
+                <div class="hd"><i class="bi bi-pc-display"></i>登入端電腦 / 最後登入</div>
+                <div class="bd">
+                    <table class="t mb-2"><tbody id="clientRows"></tbody></table>
+                    <div class="hd px-0" style="background:none;border:none;padding-top:.2rem">最後一次登入</div>
+                    <table class="t"><tbody id="lastRows"></tbody></table>
+                    <div class="mt-2 d-none" id="failBox" style="background:#fdf0d9;color:#8a5312;padding:.3rem .4rem;border-radius:.2rem;font-size:11.5px"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 欄 2：公告 -->
+        <section class="pan">
+            <div class="hd">
+                <i class="bi bi-megaphone"></i>公告
+                <span class="ms-auto d-flex gap-1">
+                    <button class="btn-sc active" data-scope="ALL">全部</button>
+                    <button class="btn-sc" data-scope="GLOBAL">全系統</button>
+                    <button class="btn-sc" data-scope="SYSTEM">本系統</button>
+                </span>
+            </div>
+            <div class="bd" id="noticeList"></div>
+        </section>
+
+        <!-- 欄 3：更版 -->
+        <section class="pan pan-release">
+            <div class="hd"><i class="bi bi-arrow-repeat"></i>更版資訊</div>
+            <div class="bd" id="releaseList"></div>
+        </section>
+
+        <!-- 欄 4：版本 / 維護者 / 教學 -->
+        <div class="stack" style="grid-template-rows: 1fr 1fr auto">
+            <section class="pan">
+                <div class="hd"><i class="bi bi-hdd-stack"></i>版本資訊</div>
+                <div class="bd"><table class="t"><tbody id="sysRows"></tbody></table></div>
+            </section>
+            <section class="pan">
+                <div class="hd"><i class="bi bi-person-gear"></i>維護者與聯絡方式</div>
+                <div class="bd"><table class="t"><tbody id="maintRows"></tbody></table></div>
+            </section>
+            <section class="pan">
+                <div class="hd"><i class="bi bi-life-preserver"></i>教學與說明</div>
+                <div class="bd" id="helpList"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="../assets/js/data.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        jQuery(function ($) {
+            var I = LD.identity();
+            LD.applyEnv();
+            LD.fill({
+                '#sysName': I.name, '#sysCode': I.code, '#sysEnv': I.envText,
+                '#org': I.org, '#ver': I.version,
+                '#short': I.short ? '（' + I.short + '）' : ''
+            });
+            LD.startClock(function (t) { $('#clock').text(t.date + ' ' + t.time); });
+
+            $('#sysRows').html(LD.tableRows(LD.systemRows()));
+            $('#maintRows').html(LD.tableRows(LD.maintainerRows(), true));
+            $('#clientRows').html(LD.tableRows(LD.clientItems().map(function (i) { return [i.label, i.value]; })));
+            $('#lastRows').html(LD.tableRows(LD.lastLoginRows()));
+            $('#releaseList').html(LD.releaseHtml());
+            $('#helpList').html(LD.helpHtml(function (h) {
+                return '<a class="help-item" href="' + LD.esc(h.href) + '"><i class="bi ' + LD.esc(h.icon) + '"></i>' +
+                    '<span>' + LD.esc(h.title) + '</span></a>';
+            }));
+
+            var ft = LD.failedLoginText();
+            if (ft) { $('#failBox').removeClass('d-none').text(ft); }
+
+            function renderNotices(scope) {
+                $('#noticeList').html(LD.noticeHtml(scope, function (n) {
+                    return '<div class="n-row">' +
+                        '<span class="tg tg-' + LD.esc(n.level) + '">' + LD.esc(n.levelName) + '</span>' +
+                        '<span class="tg tg-scope">' + LD.esc(n.scopeName) + '</span>' +
+                        (n.pinned ? '<i class="bi bi-pin-angle-fill text-danger"></i> ' : '') +
+                        '<span class="t">' + LD.esc(n.title) + '</span>' +
+                        '<div class="c">' + LD.esc(n.content) + '</div>' +
+                        '<div class="m">' + LD.esc(n.date) + ' | ' + LD.esc(n.publisher) + ' | ' + LD.esc(n.id) + '</div></div>';
+                }));
+            }
+            renderNotices('ALL');
+            $('[data-scope]').on('click', function () {
+                $('[data-scope]').removeClass('active'); $(this).addClass('active');
+                renderNotices($(this).data('scope'));
+            });
+
+            LD.bindPasswordToggle('#password', '#tp', '#tpi');
+            LD.bindDemoLogin('#loginForm', '#account', '#password', function (m, t) {
+                $('#msg').removeClass('d-none alert-warning alert-info').addClass('alert-' + t).text(m);
+            });
+        });
+    </script>
+</body>
+
+</html>

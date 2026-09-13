@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P08 系統目錄｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P08 系統目錄 System Grid =====================================
+           版面結構：主區是可公開的系統卡片牆，每張卡片自帶狀態與「登入後使用」
+           登入區位置：右上固定的登入面板；點任一系統卡片會把它設為目標並聚焦登入
+           公告呈現：卡片牆上方的橫幅摘要 + 側欄清單
+           導覽方式：以「系統」為導覽單位，回答「這個入口有哪些系統」
+           視覺語言：目錄／型錄感，卡片為主角
+           ================================================================= */
+        :root { --pt-brand: #23408e; }
+
+        .p-head { background: #fff; border-bottom: 1px solid var(--pt-line); position: sticky; top: 0; z-index: 20; }
+        .p-head-inner { max-width: 1320px; margin: 0 auto; padding: .8rem 1rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .p-head .pt-purpose { display: none; }
+        .p-head .pt-portal-name { font-size: 1.15rem; }
+        .p-head .pt-logo { width: 40px; height: 40px; flex-basis: 40px; font-size: .68rem; }
+        .p-head-actions { margin-left: auto; display: flex; gap: .5rem; }
+
+        .p-wrap { max-width: 1320px; margin: 0 auto; padding: 1.25rem 1rem 2.5rem; display: grid; gap: 1.25rem; grid-template-columns: 1fr 360px; align-items: start; }
+
+        .p-sec-title { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: baseline; margin: 0 0 .8rem; }
+        .p-sec-title h2 { font-size: 1.2rem; font-weight: 800; margin: 0; }
+        .p-sec-title p { margin: 0; color: var(--pt-muted); font-size: .88rem; }
+
+        .p-grid { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+        .p-card {
+            background: #fff; border: 1px solid var(--pt-line); border-radius: .6rem; padding: 1rem 1.1rem;
+            display: flex; flex-direction: column; gap: .4rem;
+        }
+        .p-card h3 { font-size: 1.05rem; font-weight: 800; margin: 0; }
+        .p-card .p-code { font-family: var(--pt-mono); font-size: .78rem; color: var(--pt-muted); }
+        .p-card .p-desc { font-size: .88rem; color: #33414f; margin: 0; flex: 1 1 auto; }
+        .p-card .p-owner { font-size: .8rem; color: var(--pt-muted); }
+        .p-card-btn {
+            margin-top: .4rem; min-height: 44px; font: inherit; font-weight: 700; cursor: pointer;
+            border: 1px solid var(--pt-brand); border-radius: .4rem; background: #fff; color: var(--pt-brand);
+        }
+        .p-card-btn:hover { background: var(--pt-brand); color: #fff; }
+        .p-card.is-target { border-color: var(--pt-brand); box-shadow: 0 0 0 3px rgba(35, 64, 142, .12); }
+
+        .p-rail { position: sticky; top: 5rem; }
+        .p-panel { background: #fff; border: 1px solid var(--pt-line); border-radius: .6rem; padding: 1.1rem 1.2rem; }
+        .p-panel + .p-panel { margin-top: 1rem; }
+        .p-login { border-top: 5px solid var(--pt-brand); }
+        .p-login h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 .8rem; }
+
+        .p-foot { background: #fff; border-top: 1px solid var(--pt-line); }
+        .p-foot-inner { max-width: 1320px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+        @media (max-width: 1099.98px) {
+            .p-wrap { grid-template-columns: 1fr; }
+            .p-rail { position: static; order: -1; }
+            .p-head { position: static; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <header class="p-head">
+        <div class="p-head-inner">
+            <div id="slotIdentity"></div>
+            <div class="p-head-actions">
+                <a class="pt-btn pt-btn-ghost" href="#ptForm">前往登入</a>
+                <a class="pt-btn pt-btn-ghost" href="#" data-pt-help="faq">常見問題</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-wrap">
+        <div>
+            <div id="slotAlerts"></div>
+
+            <section>
+                <div class="p-sec-title">
+                    <h2>此入口可進入的系統</h2>
+                    <p>僅顯示可公開的系統；實際可用清單以您的權限為準。點選任一系統可將其設為登入目標。</p>
+                </div>
+                <div class="p-grid" id="pSysGrid"></div>
+                <p class="pt-note">狀態為示範資料；未取得資料時顯示「狀態未確認」。</p>
+            </section>
+
+            <section class="mt-4">
+                <div class="p-sec-title"><h2>公告</h2></div>
+                <div id="slotNotices"></div>
+            </section>
+        </div>
+
+        <div class="p-rail">
+            <section class="p-panel p-login">
+                <h2>登入</h2>
+                <div id="slotLogin"></div>
+                <div id="slotResult"></div>
+            </section>
+            <section class="p-panel" id="slotStatus"></section>
+            <section class="p-panel" id="slotHelp"></section>
+        </div>
+    </main>
+
+    <footer class="p-foot">
+        <div class="p-foot-inner" id="slotFooter"></div>
+    </footer>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function ($) {
+            function esc(t) { return $('<div>').text(t == null ? '' : String(t)).html(); }
+
+            var api = Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp', footer: '#slotFooter'
+                },
+                variants: { status: 'chips', notices: 'cards', help: 'links' },
+                noticeLimit: 2,
+                afterRender: function (S) {
+                    var D = Portal.data;
+                    var html = D.systems.filter(function (s) { return s.public; }).map(function (s) {
+                        var k = S.service === 'unknown' ? 'unknown'
+                            : S.service === 'normal' ? (s.status === 'unknown' ? 'unknown' : 'operational')
+                                : s.status;
+                        var isTarget = (S.entry === 'redirect' && S.sys === s.key);
+                        return '<article class="p-card' + (isTarget ? ' is-target' : '') + '">' +
+                            '<h3>' + esc(s.name) + '</h3>' +
+                            '<p class="p-code">' + esc(s.code) + '</p>' +
+                            Portal.statusPill(k) +
+                            '<p class="p-desc">' + esc(s.desc) + '</p>' +
+                            '<p class="p-owner">業務單位：' + esc(s.owner) + '</p>' +
+                            '<button class="p-card-btn" type="button" data-sys="' + esc(s.key) + '">' +
+                            (isTarget ? '目前的登入目標' : '以此系統為登入目標') + '</button>' +
+                            '</article>';
+                    }).join('');
+                    $('#pSysGrid').html(html);
+                }
+            });
+
+            $(document).on('click', '[data-sys]', function () {
+                $('#ptDemoEntry').val('redirect').trigger('change');
+                $('#ptDemoSys').val($(this).data('sys')).trigger('change');
+                $('#ptAccount').trigger('focus');
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P06 三步驟｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P06 三步驟 Guided Steps ======================================
+           版面結構：單欄精靈式，① 確認目標與狀態 → ② 登入 → ③ 結果
+           登入區位置：第二步才出現，第一步先讓使用者確認「要進哪個系統、現在能不能用」
+           公告呈現：第一步以精簡清單呈現與目標系統相關的訊息
+           導覽方式：步驟列（可回上一步），另提供「直接登入」捷徑給熟手
+           視覺語言：明確的步驟指示與大按鈕，強調流程而非資訊牆
+           ================================================================= */
+        :root { --pt-brand: #1b4d8f; }
+
+        .p-head { background: #fff; border-bottom: 1px solid var(--pt-line); }
+        .p-head-inner { max-width: 880px; margin: 0 auto; padding: 1rem; }
+
+        .p-wrap { max-width: 880px; margin: 0 auto; padding: 1.25rem 1rem 2.5rem; }
+
+        .p-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 0 0 1.25rem; padding: 0; }
+        .p-step { background: #fff; border: 1px solid var(--pt-line); border-radius: .5rem; padding: .6rem .8rem; display: flex; gap: .6rem; align-items: center; }
+        .p-step .n { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--pt-muted-bg); color: var(--pt-muted); }
+        .p-step .t b { display: block; font-size: .92rem; }
+        .p-step .t small { color: var(--pt-muted); font-size: .76rem; }
+        .p-step[aria-current="step"] { border-color: var(--pt-brand); box-shadow: 0 0 0 3px rgba(27, 77, 143, .12); }
+        .p-step[aria-current="step"] .n { background: var(--pt-brand); color: #fff; }
+        .p-step.is-done .n { background: var(--pt-ok); color: #fff; }
+
+        .p-panel { background: #fff; border: 1px solid var(--pt-line); border-radius: .6rem; padding: 1.4rem 1.5rem; }
+        .p-panel h2 { font-size: 1.25rem; font-weight: 800; margin: 0 0 .3rem; }
+        .p-panel .p-lead { color: var(--pt-muted); font-size: .92rem; margin: 0 0 1.1rem; }
+
+        .p-confirm { border: 2px solid var(--pt-brand); border-radius: .6rem; padding: 1.1rem 1.2rem; background: #f4f8fd; }
+        .p-confirm .p-target-name { font-size: 1.5rem; font-weight: 800; margin: .2rem 0; }
+        .p-confirm .p-target-code { font-family: var(--pt-mono); color: var(--pt-muted); }
+
+        .p-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.2rem; align-items: center; }
+        .p-actions .pt-btn { min-width: 11rem; }
+        .p-shortcut { font-size: .88rem; }
+
+        .p-foot { background: #fff; border-top: 1px solid var(--pt-line); }
+        .p-foot-inner { max-width: 880px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+        @media (max-width: 767.98px) {
+            .p-steps { grid-template-columns: 1fr; }
+            .p-panel { padding: 1.1rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <header class="p-head">
+        <div class="p-head-inner" id="slotIdentity"></div>
+    </header>
+
+    <main class="p-wrap">
+        <ol class="p-steps">
+            <li class="p-step" data-step="1" aria-current="step"><span class="n">1</span><span class="t"><b>確認目標與狀態</b><small id="pStepTarget">—</small></span></li>
+            <li class="p-step" data-step="2"><span class="n">2</span><span class="t"><b>輸入帳號密碼</b><small>公務帳號登入</small></span></li>
+            <li class="p-step" data-step="3"><span class="n">3</span><span class="t"><b>進入系統</b><small>依權限導向</small></span></li>
+        </ol>
+
+        <div id="slotAlerts"></div>
+
+        <!-- 步驟 1 -->
+        <section class="p-panel" data-pane="1">
+            <h2>第 1 步：確認您要進入的系統</h2>
+            <p class="p-lead">先確認目標與目前服務狀態，避免登入後才發現系統正在維護。</p>
+
+            <div class="p-confirm">
+                <p class="mb-0" style="color:var(--pt-muted);font-size:.85rem">您正要進入</p>
+                <p class="p-target-name" id="pTargetName">—</p>
+                <p class="p-target-code" id="pTargetCode">—</p>
+                <p class="mb-2" id="pTargetDesc">—</p>
+                <div id="pTargetStatus"></div>
+            </div>
+
+            <div class="mt-3" id="slotStatus"></div>
+            <div id="slotNotices"></div>
+
+            <div class="p-actions">
+                <button class="pt-btn" type="button" data-go="2">下一步：輸入帳號密碼 <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+                <span class="p-shortcut"><a href="#" data-go="2">熟悉流程可直接登入</a></span>
+            </div>
+        </section>
+
+        <!-- 步驟 2 -->
+        <section class="p-panel" data-pane="2" hidden>
+            <h2>第 2 步：輸入帳號與密碼</h2>
+            <p class="p-lead">登入僅為示範，不會送出至任何伺服器。</p>
+            <div style="max-width:460px">
+                <div id="slotLogin"></div>
+            </div>
+            <div class="p-actions">
+                <button class="pt-btn pt-btn-ghost" type="button" data-go="1"><i class="bi bi-arrow-left" aria-hidden="true"></i> 上一步</button>
+            </div>
+        </section>
+
+        <!-- 步驟 3 -->
+        <section class="p-panel" data-pane="3" hidden>
+            <h2>第 3 步：登入結果</h2>
+            <div id="slotResult"></div>
+            <div class="p-actions">
+                <button class="pt-btn pt-btn-ghost" type="button" data-go="2"><i class="bi bi-arrow-left" aria-hidden="true"></i> 回到登入</button>
+            </div>
+        </section>
+
+        <section class="p-panel mt-3" id="slotHelp"></section>
+        <section class="p-panel mt-3" id="slotSystems"></section>
+    </main>
+
+    <footer class="p-foot">
+        <div class="p-foot-inner" id="slotFooter"></div>
+    </footer>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function ($) {
+            function goto(step) {
+                $('[data-pane]').prop('hidden', true).filter('[data-pane="' + step + '"]').prop('hidden', false);
+                $('.p-step').each(function () {
+                    var n = +$(this).data('step');
+                    $(this).attr('aria-current', n === step ? 'step' : 'false').toggleClass('is-done', n < step);
+                });
+                if (step === 2) { $('#ptAccount').trigger('focus'); }
+                $('html, body').animate({ scrollTop: 0 }, 150);
+            }
+
+            var api = Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp',
+                    systems: '#slotSystems', footer: '#slotFooter'
+                },
+                variants: { status: 'chips', notices: 'compact', help: 'actions', systems: 'list' },
+                noticeLimit: 3,
+                afterRender: function (S) {
+                    var D = Portal.data;
+                    var sys = null;
+                    for (var i = 0; i < D.systems.length; i++) { if (D.systems[i].key === S.sys) { sys = D.systems[i]; } }
+                    if (S.entry === 'redirect' && sys) {
+                        $('#pTargetName').text(sys.name);
+                        $('#pTargetCode').text(sys.code);
+                        $('#pTargetDesc').text(sys.desc + '　登入成功後將返回此系統。');
+                        $('#pStepTarget').text(sys.name);
+                        $('#pTargetStatus').html(Portal.statusPill(
+                            S.service === 'unknown' ? 'unknown' :
+                            S.service === 'normal' ? (sys.status === 'unknown' ? 'unknown' : 'operational') : sys.status
+                        ));
+                    } else {
+                        $('#pTargetName').text(D.org.portalName);
+                        $('#pTargetCode').text('');
+                        $('#pTargetDesc').text('登入成功後，會顯示您有權限的系統清單，再選擇要使用的系統。');
+                        $('#pStepTarget').text('共用入口');
+                        $('#pTargetStatus').html('');
+                    }
+                    goto(1);
+                }
+            });
+
+            $(document).on('click', '[data-go]', function (e) { e.preventDefault(); goto(+$(this).data('go')); });
+            $(document).on('submit', '#ptForm', function () {
+                window.setTimeout(function () {
+                    if ($('#ptResultPanel').length) { goto(3); }
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+
+</html>

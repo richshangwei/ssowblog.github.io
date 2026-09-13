@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>款式 07｜步驟引導</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        /* ===== 款式 07：步驟引導 Wizard =====================================
+           把登入拆成三步：① 確認系統與環境 ② 看過公告 ③ 輸入帳號密碼。
+           針對「稽核時 user 說不知道開的是哪個系統」，第一步就強迫確認一次，
+           並把確認結果（系統代碼）一路帶在步驟列上。
+           ================================================================= */
+        :root {
+            --ink: #17212c; --muted: #63748a; --line: #e2e8f0; --brand: #1d4ed8; --ok: #15803d;
+        }
+        body {
+            margin: 0; background: #f4f6fa; color: var(--ink); min-height: 100vh;
+            font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+        }
+        a { text-decoration: none; }
+
+        .wiz { width: min(860px, 100%); margin: 0 auto; }
+
+        /* 步驟列 */
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: 1.25rem; }
+        .step {
+            background: #fff; border: 1px solid var(--line); border-radius: .6rem; padding: .7rem .9rem;
+            display: flex; gap: .65rem; align-items: center; position: relative;
+        }
+        .step .num {
+            width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%;
+            display: grid; place-items: center; font-weight: 800; font-size: .9rem;
+            background: #eef2f8; color: var(--muted);
+        }
+        .step .tx { line-height: 1.25; }
+        .step .tx b { font-size: .92rem; }
+        .step .tx small { color: var(--muted); display: block; font-size: .76rem; }
+        .step.active { border-color: var(--brand); box-shadow: 0 0 0 .18rem rgba(29,78,216,.14); }
+        .step.active .num { background: var(--brand); color: #fff; }
+        .step.done .num { background: var(--ok); color: #fff; }
+
+        .panel { background: #fff; border: 1px solid var(--line); border-radius: .75rem; padding: 1.6rem; }
+
+        /* 第一步：系統確認卡 */
+        .confirm {
+            border: 2px dashed var(--brand); border-radius: .8rem; padding: 1.4rem;
+            background: linear-gradient(180deg, #f3f7ff, #fff); text-align: center;
+        }
+        .confirm .name { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+        .confirm .code { font-family: Consolas, monospace; letter-spacing: .12em; font-size: 1.05rem; color: var(--brand); }
+        .env-badge { font-weight: 800; letter-spacing: .1em; border-radius: 999px; padding: .2rem .8rem; background: #dcfce7; color: #14532d; }
+
+        .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; margin-top: 1.1rem; text-align: left; }
+        .fact { background: #fff; border: 1px solid var(--line); border-radius: .5rem; padding: .55rem .7rem; font-size: .85rem; }
+        .fact span { display: block; color: var(--muted); font-size: .74rem; }
+        .fact strong { word-break: break-word; }
+
+        .form-control { padding: .8rem .9rem; border-color: var(--line); }
+        .form-control:focus { border-color: var(--brand); box-shadow: 0 0 0 .2rem rgba(29,78,216,.16); }
+        .form-label { font-weight: 700; font-size: .86rem; color: var(--muted); }
+        .input-group-text { background: #fff; border-color: var(--line); cursor: pointer; color: var(--muted); }
+        .btn-next { background: var(--brand); color: #fff; font-weight: 800; padding: .75rem 1.4rem; border: none; }
+        .btn-next:hover { background: #1739a8; color: #fff; }
+        .btn-back { background: #fff; border: 1px solid var(--line); color: var(--muted); font-weight: 700; padding: .75rem 1.2rem; }
+
+        .notice { border: 1px solid var(--line); border-left: 4px solid var(--muted); border-radius: .5rem; padding: .8rem .95rem; margin-bottom: .6rem; }
+        .notice.lv-danger { border-left-color: #b42318; } .notice.lv-warning { border-left-color: #9a5b13; }
+        .notice.lv-info { border-left-color: #0b6bcb; } .notice.lv-success { border-left-color: #167044; }
+        .notice h6 { font-weight: 700; margin: .3rem 0 .3rem; }
+        .meta { font-size: .78rem; color: var(--muted); }
+        .pill { font-size: .72rem; border-radius: 999px; padding: .05rem .55rem; border: 1px solid var(--line); }
+        .pill-GLOBAL { background: #e8f1fb; color: #0b4f9e; } .pill-SYSTEM { background: #fdf2e3; color: #7a5322; }
+
+        .rel-block { border: 1px solid var(--line); border-radius: .5rem; padding: .7rem .9rem; margin-bottom: .5rem; }
+        .rel-head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+        .rel-ver { font-family: Consolas, monospace; font-weight: 800; color: var(--brand); }
+        .rel-now { background: #dcfce7; color: #14532d; font-size: .7rem; border-radius: 999px; padding: 0 .5rem; }
+        .rel-date, .rel-sum { font-size: .8rem; color: var(--muted); }
+        .rel-list { list-style: none; margin: .35rem 0 0; padding: 0; }
+        .rel-item { display: flex; gap: .5rem; font-size: .87rem; padding: .15rem 0; }
+        .rel-tag { font-size: .7rem; font-weight: 700; border-radius: .25rem; padding: 0 .4rem; white-space: nowrap; height: 1.3rem; }
+        .t-feature { background: #e3f0ff; color: #0b4f9e; } .t-fix { background: #fdecea; color: #96201a; }
+        .t-security { background: #ede9fe; color: #5b21b6; } .t-change { background: #eef3f7; color: #46545f; }
+
+        .kv { display: flex; justify-content: space-between; gap: .8rem; padding: .32rem 0; border-bottom: 1px dashed var(--line); font-size: .86rem; }
+        .kv:last-child { border-bottom: none; }
+        .kv .k { color: var(--muted); white-space: nowrap; }
+        .kv .v { font-weight: 600; text-align: right; word-break: break-word; }
+
+        .help-item { display: flex; gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--line); color: var(--ink); }
+        .help-item:first-child { border-top: none; }
+        .help-item i { color: var(--brand); font-size: 1.1rem; }
+        .help-item small { display: block; color: var(--muted); }
+
+        .scroll { max-height: 320px; overflow-y: auto; padding-right: .3rem; }
+
+        @media (max-width: 767.98px) {
+            .steps { grid-template-columns: 1fr; }
+            .facts { grid-template-columns: 1fr; }
+            .panel { padding: 1.1rem; }
+            .confirm .name { font-size: 1.5rem; }
+            .scroll { max-height: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-4">
+        <div class="wiz">
+
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <i class="bi bi-hospital text-primary"></i>
+                <strong id="org">—</strong>
+                <span class="text-secondary">／</span>
+                <span id="orgSub">—</span>
+                <span class="ms-auto small text-secondary" id="clock">—</span>
+            </div>
+
+            <!-- 步驟列（永遠顯示已確認的系統代碼） -->
+            <div class="steps">
+                <div class="step active" data-step="1">
+                    <span class="num">1</span>
+                    <span class="tx"><b>確認系統</b><small id="stepSys">—</small></span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="num">2</span>
+                    <span class="tx"><b>查看公告</b><small id="stepNotice">—</small></span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="num">3</span>
+                    <span class="tx"><b>輸入帳號密碼</b><small>完成登入</small></span>
+                </div>
+            </div>
+
+            <!-- 步驟 1 -->
+            <section class="panel" data-pane="1">
+                <div class="confirm">
+                    <p class="text-secondary small mb-2">請先確認您要登入的系統</p>
+                    <div class="name mb-2" id="sysName">—</div>
+                    <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2">
+                        <span class="code" id="sysCode">—</span>
+                        <span class="env-badge" id="sysEnv">—</span>
+                    </div>
+                    <p class="text-secondary small mb-0" id="sysUrl">—</p>
+
+                    <div class="facts">
+                        <div class="fact"><span>版本</span><strong id="fVersion">—</strong></div>
+                        <div class="fact"><span>維護單位</span><strong id="fUnit">—</strong></div>
+                        <div class="fact"><span>本機電腦</span><strong id="fPc">—</strong></div>
+                        <div class="fact"><span>作業系統</span><strong id="fOs">—</strong></div>
+                        <div class="fact" style="grid-column:1/-1"><span>最後一次登入</span><strong id="fLast">—</strong></div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning py-2 px-3 small mt-3 mb-0 d-none" id="failBox"></div>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="ack" />
+                        <label class="form-check-label small" for="ack">我已確認這是我要登入的系統</label>
+                    </div>
+                    <button class="btn btn-next" data-go="2">下一步：查看公告 <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+                <p class="small text-secondary mt-3 mb-0">
+                    也可以直接
+                    <a href="#" data-go="3">略過公告直接登入</a>，或查看
+                    <a href="#" data-bs-toggle="collapse" data-bs-target="#moreInfo">系統與維護者詳細資訊</a>。
+                </p>
+                <div class="collapse mt-3" id="moreInfo">
+                    <p class="small fw-bold text-secondary mb-1">版本資訊</p>
+                    <div id="sysRows" class="mb-3"></div>
+                    <p class="small fw-bold text-secondary mb-1">維護者資訊與聯絡方式</p>
+                    <div id="maintRows" class="mb-3"></div>
+                    <p class="small fw-bold text-secondary mb-1">登入端電腦與最後登入</p>
+                    <div id="clientRows" class="mb-2"></div>
+                    <div id="lastRows" class="mb-3"></div>
+                    <p class="small fw-bold text-secondary mb-1">教學與說明</p>
+                    <div id="helpList"></div>
+                </div>
+            </section>
+
+            <!-- 步驟 2 -->
+            <section class="panel d-none" data-pane="2">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <h2 class="h5 fw-bold mb-0"><i class="bi bi-megaphone me-1"></i>公告與更版資訊</h2>
+                    <div class="btn-group btn-group-sm ms-auto">
+                        <button class="btn btn-outline-secondary active" data-scope="ALL">全部</button>
+                        <button class="btn btn-outline-secondary" data-scope="GLOBAL">全系統</button>
+                        <button class="btn btn-outline-secondary" data-scope="SYSTEM">本系統</button>
+                    </div>
+                </div>
+                <div class="scroll mb-4" id="noticeList"></div>
+
+                <h3 class="h6 fw-bold mb-2"><i class="bi bi-arrow-repeat me-1"></i>更版資訊</h3>
+                <div class="scroll" id="releaseList"></div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button class="btn btn-back" data-go="1"><i class="bi bi-arrow-left me-1"></i>上一步</button>
+                    <button class="btn btn-next" data-go="3">下一步：輸入帳號密碼 <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </section>
+
+            <!-- 步驟 3 -->
+            <section class="panel d-none" data-pane="3">
+                <p class="text-secondary small mb-1">即將登入</p>
+                <h2 class="h4 fw-bold mb-1" id="sysName3">—</h2>
+                <p class="small mb-4">
+                    <span class="code" id="sysCode3">—</span>
+                    <span class="env-badge ms-2" id="sysEnv3">—</span>
+                </p>
+
+                <form id="loginForm" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="account">帳號（員工編號）</label>
+                        <input type="text" class="form-control" id="account" placeholder="例如：A12345" autocomplete="username" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">密碼</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" placeholder="請輸入密碼" autocomplete="current-password" />
+                            <span class="input-group-text" id="tp" role="button" tabindex="0" aria-label="顯示密碼"><i class="bi bi-eye" id="tpi"></i></span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rm" />
+                            <label class="form-check-label small text-secondary" for="rm">記住此電腦</label>
+                        </div>
+                        <div class="small"><a href="#">忘記密碼</a><span class="text-secondary mx-1">·</span><a href="#">變更密碼</a></div>
+                    </div>
+                    <div id="msg" class="alert py-2 px-3 small d-none"></div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-back" type="button" data-go="2"><i class="bi bi-arrow-left me-1"></i>上一步</button>
+                        <button class="btn btn-next" type="submit">登入 <span id="short"></span></button>
+                    </div>
+                </form>
+            </section>
+
+            <p class="text-secondary small mt-4 mb-0 text-center" id="footer">—</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="../assets/js/data.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        jQuery(function ($) {
+            var I = LD.identity(), c = LD.cfg.client || {};
+            LD.applyEnv();
+            LD.fill({
+                '#org': I.org, '#orgSub': I.orgSub,
+                '#sysName': I.name, '#sysName3': I.name,
+                '#sysCode': I.code, '#sysCode3': I.code,
+                '#sysEnv': I.envText, '#sysEnv3': I.envText, '#sysUrl': I.url,
+                '#stepSys': I.code, '#fVersion': I.version,
+                '#fUnit': (LD.cfg.maintainer || {}).unit || '-',
+                '#fPc': c.computerName || '-', '#fOs': c.os || LD.detectOs(),
+                '#fLast': LD.lastLoginText(),
+                '#short': I.short ? '（' + I.short + '）' : '', '#footer': I.footer
+            });
+            $('#stepNotice').text(LD.notices('ALL').length + ' 則待閱');
+            LD.startClock(function (t) { $('#clock').text(t.date + '　' + t.time); });
+
+            $('#sysRows').html(LD.kvHtml(LD.systemRows()));
+            $('#maintRows').html(LD.kvHtml(LD.maintainerRows(), 'kv', true));
+            $('#clientRows').html(LD.kvHtml(LD.clientItems().map(function (i) { return [i.label, i.value]; })));
+            $('#lastRows').html(LD.kvHtml(LD.lastLoginRows()));
+            $('#helpList').html(LD.helpHtml());
+            $('#releaseList').html(LD.releaseHtml());
+
+            var ft = LD.failedLoginText();
+            if (ft) { $('#failBox').removeClass('d-none').text(ft); }
+
+            function renderNotices(scope) {
+                $('#noticeList').html(LD.noticeHtml(scope, function (n) {
+                    return '<article class="notice lv-' + LD.esc(n.level) + '">' +
+                        '<div class="d-flex flex-wrap align-items-center gap-2">' +
+                        (n.pinned ? '<i class="bi bi-pin-angle-fill text-danger"></i>' : '') +
+                        '<span class="badge text-bg-' + LD.esc(n.level) + '">' + LD.esc(n.levelName) + '</span>' +
+                        '<span class="pill pill-' + LD.esc(n.scope) + '">' + LD.esc(n.scopeName) + '</span></div>' +
+                        '<h6>' + LD.esc(n.title) + '</h6><p class="small mb-1">' + LD.esc(n.content) + '</p>' +
+                        '<div class="meta">' + LD.esc(n.date) + ' · ' + LD.esc(n.publisher) + ' · ' + LD.esc(n.id) + '</div></article>';
+                }));
+            }
+            renderNotices('ALL');
+            $('[data-scope]').on('click', function () {
+                $('[data-scope]').removeClass('active'); $(this).addClass('active');
+                renderNotices($(this).data('scope'));
+            });
+
+            /* 步驟切換 */
+            function goto(step) {
+                $('[data-pane]').addClass('d-none').filter('[data-pane="' + step + '"]').removeClass('d-none');
+                $('.step').each(function () {
+                    var n = +$(this).data('step');
+                    $(this).toggleClass('active', n === step).toggleClass('done', n < step);
+                });
+                $('html, body').animate({ scrollTop: 0 }, 200);
+                if (step === 3) { $('#account').trigger('focus'); }
+            }
+            $(document).on('click', '[data-go]', function (e) {
+                e.preventDefault();
+                goto(+$(this).data('go'));
+            });
+
+            LD.bindPasswordToggle('#password', '#tp', '#tpi');
+            LD.bindDemoLogin('#loginForm', '#account', '#password', function (m, t) {
+                $('#msg').removeClass('d-none alert-warning alert-info').addClass('alert-' + t).text(m);
+            });
+        });
+    </script>
+</body>
+
+</html>

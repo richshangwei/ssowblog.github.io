@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P02 左右分割｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P02 左右分割 Split ===========================================
+           版面結構：左側深色「資訊欄」與右側白色「操作欄」各半，兩欄各自捲動
+           登入區位置：固定在右半邊，視線右移即可操作
+           公告呈現：完整清單（含影響與可採取行動），不需要再點開
+           導覽方式：左欄內以區段標題分段，無分頁
+           視覺語言：深藍資訊欄 vs 白色操作欄，靠明暗對比分工
+           ================================================================= */
+        :root { --pt-brand: #0f3f63; }
+
+        .p-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+        .p-info {
+            background: linear-gradient(180deg, #10405f, #0a2b42);
+            color: #eaf2f8; padding: 2rem 2.25rem 2.5rem;
+        }
+        .p-info .pt-purpose,
+        .p-info .pt-note,
+        .p-info .pt-status-updated,
+        .p-info .pt-notice-updated,
+        .p-info .pt-scope,
+        .p-info .pt-sys-desc { color: #b6cbdb; }
+        .p-info .pt-logo { color: #eaf2f8; }
+        .p-info .pt-block-title { font-size: .82rem; letter-spacing: .16em; text-transform: uppercase; color: #9fbdd2; }
+        .p-info .pt-sb,
+        .p-info .pt-notice-item,
+        .p-info .pt-chip { background: rgba(255, 255, 255, .07); border-color: rgba(255, 255, 255, .18); color: #eaf2f8; }
+        .p-info .pt-notice-title { color: #fff; }
+        .p-info .pt-sb-name { color: #fff; }
+        .p-info .pt-sb-desc, .p-info .pt-sb-time { color: #b6cbdb; }
+        .p-info .pt-sb-ok .pt-sb-state { color: #7fe0b0; }
+        .p-info .pt-sb-warn .pt-sb-state { color: #ffca6e; }
+        .p-info .pt-sb-info .pt-sb-state { color: #94c6ff; }
+        .p-info .pt-sb-muted .pt-sb-state { color: #b6cbdb; }
+        .p-info .pt-link-btn { color: #ffd98a; }
+        .p-info .pt-sys-list li { border-color: rgba(255, 255, 255, .16); }
+        .p-info .pt-sev-normal .pt-sev { background: rgba(255, 255, 255, .14); color: #dbe8f2; border-color: rgba(255, 255, 255, .25); }
+        .p-info .pt-status-ok { color: #7fe0b0; background: rgba(127, 224, 176, .12); }
+        .p-info .pt-status-warn { color: #ffca6e; background: rgba(255, 202, 110, .12); }
+        .p-info .pt-status-info { color: #94c6ff; background: rgba(148, 198, 255, .12); }
+        .p-info .pt-status-muted { color: #c2d4e2; background: rgba(255, 255, 255, .1); }
+
+        .p-op { background: #fff; padding: 2rem 2.25rem 2.5rem; display: flex; flex-direction: column; }
+        .p-op-inner { width: min(440px, 100%); margin: auto; }
+        .p-op h2 { font-size: 1.3rem; font-weight: 800; margin: 0 0 .2rem; }
+        .p-op .p-op-sub { color: var(--pt-muted); font-size: .9rem; margin: 0 0 1.25rem; }
+
+        .p-info-foot { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, .18); font-size: .82rem; color: #b6cbdb; }
+        .p-info-foot a { color: #ffd98a; }
+        .p-info-foot .pt-footer-inner { grid-template-columns: 1fr 1fr; }
+        .p-info-foot .pt-footer-title { color: #fff; }
+        .p-info-foot .pt-footer-demo { border-color: rgba(255, 255, 255, .18); color: #9fbdd2; }
+
+        @media (max-width: 991.98px) {
+            .p-split { grid-template-columns: 1fr; }
+            .p-op { order: -1; padding: 1.5rem 1.1rem 2rem; }
+            .p-info { padding: 1.5rem 1.1rem 2rem; }
+            .p-info-foot .pt-footer-inner { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <div class="p-split">
+        <!-- 左：資訊欄 -->
+        <section class="p-info" aria-label="入口資訊">
+            <div id="slotIdentity"></div>
+            <div class="mt-4" id="slotStatus"></div>
+            <div id="slotNotices"></div>
+            <div id="slotSystems"></div>
+            <div class="p-info-foot" id="slotFooter"></div>
+        </section>
+
+        <!-- 右：操作欄 -->
+        <section class="p-op" aria-label="登入">
+            <div class="p-op-inner">
+                <h2>登入</h2>
+                <p class="p-op-sub">請輸入 [組織名稱] 核發的公務帳號。左側可查看服務狀態與目前公告。</p>
+                <div id="slotAlerts"></div>
+                <div id="slotLogin"></div>
+                <div id="slotResult"></div>
+                <div class="mt-4" id="slotHelp"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function () {
+            Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp',
+                    systems: '#slotSystems', footer: '#slotFooter'
+                },
+                variants: { status: 'board', notices: 'list', help: 'links', systems: 'list' },
+                noticeLimit: 3
+            });
+        });
+    </script>
+</body>
+
+</html>

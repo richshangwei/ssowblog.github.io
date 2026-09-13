@@ -1,0 +1,71 @@
+{
+  "results": [
+    {
+      "id": "portal-01-service-desk",
+      "passed": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "passed": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "passed": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "passed": true
+    },
+    {
+      "id": "portal-05-guided",
+      "passed": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "passed": true
+    },
+    {
+      "id": "portal-07-index",
+      "passed": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "passed": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "passed": true
+    },
+    {
+      "id": "portal-10-layered",
+      "passed": true
+    }
+  ],
+  "lastRegression": [
+    "portal-09-mobile"
+  ],
+  "pageErrors": [],
+  "remoteRequests": [],
+  "checks": [
+    "ten layouts, required sections and IDs",
+    "local Bootstrap5.3.3/jQuery3.7.1",
+    "375/768/1024/1440, 812x375 landscape",
+    "required fields and focus",
+    "password visibility and clearing",
+    "demo-only input",
+    "processing and duplicate prevention",
+    "direct system list and allowed return",
+    "generic credential failure",
+    "network failure and report summary including selected destination",
+    "session timeout and relogin",
+    "denied and empty permission list",
+    "unknown/normal/partial/maintenance",
+    "relevant prelogin impact and affected return handling",
+    "notice details, public/expiry/future filters",
+    "help without login and FAQ",
+    "no credential persistence or remote requests",
+    "allowlisted target query and no arbitrary redirect",
+    "comparison and gallery"
+  ],
+  "note": "Automated prototype checks; not user testing or a complete accessibility certification."
+}

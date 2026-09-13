@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>款式 03｜終端機</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        /* ===== 款式 03：終端機 Terminal =====================================
+           全等寬字、命令列提示符、方框線段。給資訊機房／維運人員的內部工具感。
+           系統代碼與環境用視窗標題列固定顯示，像 SSH 進了哪台機器一樣明確。
+           ================================================================= */
+        :root {
+            --bg: #0a0f0d; --win: #0e1512; --line: #1f3b31;
+            --green: #46e08a; --green-dim: #2a8f5a; --amber: #ffc352; --red: #ff6b5e; --blue: #6fb7ff;
+            --ink: #cfe8da; --muted: #6f9384;
+            --mono: Consolas, "Roboto Mono", "DejaVu Sans Mono", "Noto Sans TC", monospace;
+        }
+        body {
+            margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+            font-family: var(--mono); font-size: 14px; line-height: 1.65;
+            background-image: repeating-linear-gradient(180deg, rgba(70,224,138,.035) 0 1px, transparent 1px 3px);
+        }
+        a { color: var(--green); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .win { max-width: 1180px; margin: 1.5rem auto; border: 1px solid var(--line); background: var(--win); }
+        .win-bar {
+            background: #132019; border-bottom: 1px solid var(--line); padding: .5rem .85rem;
+            display: flex; flex-wrap: wrap; align-items: center; gap: .6rem;
+        }
+        .dots span { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+        .win-title { color: var(--green); font-weight: 700; letter-spacing: .04em; }
+        .badge-env { background: var(--green-dim); color: #06150e; padding: 0 .5rem; font-weight: 700; letter-spacing: .08em; }
+        .win-body { padding: 1.1rem 1.2rem 1.4rem; }
+
+        .sec { border: 1px solid var(--line); margin-bottom: 1rem; }
+        .sec > .hd {
+            background: #101a15; border-bottom: 1px solid var(--line); padding: .35rem .7rem;
+            color: var(--green); font-weight: 700; letter-spacing: .06em;
+        }
+        .sec > .bd { padding: .8rem .85rem; }
+
+        .prompt { color: var(--green-dim); }
+        .prompt::before { content: '$ '; }
+
+        .banner { color: var(--green); white-space: pre; font-size: 12px; line-height: 1.25; overflow-x: auto; }
+        .sys-big { font-size: 1.55rem; font-weight: 800; color: #eafff2; letter-spacing: .02em; }
+
+        .form-control {
+            background: #060b09; border: 1px solid var(--line); color: var(--green);
+            border-radius: 0; font-family: var(--mono); padding: .5rem .6rem;
+        }
+        .form-control:focus { background: #060b09; color: var(--green); border-color: var(--green); box-shadow: 0 0 0 .15rem rgba(70,224,138,.2); }
+        .form-control::placeholder { color: #3e6153; }
+        .form-label { color: var(--muted); font-size: .82rem; }
+        .input-group-text { background: #101a15; border: 1px solid var(--line); border-radius: 0; color: var(--muted); cursor: pointer; }
+        .btn-run {
+            background: var(--green); color: #06150e; border: none; border-radius: 0;
+            font-family: var(--mono); font-weight: 700; padding: .5rem 1rem; letter-spacing: .06em;
+        }
+        .btn-run:hover { background: #6ef0a5; color: #06150e; }
+        .form-check-input { background-color: #060b09; border-color: var(--line); border-radius: 0; }
+        .form-check-input:checked { background-color: var(--green); border-color: var(--green); }
+
+        table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table.t th, table.t td { border: 1px solid var(--line); padding: .25rem .5rem; }
+        table.t th { color: var(--muted); font-weight: 500; width: 40%; text-align: left; }
+        table.t td { color: var(--ink); word-break: break-word; }
+
+        .log { padding: .45rem 0; border-bottom: 1px dashed var(--line); }
+        .log:last-child { border-bottom: none; }
+        .lv { font-weight: 700; }
+        .lv-danger { color: var(--red); } .lv-warning { color: var(--amber); }
+        .lv-info { color: var(--blue); } .lv-success { color: var(--green); }
+        .sc { color: var(--muted); }
+        .log .ttl { color: #eafff2; font-weight: 700; }
+        .log .txt { color: var(--ink); opacity: .9; }
+        .log .meta { color: var(--muted); font-size: 12px; }
+
+        .rel-block { padding: .45rem 0; border-bottom: 1px dashed var(--line); }
+        .rel-block:last-child { border-bottom: none; }
+        .rel-head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; }
+        .rel-ver { color: var(--green); font-weight: 800; }
+        .rel-now { background: var(--green-dim); color: #06150e; padding: 0 .35rem; font-size: 11px; }
+        .rel-date, .rel-sum { color: var(--muted); font-size: 12px; }
+        .rel-list { list-style: none; margin: .2rem 0 0; padding: 0; }
+        .rel-item { display: flex; gap: .5rem; font-size: 13px; }
+        .rel-item::before { content: '›'; color: var(--green-dim); }
+        .rel-tag { color: var(--muted); white-space: nowrap; }
+        .rel-tag::before { content: '['; } .rel-tag::after { content: ']'; }
+
+        .scroll { max-height: 460px; overflow-y: auto; padding-right: .3rem; }
+        .scroll::-webkit-scrollbar { width: 8px; }
+        .scroll::-webkit-scrollbar-thumb { background: var(--line); }
+
+        .btn-sc { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 0; font-family: var(--mono); font-size: 12px; padding: .1rem .5rem; }
+        .btn-sc.active { background: var(--green-dim); color: #06150e; border-color: var(--green-dim); }
+
+        .warn { border: 1px solid var(--amber); color: var(--amber); padding: .5rem .7rem; font-size: 13px; }
+        .msg { border: 1px solid var(--green); color: var(--green); padding: .4rem .6rem; font-size: 13px; }
+
+        @media (max-width: 767.98px) {
+            .win { margin: 0; border-left: none; border-right: none; }
+            .banner { font-size: 9px; }
+            .scroll { max-height: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="win">
+        <!-- 視窗標題列：永遠看得到連到哪個系統、哪個環境 -->
+        <div class="win-bar">
+            <span class="dots"><span style="background:#ff6b5e"></span><span style="background:#ffc352"></span><span style="background:#46e08a"></span></span>
+            <span class="win-title" id="barTitle">—</span>
+            <span class="badge-env" id="barEnv">—</span>
+            <span class="ms-auto" style="color:var(--muted)" id="clock">—</span>
+        </div>
+
+        <div class="win-body">
+            <!-- 橫幅 -->
+            <pre class="banner mb-2" id="banner"></pre>
+            <div class="sys-big mb-1" id="sysName">—</div>
+            <div style="color:var(--muted)" class="mb-3">
+                <span id="org">—</span> / <span id="orgSub">—</span>　·　system_code=<span style="color:var(--green)" id="sysCode">—</span>　·　version=<span style="color:var(--green)" id="ver">—</span>
+            </div>
+
+            <div class="row g-3">
+                <!-- 登入 -->
+                <div class="col-12 col-lg-5">
+                    <div class="sec">
+                        <div class="hd">[ auth ] 登入</div>
+                        <div class="bd">
+                            <div class="prompt mb-2">login --system <span id="scInline">—</span></div>
+                            <form id="loginForm" novalidate>
+                                <div class="mb-2">
+                                    <label class="form-label" for="account">帳號（員工編號）</label>
+                                    <input type="text" class="form-control" id="account" placeholder="A12345" autocomplete="username" />
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="password">密碼</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" placeholder="********" autocomplete="current-password" />
+                                        <span class="input-group-text" id="tp" role="button" tabindex="0" aria-label="顯示密碼"><i class="bi bi-eye" id="tpi"></i></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rm" />
+                                        <label class="form-check-label" for="rm" style="font-size:12px;color:var(--muted)">--remember-device</label>
+                                    </div>
+                                    <div style="font-size:12px"><a href="#">--forgot-password</a>　<a href="#">--change-password</a></div>
+                                </div>
+                                <div id="msg" class="msg mb-2 d-none"></div>
+                                <button class="btn btn-run w-100" type="submit">EXECUTE LOGIN</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="sec">
+                        <div class="hd">[ client ] 登入端電腦</div>
+                        <div class="bd">
+                            <table class="t mb-2"><tbody id="clientRows"></tbody></table>
+                            <div class="prompt mb-1">last login</div>
+                            <table class="t"><tbody id="lastRows"></tbody></table>
+                            <div class="warn mt-2 d-none" id="failBox"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 公告 / 更版 -->
+                <div class="col-12 col-lg-7">
+                    <div class="sec">
+                        <div class="hd d-flex flex-wrap align-items-center gap-2">
+                            <span>[ notice ] 公告</span>
+                            <span class="ms-auto d-flex gap-1">
+                                <button class="btn-sc active" data-scope="ALL">--all</button>
+                                <button class="btn-sc" data-scope="GLOBAL">--global</button>
+                                <button class="btn-sc" data-scope="SYSTEM">--system</button>
+                            </span>
+                        </div>
+                        <div class="bd"><div class="scroll" id="noticeList"></div></div>
+                    </div>
+
+                    <div class="sec">
+                        <div class="hd">[ changelog ] 更版資訊</div>
+                        <div class="bd"><div class="scroll" id="releaseList"></div></div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <div class="sec h-100">
+                                <div class="hd">[ system ] 版本</div>
+                                <div class="bd"><table class="t"><tbody id="sysRows"></tbody></table></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="sec h-100">
+                                <div class="hd">[ owner ] 維護者</div>
+                                <div class="bd"><table class="t"><tbody id="maintRows"></tbody></table></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sec">
+                        <div class="hd">[ docs ] 教學與說明</div>
+                        <div class="bd" id="helpList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt mt-2" style="color:var(--muted)" id="footer">—</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="../assets/js/data.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        jQuery(function ($) {
+            var I = LD.identity();
+            LD.applyEnv();
+            LD.fill({
+                '#barTitle': I.code + ' — ' + I.name, '#barEnv': I.env,
+                '#sysName': I.name, '#org': I.org, '#orgSub': I.orgSub,
+                '#sysCode': I.code, '#scInline': I.code, '#ver': I.version, '#footer': I.footer
+            });
+            $('#banner').text(
+                '  ____  _     ____  _   _\n' +
+                ' / ___|| |__ / ___|| | | |   ' + I.code + '\n' +
+                '| |    |  _ \\| |  _ | |_| |   ' + I.envLabel + '\n' +
+                '| |___ | | | | |_| ||  _  |   ' + I.version + '\n' +
+                ' \\____||_| |_|\\____||_| |_|'
+            );
+            LD.startClock(function (t) { $('#clock').text(t.date + ' ' + t.time); });
+
+            $('#sysRows').html(LD.tableRows(LD.systemRows()));
+            $('#maintRows').html(LD.tableRows(LD.maintainerRows(), true));
+            $('#clientRows').html(LD.tableRows(LD.clientItems().map(function (i) { return [i.label, i.value]; })));
+            $('#lastRows').html(LD.tableRows(LD.lastLoginRows()));
+            $('#releaseList').html(LD.releaseHtml({ tagCls: function () { return 'rel-tag'; } }));
+            $('#helpList').html(LD.helpHtml(function (h) {
+                return '<div class="prompt"><a href="' + LD.esc(h.href) + '">' + LD.esc(h.title) + '</a>' +
+                    ' <span style="color:var(--muted)"># ' + LD.esc(h.desc) + '</span></div>';
+            }));
+
+            var ft = LD.failedLoginText();
+            if (ft) { $('#failBox').removeClass('d-none').text('! ' + ft); }
+
+            function renderNotices(scope) {
+                $('#noticeList').html(LD.noticeHtml(scope, function (n) {
+                    return '<div class="log">' +
+                        '<span class="lv lv-' + LD.esc(n.level) + '">[' + LD.esc(n.levelName) + ']</span> ' +
+                        '<span class="sc">[' + LD.esc(n.scopeName) + ']</span> ' +
+                        (n.pinned ? '<span class="lv lv-danger">[置頂]</span> ' : '') +
+                        '<span class="ttl">' + LD.esc(n.title) + '</span>' +
+                        '<div class="txt">  ' + LD.esc(n.content) + '</div>' +
+                        '<div class="meta">  ' + LD.esc(n.date) + ' | ' + LD.esc(n.publisher) + ' | ' + LD.esc(n.id) + '</div></div>';
+                }, '<div style="color:var(--muted)">// no notices</div>'));
+            }
+            renderNotices('ALL');
+            $('[data-scope]').on('click', function () {
+                $('[data-scope]').removeClass('active'); $(this).addClass('active');
+                renderNotices($(this).data('scope'));
+            });
+
+            LD.bindPasswordToggle('#password', '#tp', '#tpi');
+            LD.bindDemoLogin('#loginForm', '#account', '#password', function (m) {
+                $('#msg').removeClass('d-none').text('> ' + m);
+            });
+        });
+    </script>
+</body>
+
+</html>

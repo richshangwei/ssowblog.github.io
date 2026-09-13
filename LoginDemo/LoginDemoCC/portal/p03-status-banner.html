@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P03 狀態橫幅三欄｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P03 狀態橫幅三欄 Status Banner + 3 Columns ===================
+           版面結構：整頁最上方是服務狀態橫幅，下方三欄（公告｜登入｜協助）
+           登入區位置：正中央欄，兩側是公告與協助，登入與求助同一視線高度
+           公告呈現：卡片格狀，適合公告數量中等時並排比較
+           導覽方式：無分頁，靠三欄分工
+           視覺語言：淺灰底、白卡片、狀態橫幅用色塊強調
+           ================================================================= */
+        :root { --pt-brand: #1d4e89; }
+
+        .p-head { background: #fff; border-bottom: 1px solid var(--pt-line); }
+        .p-head-inner { max-width: 1320px; margin: 0 auto; padding: 1rem; }
+
+        .p-statusbar { background: #0f2f4f; color: #fff; }
+        .p-statusbar-inner { max-width: 1320px; margin: 0 auto; padding: 1rem; }
+        .p-statusbar .pt-block { margin: 0; }
+        .p-statusbar .pt-block-title { color: #b9d3e8; font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; }
+        .p-statusbar .pt-status-desc,
+        .p-statusbar .pt-status-updated,
+        .p-statusbar .pt-note { color: #b9d3e8; }
+        .p-statusbar .pt-status-lines li { border-color: rgba(255, 255, 255, .16); }
+        .p-statusbar .pt-sl-name { color: #fff; }
+        .p-statusbar .pt-status-ok { color: #8fe7bd; background: rgba(143, 231, 189, .12); }
+        .p-statusbar .pt-status-warn { color: #ffd083; background: rgba(255, 208, 131, .12); }
+        .p-statusbar .pt-status-info { color: #a2ccff; background: rgba(162, 204, 255, .12); }
+        .p-statusbar .pt-status-muted { color: #cbdcea; background: rgba(255, 255, 255, .1); }
+
+        .p-cols { max-width: 1320px; margin: 0 auto; padding: 1.25rem 1rem 2.5rem; display: grid; gap: 1.25rem; grid-template-columns: 1fr 1.1fr 1fr; align-items: start; }
+        .p-panel { background: #fff; border: 1px solid var(--pt-line); border-radius: .6rem; padding: 1.1rem 1.2rem; }
+        .p-panel + .p-panel { margin-top: 1rem; }
+        .p-login { border-top: 5px solid var(--pt-brand); box-shadow: 0 12px 34px rgba(29, 78, 137, .1); }
+        .p-login h2 { font-size: 1.2rem; font-weight: 800; margin: 0 0 .8rem; }
+        .p-panel .pt-block:last-child { margin-bottom: 0; }
+        .p-notice-cards .pt-notice-cards { grid-template-columns: 1fr; }
+
+        .p-foot { background: #fff; border-top: 1px solid var(--pt-line); }
+        .p-foot-inner { max-width: 1320px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+        @media (max-width: 1199.98px) {
+            .p-cols { grid-template-columns: 1fr 1fr; }
+            .p-cols > .p-col-login { grid-column: 1 / -1; order: -1; }
+        }
+        @media (max-width: 767.98px) {
+            .p-cols { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <header class="p-head">
+        <div class="p-head-inner" id="slotIdentity"></div>
+    </header>
+
+    <section class="p-statusbar" aria-label="服務狀態">
+        <div class="p-statusbar-inner" id="slotStatus"></div>
+    </section>
+
+    <main class="p-cols">
+        <!-- 左：公告 -->
+        <div class="p-col p-notice-cards">
+            <div class="p-panel" id="slotNotices"></div>
+        </div>
+
+        <!-- 中：登入 -->
+        <div class="p-col p-col-login">
+            <div id="slotAlerts"></div>
+            <div class="p-panel p-login">
+                <h2>登入</h2>
+                <div id="slotLogin"></div>
+                <div id="slotResult"></div>
+            </div>
+        </div>
+
+        <!-- 右：協助與系統 -->
+        <div class="p-col">
+            <div class="p-panel" id="slotHelp"></div>
+            <div class="p-panel" id="slotSystems"></div>
+        </div>
+    </main>
+
+    <footer class="p-foot">
+        <div class="p-foot-inner" id="slotFooter"></div>
+    </footer>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function () {
+            Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp',
+                    systems: '#slotSystems', footer: '#slotFooter'
+                },
+                variants: { status: 'banner', notices: 'cards', help: 'cards', systems: 'list' },
+                noticeLimit: 3
+            });
+        });
+    </script>
+</body>
+
+</html>

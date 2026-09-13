@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>款式 04｜玻璃擬態</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        /* ===== 款式 04：玻璃擬態 Glassmorphism =============================
+           彩色漸層背景 + 半透明毛玻璃卡片；系統識別浮在最上層的膠囊列。
+           視覺最柔和、最「現代感」，適合對外形象較講究的入口。
+           ================================================================= */
+        :root {
+            --ink: #14202e; --muted: #5b6b7d; --glass: rgba(255,255,255,.62);
+            --glass-line: rgba(255,255,255,.75); --accent: #2563eb;
+        }
+        body {
+            margin: 0; min-height: 100vh; color: var(--ink);
+            font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+            background:
+                radial-gradient(1000px 600px at 8% 8%, #a5c9ff 0%, transparent 55%),
+                radial-gradient(900px 700px at 95% 10%, #ffd6a5 0%, transparent 52%),
+                radial-gradient(1000px 800px at 55% 100%, #bdf0dc 0%, transparent 55%),
+                #eef3f9;
+            background-attachment: fixed;
+        }
+        a { text-decoration: none; }
+
+        .glass {
+            background: var(--glass);
+            border: 1px solid var(--glass-line);
+            border-radius: 1.1rem;
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            box-shadow: 0 16px 40px rgba(31, 61, 97, .12);
+        }
+
+        .id-bar {
+            position: sticky; top: 1rem; z-index: 20;
+            padding: .55rem 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem;
+        }
+        .id-bar .name { font-weight: 800; }
+        .code {
+            font-family: Consolas, monospace; font-size: .8rem; letter-spacing: .06em;
+            background: rgba(37,99,235,.12); color: #1e40af; border-radius: 999px; padding: .1rem .55rem;
+        }
+        .env {
+            font-size: .78rem; font-weight: 800; letter-spacing: .08em; border-radius: 999px;
+            padding: .1rem .6rem; background: rgba(16,122,79,.15); color: #0c5c3c;
+        }
+
+        .hero-name { font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 800; line-height: 1.15; }
+
+        .form-control {
+            background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.9);
+            border-radius: .7rem; padding: .8rem .95rem;
+        }
+        .form-control:focus { background: #fff; border-color: var(--accent); box-shadow: 0 0 0 .22rem rgba(37,99,235,.18); }
+        .form-label { font-weight: 700; font-size: .85rem; color: var(--muted); }
+        .input-group-text { background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.9); border-radius: .7rem; cursor: pointer; color: var(--muted); }
+        .btn-glass {
+            border: none; border-radius: .7rem; padding: .8rem; font-weight: 800; color: #fff;
+            background: linear-gradient(120deg, #2563eb, #4f46e5);
+            box-shadow: 0 10px 24px rgba(37,99,235,.32);
+        }
+        .btn-glass:hover { color: #fff; filter: brightness(1.08); }
+
+        .nav-pills .nav-link {
+            color: var(--muted); font-weight: 700; border-radius: 999px; padding: .35rem .9rem; font-size: .9rem;
+        }
+        .nav-pills .nav-link.active { background: rgba(37,99,235,.14); color: #1e40af; }
+
+        .notice {
+            background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.8);
+            border-radius: .8rem; padding: .85rem 1rem; margin-bottom: .65rem;
+        }
+        .notice h6 { font-weight: 800; margin: .35rem 0 .35rem; }
+        .meta { font-size: .78rem; color: var(--muted); }
+        .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+        .d-danger { background: #dc2626; } .d-warning { background: #d97706; }
+        .d-info { background: #2563eb; } .d-success { background: #059669; }
+        .pill { font-size: .72rem; border-radius: 999px; padding: .05rem .55rem; background: rgba(255,255,255,.8); color: var(--muted); }
+
+        .kv { display: flex; justify-content: space-between; gap: .8rem; padding: .4rem 0; border-bottom: 1px solid rgba(255,255,255,.7); font-size: .88rem; }
+        .kv:last-child { border-bottom: none; }
+        .kv .k { color: var(--muted); white-space: nowrap; }
+        .kv .v { font-weight: 700; text-align: right; word-break: break-word; }
+
+        .rel-block { background: rgba(255,255,255,.5); border-radius: .8rem; padding: .8rem 1rem; margin-bottom: .6rem; }
+        .rel-head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+        .rel-ver { font-family: Consolas, monospace; font-weight: 800; color: #1e40af; }
+        .rel-now { background: rgba(5,150,105,.16); color: #065f46; font-size: .7rem; border-radius: 999px; padding: 0 .5rem; }
+        .rel-date, .rel-sum { font-size: .8rem; color: var(--muted); }
+        .rel-list { list-style: none; padding: 0; margin: .4rem 0 0; }
+        .rel-item { display: flex; gap: .5rem; padding: .2rem 0; font-size: .88rem; }
+        .rel-tag { font-size: .7rem; font-weight: 700; border-radius: 999px; padding: 0 .5rem; white-space: nowrap; height: 1.35rem; }
+        .t-feature { background: rgba(37,99,235,.14); color: #1e40af; }
+        .t-fix { background: rgba(220,38,38,.14); color: #991b1b; }
+        .t-security { background: rgba(124,58,237,.14); color: #5b21b6; }
+        .t-change { background: rgba(100,116,139,.16); color: #334155; }
+
+        .help-item { display: flex; gap: .7rem; padding: .6rem .8rem; border-radius: .7rem; color: var(--ink); background: rgba(255,255,255,.45); margin-bottom: .45rem; }
+        .help-item:hover { background: rgba(255,255,255,.8); color: var(--ink); }
+        .help-item i { font-size: 1.2rem; color: var(--accent); }
+        .help-item small { display: block; color: var(--muted); }
+
+        .scroll { max-height: 780px; overflow-y: auto; padding-right: .3rem; }
+        .info-sticky { position: sticky; top: 4.5rem; }
+        @media (max-width: 991.98px) { .scroll { max-height: none; } .id-bar { position: static; } }
+    </style>
+</head>
+
+<body>
+    <div class="container py-4">
+
+        <!-- 浮動系統識別膠囊 -->
+        <div class="glass id-bar mb-4">
+            <i class="bi bi-hospital" style="color:var(--accent)"></i>
+            <span class="name" id="sysName">—</span>
+            <span class="code" id="sysCode">—</span>
+            <span class="env" id="sysEnv">—</span>
+            <span class="ms-auto small text-secondary"><span id="org">—</span>　<span id="clock">—</span></span>
+        </div>
+
+        <div class="row g-4">
+            <!-- 登入 -->
+            <div class="col-12 col-lg-5">
+                <div class="glass p-4 mb-4">
+                    <p class="text-secondary small mb-1">您正在登入</p>
+                    <h1 class="hero-name mb-3" id="heroName">—</h1>
+                    <p class="text-secondary small mb-4" id="tagline"></p>
+
+                    <form id="loginForm" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="account">帳號（員工編號）</label>
+                            <input type="text" class="form-control" id="account" placeholder="例如：A12345" autocomplete="username" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">密碼</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password" placeholder="請輸入密碼" autocomplete="current-password" />
+                                <span class="input-group-text" id="tp" role="button" tabindex="0" aria-label="顯示密碼"><i class="bi bi-eye" id="tpi"></i></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rm" />
+                                <label class="form-check-label small text-secondary" for="rm">記住此電腦</label>
+                            </div>
+                            <div class="small"><a href="#">忘記密碼</a><span class="text-secondary mx-1">·</span><a href="#">變更密碼</a></div>
+                        </div>
+                        <div id="msg" class="alert py-2 px-3 small d-none" style="border-radius:.7rem"></div>
+                        <button class="btn btn-glass w-100" type="submit">登入 <span id="short"></span></button>
+                    </form>
+                </div>
+
+                <div class="glass p-4">
+                    <h2 class="h6 fw-bold mb-3"><i class="bi bi-pc-display me-2"></i>登入端電腦與最後登入</h2>
+                    <div id="clientRows" class="mb-3"></div>
+                    <p class="small fw-bold text-secondary mb-1">最後一次登入</p>
+                    <div id="lastRows"></div>
+                    <div class="alert alert-warning py-2 px-3 small mt-3 mb-0 d-none" style="border-radius:.7rem" id="failBox"></div>
+                </div>
+            </div>
+
+            <!-- 資訊 -->
+            <div class="col-12 col-lg-7">
+                <div class="glass p-4 info-sticky">
+                    <ul class="nav nav-pills gap-2 mb-3 flex-nowrap overflow-auto" role="tablist">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#p1">公告 <span class="badge text-bg-danger rounded-pill" id="nCount">0</span></button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p2">更版資訊</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p3">系統與維護者</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p4">教學說明</button></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="p1">
+                            <div class="btn-group btn-group-sm mb-3">
+                                <input type="radio" class="btn-check" name="sc" id="sc1" value="ALL" checked /><label class="btn btn-outline-primary rounded-pill px-3" for="sc1">全部</label>
+                                <input type="radio" class="btn-check" name="sc" id="sc2" value="GLOBAL" /><label class="btn btn-outline-primary rounded-pill px-3 ms-2" for="sc2">全系統</label>
+                                <input type="radio" class="btn-check" name="sc" id="sc3" value="SYSTEM" /><label class="btn btn-outline-primary rounded-pill px-3 ms-2" for="sc3">本系統</label>
+                            </div>
+                            <div class="scroll" id="noticeList"></div>
+                        </div>
+                        <div class="tab-pane fade" id="p2"><div class="scroll" id="releaseList"></div></div>
+                        <div class="tab-pane fade" id="p3">
+                            <div class="scroll">
+                                <p class="small fw-bold text-secondary mb-1">版本資訊</p>
+                                <div id="sysRows" class="mb-3"></div>
+                                <p class="small fw-bold text-secondary mb-1">維護者資訊與聯絡方式</p>
+                                <div id="maintRows"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="p4"><div class="scroll" id="helpList"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-secondary small mt-4 mb-0" id="footer">—</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="../assets/js/data.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        jQuery(function ($) {
+            var I = LD.identity();
+            LD.applyEnv();
+            LD.fill({
+                '#sysName': I.name, '#heroName': I.name, '#sysCode': I.code, '#sysEnv': I.envText,
+                '#org': I.org, '#tagline': I.tagline,
+                '#short': I.short ? '（' + I.short + '）' : '', '#footer': I.footer
+            });
+            LD.startClock(function (t) { $('#clock').text(t.date + '　' + t.time); });
+
+            $('#sysRows').html(LD.kvHtml(LD.systemRows()));
+            $('#maintRows').html(LD.kvHtml(LD.maintainerRows(), 'kv', true));
+            $('#clientRows').html(LD.kvHtml(LD.clientItems().map(function (i) { return [i.label, i.value]; })));
+            $('#lastRows').html(LD.kvHtml(LD.lastLoginRows()));
+            $('#releaseList').html(LD.releaseHtml());
+            $('#helpList').html(LD.helpHtml());
+
+            var ft = LD.failedLoginText();
+            if (ft) { $('#failBox').removeClass('d-none').text(ft); }
+
+            function renderNotices(scope) {
+                $('#nCount').text(LD.notices(scope).length);
+                $('#noticeList').html(LD.noticeHtml(scope, function (n) {
+                    return '<article class="notice">' +
+                        '<div class="d-flex flex-wrap align-items-center gap-2">' +
+                        '<span class="dot d-' + LD.esc(n.level) + '"></span>' +
+                        '<span class="fw-bold small">' + LD.esc(n.levelName) + '</span>' +
+                        '<span class="pill">' + LD.esc(n.scopeName) + '</span>' +
+                        (n.pinned ? '<i class="bi bi-pin-angle-fill text-danger"></i>' : '') + '</div>' +
+                        '<h6>' + LD.esc(n.title) + '</h6>' +
+                        '<p class="small mb-1">' + LD.esc(n.content) + '</p>' +
+                        '<div class="meta">' + LD.esc(n.date) + ' · ' + LD.esc(n.publisher) + ' · ' + LD.esc(n.id) + '</div></article>';
+                }));
+            }
+            renderNotices('ALL');
+            LD.bindScope('input[name="sc"]', renderNotices);
+
+            LD.bindPasswordToggle('#password', '#tp', '#tpi');
+            LD.bindDemoLogin('#loginForm', '#account', '#password', function (m, t) {
+                $('#msg').removeClass('d-none alert-warning alert-info').addClass('alert-' + t).text(m);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,448 @@
+/* =============================================================================
+ * app.css — 振興醫院登入頁客製樣式（疊在 Bootstrap 5 之上）
+ * 主色可透過 :root 變數調整，換系統時只需改這幾個值。
+ * ===========================================================================*/
+
+:root {
+    --sys-primary: #073b66;
+    --sys-primary-strong: #052a4a;
+    --sys-accent: #b8864b;
+    --sys-accent-soft: #f3eadf;
+    --sys-surface: #ffffff;
+    --sys-surface-soft: #f6f8fb;
+    --sys-ink: #172331;
+    --sys-muted: #5f6b78;
+    --sys-line: #d8e0e8;
+    --sys-shadow: 0 22px 60px rgba(7, 59, 102, .16);
+    --sys-font: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    font-family: var(--sys-font);
+    color: var(--sys-ink);
+    background:
+        linear-gradient(135deg, rgba(7, 59, 102, .08), transparent 36%),
+        linear-gradient(315deg, rgba(184, 134, 75, .12), transparent 34%),
+        var(--sys-surface-soft);
+    background-attachment: fixed;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 系統識別列：稽核時一眼看出「現在開的是哪個系統 / 哪個環境」
+ * ------------------------------------------------------------------------ */
+.sys-topbar {
+    background: var(--sys-primary-strong);
+    color: #fff;
+    border-bottom: 3px solid var(--sys-accent);
+}
+
+.sys-topbar .sys-topbar-code {
+    font-family: "Consolas", "Menlo", monospace;
+    letter-spacing: .06em;
+}
+
+.sys-env-badge {
+    font-weight: 700;
+    letter-spacing: .08em;
+    border-radius: 999px;
+    padding: .3rem .85rem;
+}
+
+.sys-env-PROD { background: #167044; color: #fff; }
+.sys-env-UAT  { background: #9a5b13; color: #fff; }
+.sys-env-SIT  { background: #6d28d9; color: #fff; }
+.sys-env-DEV  { background: #b42318; color: #fff; }
+
+/* 非正式環境時，整頁加上警示斜紋，避免 user 誤以為在正式區操作 */
+body.is-nonprod .sys-topbar {
+    background: repeating-linear-gradient(
+        135deg,
+        var(--sys-primary-strong) 0 18px,
+        #6b3b06 18px 36px
+    );
+}
+
+/* ---------------------------------------------------------------------------
+ * 主卡片
+ * ------------------------------------------------------------------------ */
+.login-shell {
+    width: min(1240px, 100%);
+}
+
+.login-card {
+    background: var(--sys-surface);
+    border: 1px solid rgba(216, 224, 232, .9);
+    border-radius: .75rem;
+    box-shadow: var(--sys-shadow);
+    overflow: hidden;
+}
+
+/* 左側登入區 ------------------------------------------------------------- */
+.login-panel {
+    background: linear-gradient(180deg, var(--sys-primary), var(--sys-primary-strong));
+    color: #fff;
+    padding: 2.5rem;
+}
+
+.brand-mark {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+    display: grid;
+    place-items: center;
+    border-radius: .6rem;
+    border: 1px solid rgba(255, 255, 255, .28);
+    background: rgba(255, 255, 255, .1);
+    font-weight: 700;
+    letter-spacing: .04em;
+}
+
+.login-panel .sys-name {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.login-panel .sys-name-en {
+    color: rgba(255, 255, 255, .72);
+}
+
+.login-panel .form-label {
+    color: rgba(255, 255, 255, .85);
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.login-panel .form-control {
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid rgba(255, 255, 255, .35);
+    padding: .7rem .9rem;
+}
+
+.login-panel .form-control:focus {
+    border-color: var(--sys-accent);
+    box-shadow: 0 0 0 .25rem rgba(184, 134, 75, .35);
+}
+
+.login-panel .input-group-text {
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid rgba(255, 255, 255, .35);
+    color: var(--sys-muted);
+    cursor: pointer;
+}
+
+.login-panel .form-check-label,
+.login-panel .link-soft {
+    color: rgba(255, 255, 255, .82);
+}
+
+.login-panel .link-soft:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.btn-login {
+    background: var(--sys-accent);
+    border: none;
+    color: #17202a;
+    font-weight: 700;
+    padding: .75rem 1rem;
+    letter-spacing: .04em;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+    background: #caa168;
+    color: #17202a;
+}
+
+.panel-divider {
+    border-top: 1px solid rgba(255, 255, 255, .18);
+}
+
+/* 右側資訊區 ------------------------------------------------------------- */
+.info-panel {
+    padding: 1.75rem 2rem 2rem;
+    background: var(--sys-surface);
+}
+
+.info-panel .nav-tabs {
+    border-bottom: 2px solid var(--sys-line);
+}
+
+.info-panel .nav-tabs .nav-link {
+    color: var(--sys-muted);
+    font-weight: 600;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: .6rem .95rem;
+    white-space: nowrap;
+}
+
+.info-panel .nav-tabs .nav-link:hover {
+    color: var(--sys-primary);
+}
+
+.info-panel .nav-tabs .nav-link.active {
+    color: var(--sys-primary);
+    background: transparent;
+    border-bottom-color: var(--sys-accent);
+}
+
+.tab-scroll {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: .4rem;
+}
+
+.tab-scroll { scrollbar-gutter: stable; }
+
+/* 還有更多內容時，底部淡出提示 */
+.tab-pane { position: relative; }
+
+.tab-pane.has-more::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: .5rem;
+    bottom: 0;
+    height: 56px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 85%);
+    pointer-events: none;
+}
+
+.tab-pane.has-more .scroll-hint {
+    display: block;
+}
+
+.scroll-hint {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: .2rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-size: .78rem;
+    color: var(--sys-muted);
+    background: #fff;
+    padding: .1rem .6rem;
+    border: 1px solid var(--sys-line);
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.tab-scroll::-webkit-scrollbar { width: 8px; }
+.tab-scroll::-webkit-scrollbar-thumb {
+    background: #cfd9e3;
+    border-radius: 8px;
+}
+
+/* 公告卡片 --------------------------------------------------------------- */
+.notice-item {
+    border: 1px solid var(--sys-line);
+    border-left-width: 4px;
+    border-radius: .5rem;
+    padding: .85rem 1rem;
+    background: #fff;
+    transition: box-shadow .15s ease;
+}
+
+.notice-item:hover {
+    box-shadow: 0 6px 18px rgba(7, 59, 102, .08);
+}
+
+.notice-item.lv-danger  { border-left-color: #b42318; }
+.notice-item.lv-warning { border-left-color: #9a5b13; }
+.notice-item.lv-info    { border-left-color: #0b6bcb; }
+.notice-item.lv-success { border-left-color: #167044; }
+
+.notice-title {
+    font-weight: 700;
+    color: var(--sys-ink);
+}
+
+.notice-meta {
+    font-size: .8rem;
+    color: var(--sys-muted);
+}
+
+.badge-scope-GLOBAL {
+    background: #0b6bcb;
+    color: #fff;
+}
+
+.badge-scope-SYSTEM {
+    background: var(--sys-accent-soft);
+    color: #7a5322;
+    border: 1px solid #e0cdb2;
+}
+
+/* 更版資訊 --------------------------------------------------------------- */
+.release-block + .release-block {
+    margin-top: 1.1rem;
+}
+
+.release-head {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+}
+
+.release-version {
+    font-family: "Consolas", "Menlo", monospace;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--sys-primary);
+}
+
+.release-list {
+    list-style: none;
+    margin: .6rem 0 0;
+    padding: 0;
+}
+
+.release-list li {
+    display: flex;
+    gap: .55rem;
+    padding: .3rem 0;
+    font-size: .92rem;
+    border-top: 1px dashed #e6ecf2;
+}
+
+.release-list li:first-child { border-top: none; }
+
+.tag-type {
+    flex: 0 0 auto;
+    font-size: .72rem;
+    font-weight: 700;
+    border-radius: .3rem;
+    padding: .1rem .45rem;
+    height: 1.35rem;
+    line-height: 1.15rem;
+    white-space: nowrap;
+}
+
+.tag-feature  { background: #e3f0ff; color: #0b4f9e; }
+.tag-fix      { background: #fdecea; color: #96201a; }
+.tag-security { background: #ede9fe; color: #5b21b6; }
+.tag-change   { background: #eef3f7; color: #46545f; }
+
+/* 資訊表格 --------------------------------------------------------------- */
+.kv-table th {
+    width: 38%;
+    font-weight: 600;
+    color: var(--sys-muted);
+    background: var(--sys-surface-soft);
+    white-space: nowrap;
+}
+
+.kv-table td {
+    color: var(--sys-ink);
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.kv-table th,
+.kv-table td {
+    padding: .5rem .75rem;
+    vertical-align: middle;
+    font-size: .92rem;
+}
+
+/* 教學連結 --------------------------------------------------------------- */
+.help-link {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    border: 1px solid var(--sys-line);
+    border-radius: .5rem;
+    padding: .75rem .9rem;
+    height: 100%;
+    color: var(--sys-ink);
+    background: #fff;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.help-link:hover {
+    border-color: var(--sys-accent);
+    box-shadow: 0 6px 18px rgba(184, 134, 75, .15);
+    color: var(--sys-ink);
+}
+
+.help-link i {
+    font-size: 1.25rem;
+    color: var(--sys-accent);
+    line-height: 1.3;
+}
+
+.help-link small {
+    color: var(--sys-muted);
+}
+
+/* 本機資訊 --------------------------------------------------------------- */
+.client-tile {
+    border: 1px solid var(--sys-line);
+    border-radius: .5rem;
+    padding: .75rem .9rem;
+    background: var(--sys-surface-soft);
+    height: 100%;
+}
+
+.client-tile .label {
+    font-size: .78rem;
+    color: var(--sys-muted);
+    display: block;
+}
+
+.client-tile .value {
+    font-weight: 700;
+    word-break: normal;
+    overflow-wrap: break-word;
+    line-height: 1.35;
+}
+
+.section-title {
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--sys-muted);
+    text-transform: uppercase;
+}
+
+/* 頁尾 ------------------------------------------------------------------- */
+.login-footer {
+    color: var(--sys-muted);
+    font-size: .85rem;
+}
+
+/* RWD -------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .login-panel { padding: 2rem 1.5rem; }
+    .info-panel { padding: 1.5rem; }
+    .tab-scroll { max-height: none; }
+    .login-panel .sys-name { font-size: 1.55rem; }
+}
+
+@media (max-width: 575.98px) {
+    .login-panel { padding: 1.5rem 1.1rem; }
+    .info-panel { padding: 1.1rem; }
+    .kv-table th { width: 42%; }
+}
+
+/* 列印時保留系統識別 */
+@media print {
+    body { background: #fff; }
+    .login-card { box-shadow: none; }
+}

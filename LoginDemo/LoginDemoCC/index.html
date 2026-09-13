@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 分頁標題也帶上系統名稱與環境，避免多視窗時分不清 -->
+    <title id="pageTitle">登入｜振興醫院</title>
+    <meta name="description" content="振興醫院員工資訊整合入口 — 系統登入頁" />
+
+    <!-- Bootstrap 5 CSS（CDN，失敗時自動改用本機備援） -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+
+<body>
+
+    <!-- =====================================================================
+         系統識別列 — 稽核時最重要：一眼看出「現在開的是哪個系統、哪個環境」
+         ================================================================== -->
+    <header class="sys-topbar py-2">
+        <div class="container-xl d-flex flex-wrap align-items-center gap-2 gap-md-3">
+            <i class="bi bi-hospital fs-4" aria-hidden="true"></i>
+            <div class="me-auto lh-sm">
+                <div class="fw-bold" id="topbarSystemName">—</div>
+                <div class="small opacity-75">
+                    <span id="topbarOrgName">—</span>
+                    ｜系統代碼 <span class="sys-topbar-code fw-semibold" id="topbarSystemCode">—</span>
+                </div>
+            </div>
+            <span class="sys-env-badge" id="topbarEnvBadge">—</span>
+            <a href="../index.html" class="btn btn-outline-light btn-sm py-0 ms-2" style="font-size:0.75rem;"><i class="bi bi-house-door-fill me-1"></i>全站大廳</a>
+            <div class="small text-end lh-sm d-none d-sm-block">
+                <div id="topbarClock" class="fw-semibold">—</div>
+                <div class="opacity-75" id="topbarDate">—</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-xl py-4 py-lg-5">
+        <div class="login-shell mx-auto">
+            <div class="login-card">
+                <div class="row g-0">
+
+                    <!-- =========================================================
+                         左：登入區（帳號 / 密碼 / 忘記密碼）
+                         ====================================================== -->
+                    <section class="col-lg-5 login-panel d-flex flex-column">
+
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <div class="brand-mark" id="brandMark">—</div>
+                            <div class="lh-sm">
+                                <div class="fw-bold fs-5" id="brandOrgName">—</div>
+                                <div class="small opacity-75" id="brandOrgSub">—</div>
+                            </div>
+                        </div>
+
+                        <!-- 系統名稱大字，登入前就能確認系統 -->
+                        <p class="section-title text-white-50 mb-1">您正在登入</p>
+                        <h1 class="sys-name mb-2" id="loginSystemName">—</h1>
+                        <p class="small mb-4" id="loginTagline"></p>
+
+                        <form id="loginForm" novalidate autocomplete="on">
+                            <!-- 帳號 -->
+                            <div class="mb-3">
+                                <label class="form-label" for="account">
+                                    <i class="bi bi-person-badge me-1"></i>帳號（員工編號）
+                                </label>
+                                <input type="text" class="form-control" id="account" name="account"
+                                       placeholder="例如：A12345" autocomplete="username"
+                                       required aria-describedby="accountFeedback" />
+                                <div class="invalid-feedback d-block text-warning" id="accountFeedback"></div>
+                            </div>
+
+                            <!-- 密碼 -->
+                            <div class="mb-3">
+                                <label class="form-label" for="password">
+                                    <i class="bi bi-key me-1"></i>密碼
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password"
+                                           placeholder="請輸入密碼" autocomplete="current-password"
+                                           required aria-describedby="passwordFeedback" />
+                                    <span class="input-group-text" id="togglePassword" role="button"
+                                          tabindex="0" aria-label="顯示密碼" title="顯示／隱藏密碼">
+                                        <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                                    </span>
+                                </div>
+                                <div class="invalid-feedback d-block text-warning" id="passwordFeedback"></div>
+                            </div>
+
+                            <!-- 記住裝置 / 忘記密碼 / 變更密碼 -->
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" type="checkbox" id="rememberDevice" />
+                                    <label class="form-check-label small" for="rememberDevice">記住此電腦</label>
+                                </div>
+                                <div class="small">
+                                    <a href="#" class="link-soft" id="linkForgotPassword"
+                                       data-bs-toggle="modal" data-bs-target="#pwdModal">
+                                        <i class="bi bi-question-circle me-1"></i>忘記密碼
+                                    </a>
+                                    <span class="opacity-50 mx-1">|</span>
+                                    <a href="#" class="link-soft" id="linkChangePassword"
+                                       data-bs-toggle="modal" data-bs-target="#pwdModal">
+                                        變更密碼
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div id="loginAlert" class="alert alert-warning py-2 px-3 small d-none" role="alert"></div>
+
+                            <button type="submit" class="btn btn-login w-100" id="btnLogin">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="loginSpinner"
+                                      role="status" aria-hidden="true"></span>
+                                <i class="bi bi-box-arrow-in-right me-1" id="loginIcon"></i>
+                                登入 <span id="loginBtnSystem" class="fw-normal"></span>
+                            </button>
+                        </form>
+
+                        <!-- 左側下方：本機電腦與最後登入摘要（登入前即可自我確認） -->
+                        <div class="panel-divider mt-4 pt-3">
+                            <p class="section-title text-white-50 mb-2">
+                                <i class="bi bi-pc-display me-1"></i>本次登入電腦
+                            </p>
+                            <div class="row g-2 small">
+                                <div class="col-6">
+                                    <span class="opacity-75 d-block">電腦名稱</span>
+                                    <span class="fw-semibold" id="sideComputerName">—</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="opacity-75 d-block">作業系統</span>
+                                    <span class="fw-semibold" id="sideOs">—</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="opacity-75 d-block">最後一次登入</span>
+                                    <span class="fw-semibold" id="sideLastLogin">—</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-4 small opacity-75 d-flex flex-wrap gap-2">
+                            <span id="sideVersion">—</span>
+                            <span class="opacity-50">|</span>
+                            <span id="sideMaintainer">—</span>
+                        </div>
+                    </section>
+
+                    <!-- =========================================================
+                         右：公告 / 更版 / 系統 / 教學 / 本機資訊
+                         ====================================================== -->
+                    <section class="col-lg-7 info-panel">
+
+                        <ul class="nav nav-tabs flex-nowrap overflow-auto mb-3" id="infoTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="tab-notice-btn" data-bs-toggle="tab"
+                                        data-bs-target="#tab-notice" type="button" role="tab">
+                                    <i class="bi bi-megaphone me-1"></i>公告
+                                    <span class="badge text-bg-danger rounded-pill ms-1" id="noticeCount">0</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab-release-btn" data-bs-toggle="tab"
+                                        data-bs-target="#tab-release" type="button" role="tab">
+                                    <i class="bi bi-arrow-repeat me-1"></i>更版資訊
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab-system-btn" data-bs-toggle="tab"
+                                        data-bs-target="#tab-system" type="button" role="tab">
+                                    <i class="bi bi-info-circle me-1"></i>系統資訊
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab-help-btn" data-bs-toggle="tab"
+                                        data-bs-target="#tab-help" type="button" role="tab">
+                                    <i class="bi bi-life-preserver me-1"></i>教學說明
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab-client-btn" data-bs-toggle="tab"
+                                        data-bs-target="#tab-client" type="button" role="tab">
+                                    <i class="bi bi-pc-display-horizontal me-1"></i>本機資訊
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+
+                            <!-- ===== 公告 ===== -->
+                            <div class="tab-pane fade show active" id="tab-notice" role="tabpanel">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="公告範圍篩選">
+                                        <input type="radio" class="btn-check" name="noticeScope" id="scopeAll"
+                                               value="ALL" checked />
+                                        <label class="btn btn-outline-secondary" for="scopeAll">全部</label>
+
+                                        <input type="radio" class="btn-check" name="noticeScope" id="scopeGlobal"
+                                               value="GLOBAL" />
+                                        <label class="btn btn-outline-secondary" for="scopeGlobal">
+                                            <i class="bi bi-globe2 me-1"></i>全系統公告
+                                        </label>
+
+                                        <input type="radio" class="btn-check" name="noticeScope" id="scopeSystem"
+                                               value="SYSTEM" />
+                                        <label class="btn btn-outline-secondary" for="scopeSystem">
+                                            <i class="bi bi-app-indicator me-1"></i>本系統公告
+                                        </label>
+                                    </div>
+                                    <span class="small text-secondary" id="noticeSummary"></span>
+                                </div>
+
+                                <div class="tab-scroll d-grid gap-2" id="noticeList">
+                                    <div class="text-secondary small">載入中…</div>
+                                </div>
+                            </div>
+
+                            <!-- ===== 更版資訊 ===== -->
+                            <div class="tab-pane fade" id="tab-release" role="tabpanel">
+                                <div class="alert alert-light border d-flex align-items-center gap-2 py-2 px-3 small">
+                                    <i class="bi bi-box-seam text-secondary"></i>
+                                    <span>目前版本
+                                        <strong id="releaseCurrentVersion">—</strong>
+                                        （發佈日 <span id="releaseCurrentDate">—</span>）
+                                    </span>
+                                </div>
+                                <div class="tab-scroll" id="releaseList">
+                                    <div class="text-secondary small">載入中…</div>
+                                </div>
+                            </div>
+
+                            <!-- ===== 系統資訊 + 維護者 ===== -->
+                            <div class="tab-pane fade" id="tab-system" role="tabpanel">
+                                <div class="tab-scroll">
+                                    <p class="section-title mb-2"><i class="bi bi-hdd-stack me-1"></i>版本資訊</p>
+                                    <div class="table-responsive mb-4">
+                                        <table class="table table-sm table-bordered align-middle mb-0 kv-table">
+                                            <tbody id="systemInfoTable"></tbody>
+                                        </table>
+                                    </div>
+
+                                    <p class="section-title mb-2"><i class="bi bi-person-gear me-1"></i>維護者資訊與聯絡方式</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered align-middle mb-0 kv-table">
+                                            <tbody id="maintainerTable"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== 教學說明 ===== -->
+                            <div class="tab-pane fade" id="tab-help" role="tabpanel">
+                                <p class="small text-secondary mb-3">
+                                    系統功能教學與說明文件，登入前即可查閱。
+                                </p>
+                                <div class="tab-scroll">
+                                    <div class="row g-2" id="helpList"></div>
+                                </div>
+                            </div>
+
+                            <!-- ===== 本機資訊 / 最後登入 ===== -->
+                            <div class="tab-pane fade" id="tab-client" role="tabpanel">
+                                <div class="tab-scroll">
+                                    <p class="section-title mb-2"><i class="bi bi-pc-display me-1"></i>本機電腦</p>
+                                    <div class="row g-2 mb-4" id="clientTiles"></div>
+
+                                    <p class="section-title mb-2"><i class="bi bi-clock-history me-1"></i>最後一次登入紀錄</p>
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-sm table-bordered align-middle mb-0 kv-table">
+                                            <tbody id="lastLoginTable"></tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="alert alert-warning py-2 px-3 small d-none" id="lastFailedBox">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                        <span id="lastFailedText"></span>
+                                    </div>
+
+                                    <p class="small text-secondary mb-0">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        電腦名稱、IP 與登入地點需由後端（AD／網域服務／登入紀錄）提供；
+                                        瀏覽器本身僅能取得作業系統、瀏覽器與螢幕解析度等資訊。
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- 頁尾：再次標示系統與維護單位 -->
+            <footer class="login-footer d-flex flex-wrap justify-content-between gap-2 mt-3 px-1">
+                <div>
+                    <span id="footerSystem">—</span>
+                    <span class="mx-1">·</span>
+                    <span id="footerVersion">—</span>
+                </div>
+                <div id="footerMaintainer">—</div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- =====================================================================
+         忘記密碼 / 變更密碼 Modal
+         ================================================================== -->
+    <div class="modal fade" id="pwdModal" tabindex="-1" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pwdModalLabel">
+                        <i class="bi bi-shield-lock me-1"></i>忘記密碼／變更密碼
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-secondary">
+                        請輸入員工編號與院內信箱，系統會寄送密碼重設連結（連結 30 分鐘內有效）。
+                    </p>
+                    <form id="pwdForm" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="pwdAccount">員工編號</label>
+                            <input type="text" class="form-control" id="pwdAccount" placeholder="例如：A12345" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="pwdEmail">院內信箱</label>
+                            <input type="email" class="form-control" id="pwdEmail" placeholder="name@chgh.org.tw" required />
+                        </div>
+                        <div id="pwdAlert" class="alert py-2 px-3 small d-none" role="alert"></div>
+                    </form>
+                    <hr />
+                    <p class="small mb-1 fw-semibold">其他方式</p>
+                    <ul class="small text-secondary mb-0 ps-3">
+                        <li>已知舊密碼要變更 → 請至 <a href="#" id="modalChangePwdLink">密碼變更頁</a>。</li>
+                        <li>帳號已鎖定或信箱失效 → 請洽 <span id="modalContact">維護單位</span>。</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-primary" id="pwdSubmit">
+                        <i class="bi bi-envelope-check me-1"></i>寄送重設連結
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery（CDN，失敗時自動改用本機備援） -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="assets/libs/jquery/jquery.min.js"><\/script>');
+    </script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.bootstrap || document.write('<script src="assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');
+    </script>
+
+    <!-- 資料與邏輯 -->
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>

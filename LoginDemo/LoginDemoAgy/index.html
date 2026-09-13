@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多系統共用登入網站 — 10款風格前端原型總覽與決策評估｜振興醫院資訊室</title>
+    <link rel="stylesheet" href="assets/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/libs/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/common.css">
+    <style>
+        body {
+            background-color: #0b1120;
+            color: #f1f5f9;
+            font-family: var(--agy-font-sans);
+        }
+        .hero-banner {
+            background: radial-gradient(circle at 50% 10%, #1e3a8a 0%, #0b1120 80%);
+            padding: 4rem 0 3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .card-style-item {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card-style-item:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+        }
+        .style-thumb-box {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .matrix-table th, .matrix-table td {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-color: rgba(255, 255, 255, 0.1);
+            vertical-align: middle;
+            font-size: 0.88rem;
+        }
+        .badge-rec {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Hero -->
+    <header class="hero-banner text-center">
+        <div class="container">
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-25 border border-primary border-opacity-50 text-info mb-3 small">
+                <i class="bi bi-shield-check"></i> 資訊室主任架構規劃 ｜ 多系統共用入口前端原型 ｜ Bootstrap 5 + jQuery
+            </div>
+            <h1 class="display-5 fw-bold text-white mb-3">全院多系統共用登入網站 · 10 款風格前端原型</h1>
+            <p class="lead text-light text-opacity-75 max-w-700 mx-auto fs-6 mb-4">
+                以醫院資訊管理與服務治理視角設計：清楚回答<b>「這是哪個組織、用什麼帳號、即將進入何系統、當前是否有服務異常、遇到問題如何立即求助」</b>。<br>
+                所有原型均包含<b>可操作的互動情境切換條</b>（正常、重大維護、驗證失敗、直接入口 vs 目標系統導向）。
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="../index.html" class="btn btn-outline-light px-3 py-2"><i class="bi bi-house-door-fill me-1"></i>全站展示大廳</a>
+                <a href="#gallery" class="btn btn-primary px-4 py-2 fw-semibold"><i class="bi bi-grid-fill me-2"></i>瀏覽 10 款原型</a>
+                <a href="#matrix" class="btn btn-outline-light px-4 py-2"><i class="bi bi-table me-2"></i>差異比較矩陣</a>
+                <a href="#recommendations" class="btn btn-warning px-4 py-2 fw-bold text-dark"><i class="bi bi-award-fill me-2"></i>選型推薦前三款</a>
+                <a href="#integration" class="btn btn-outline-info px-4 py-2"><i class="bi bi-gear-fill me-2"></i>落地整合待確認事項</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 10 款設計卡片選單 -->
+    <main class="container my-5" id="gallery">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+                <h3 class="fw-bold text-white mb-0"><i class="bi bi-palette-fill text-info me-2"></i>十款設計原型目錄</h3>
+                <div class="text-white-50 small">任兩款均在版面結構、登入區位置、公告呈現、導覽方式等面向具備實質差異</div>
+            </div>
+            <span class="badge bg-secondary">共收錄 10 款完整獨立頁面</span>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- 01. 雙欄標準管理型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #073b66 0%, #0077b6 100%);">
+                        <div class="text-center text-white"><i class="bi bi-layout-split fs-2"></i><div class="mt-1">雙欄標準管理型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">01 / Portal Standard</span>
+                            <span class="badge badge-rec">首選推薦 No.1</span>
+                        </div>
+                        <h5 class="fw-bold text-white">01. 雙欄標準管理型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            經典 5:7 左右非對稱雙欄。左側專注登入操作與帳號規則指引；右側頁籤切換重大公告、系統狀態與值班專線，權威穩重。
+                        </p>
+                        <a href="01-medical-flagship/index.html" class="btn btn-primary w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02. 戰情運維導向型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #030712 0%, #0b1120 100%); border-bottom: 2px solid #06b6d4;">
+                        <div class="text-center text-info"><i class="bi bi-terminal-fill fs-2"></i><div class="mt-1">戰情運維導向型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-dark border border-info text-info">02 / Operations First</span>
+                            <span class="badge bg-success">資訊中心首選</span>
+                        </div>
+                        <h5 class="fw-bold text-white">02. 戰情運維導向型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            頂部即時運維指標條，主視覺優先呈現全院 6 大系統狀態矩陣與重大告警，右側收斂精簡登入艙，技術透明度最高。
+                        </p>
+                        <a href="02-cyber-console/index.html" class="btn btn-outline-info w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03. 置中專注抽屜型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);">
+                        <div class="text-center text-white"><i class="bi bi-layers-half fs-2"></i><div class="mt-1">置中專注抽屜型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-light text-dark">03 / Centered Drawer</span>
+                            <span class="badge bg-info text-dark">極簡專注</span>
+                        </div>
+                        <h5 class="fw-bold text-white">03. 置中專注抽屜型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            視覺焦點純粹置中於單一卡片，目標系統提示清晰；服務狀態、公告與求助平時收納於右側 Offcanvas 抽屜，點擊即流暢滑出。
+                        </p>
+                        <a href="03-modern-glass/index.html" class="btn btn-info text-dark w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04. 瑞士高對比網格型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: #ffe600; color: #111111;">
+                        <div class="text-center"><i class="bi bi-grid-3x3 fs-2"></i><div class="mt-1 fw-bold">瑞士高對比排版型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-warning text-dark">04 / Swiss Grid</span>
+                            <span class="badge bg-danger">投影檢核專用</span>
+                        </div>
+                        <h5 class="fw-bold text-white">04. 瑞士高對比排版型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            嚴謹 3 等欄純黑粗線框與醒目標記黃，條列式無裝飾純文字狀態與替代方案，適合弱視、高齡同仁與大型螢幕投影。
+                        </p>
+                        <a href="04-swiss-grid/index.html" class="btn btn-warning text-dark w-100 fw-bold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05. 人文刊物長文型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #fbf9f5 0%, #e8e2d8 100%); color: #78350f;">
+                        <div class="text-center"><i class="bi bi-journal-bookmark fs-2"></i><div class="mt-1">人文刊物長文型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-secondary">05 / Human Editorial</span>
+                            <span class="badge bg-warning text-dark">長文替代指南</span>
+                        </div>
+                        <h5 class="fw-bold text-white">05. 人文刊物長文型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            刊物式編審排版，左側以完整長文刊載「維護期間各科室急用衛材紙本三聯單替代方案」，右側溫潤登入卡，撫平焦慮。
+                        </p>
+                        <a href="05-warm-editorial/index.html" class="btn btn-outline-warning w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06. 橫向步驟卡片流型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
+                        <div class="text-center text-white"><i class="bi bi-arrow-right-circle fs-2"></i><div class="mt-1">橫向步驟卡片流型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">06 / Step Deck</span>
+                            <span class="badge bg-success">流程明確</span>
+                        </div>
+                        <h5 class="fw-bold text-white">06. 橫向步驟卡片流型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            橫向展開 3 聯卡 (Step 1 檢視狀態 -> Step 2 執行登入 -> Step 3 取得支援)，流程層級清晰，降低同仁操作迷失。
+                        </p>
+                        <a href="06-eco-forest/index.html" class="btn btn-outline-primary w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07. 側邊工作站導航型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
+                        <div class="text-center text-white"><i class="bi bi-layout-sidebar-inset fs-2"></i><div class="mt-1">側邊工作站導航型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-indigo text-white">07 / Sidebar Portal</span>
+                            <span class="badge badge-rec">推薦 No.2</span>
+                        </div>
+                        <h5 class="fw-bold text-white">07. 側邊工作站導航型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            290px 固定深色左側導航欄，常駐各系統狀態燈號、IT 服務台分機 5888 與值班專線；主工作區居中卡片，極具工作站格局。
+                        </p>
+                        <a href="07-bulletin-priority/index.html" class="btn btn-outline-light w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08. 現代模組浮動卡型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);">
+                        <div class="text-center text-white"><i class="bi bi-bounding-box-circles fs-2"></i><div class="mt-1">現代模組浮動卡型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">08 / Modular Grid</span>
+                            <span class="badge bg-light text-dark">現代 SaaS</span>
+                        </div>
+                        <h5 class="fw-bold text-white">08. 現代模組浮動卡型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            4 塊自適應浮動卡片（主登入、重大告警、服務矩陣、求助專線），微光邊框與現代卡片化排版，適合新世代雲端入口。
+                        </p>
+                        <a href="08-nordic-gradient/index.html" class="btn btn-outline-info w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09. 流程防呆藍圖型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: #0a2540; border-bottom: 2px dashed #00b4d8; color: #00b4d8;">
+                        <div class="text-center"><i class="bi bi-diagram-3-fill fs-2"></i><div class="mt-1 font-monospace">流程防呆藍圖型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-dark text-info border border-info">09 / Blueprint Spec</span>
+                            <span class="badge bg-secondary">稽核防呆專用</span>
+                        </div>
+                        <h5 class="fw-bold text-white">09. 流程防呆藍圖型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            CAD 工程圖框與點矩陣網格底圖，嚴格標註身分驗證模組、系統依賴拓撲狀態與 SSO 待確認架構，資訊稽核員首選。
+                        </p>
+                        <a href="09-technical-blueprint/index.html" class="btn btn-outline-info w-100 fw-semibold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. 全齡友善觸控型 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-style-item">
+                    <div class="style-thumb-box" style="background: #002855; border-bottom: 4px solid #ffb703; color: #ffb703;">
+                        <div class="text-center"><i class="bi bi-hand-index-thumb-fill fs-2"></i><div class="mt-1 fw-bold">全齡友善觸控型</div></div>
+                    </div>
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-warning text-dark">10 / Kiosk Friendly</span>
+                            <span class="badge badge-rec">推薦 No.3</span>
+                        </div>
+                        <h5 class="fw-bold text-white">10. 全齡友善觸控型</h5>
+                        <p class="text-white-50 small flex-grow-1">
+                            20px 超大字體、60px 超大觸控按鈕、醒目防窺提示與嚴禁記住密碼防呆，專門針對護理站推車與公用終端最佳化。
+                        </p>
+                        <a href="10-accessible-touch/index.html" class="btn btn-warning text-dark w-100 fw-bold">開啟體驗 <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 差異比較表 (Difference Matrix) -->
+    <section class="container my-5" id="matrix">
+        <div class="card bg-dark border-secondary p-4">
+            <h4 class="fw-bold text-white mb-3"><i class="bi bi-table text-info me-2"></i>十款設計規格與架構差異比較表</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered matrix-table mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 12%;">款式編號</th>
+                            <th style="width: 15%;">設計定位</th>
+                            <th style="width: 18%;">版面結構</th>
+                            <th style="width: 15%;">登入區位置</th>
+                            <th style="width: 20%;">公告與狀態呈現</th>
+                            <th style="width: 20%;">主要適用情境與取捨</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b class="text-info">01. 雙欄標準</b></td>
+                            <td>經典醫學中心官方門面</td>
+                            <td>非對稱 5:7 左右雙欄</td>
+                            <td>左側卡片</td>
+                            <td>右側頁籤切換公告、系統狀態與聯絡窗口</td>
+                            <td><b>適用：</b>全院日常共用門戶。<br><b>取捨：</b>資訊完整但手機版需往下滑動。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">02. 戰情運維</b></td>
+                            <td>監控導向運維看板</td>
+                            <td>頂部遙測條 + 7:5 左右分割</td>
+                            <td>右側精簡登入艙</td>
+                            <td>左側 6 格即時系統矩陣 + 運維日誌</td>
+                            <td><b>適用：</b>資訊管理人員與資安監控。<br><b>取捨：</b>技術感強烈，非資訊同仁需短暫適應。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">03. 置中抽屜</b></td>
+                            <td>極簡專注卡片</td>
+                            <td>純置中浮動卡片</td>
+                            <td>畫面正中心</td>
+                            <td>平時收納於右側 Offcanvas 抽屜中</td>
+                            <td><b>適用：</b>行政高階主管與極致專注。<br><b>取捨：</b>首頁乾淨，但需主動點擊抽屜看公告。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">04. 瑞士高對比</b></td>
+                            <td>機能主義無障礙排版</td>
+                            <td>3 等欄幾何純黑粗線框</td>
+                            <td>第 1 欄登入</td>
+                            <td>第 2 欄條列式無裝飾純文字狀態與替代方案</td>
+                            <td><b>適用：</b>投影機查核、年長同仁與弱視者。<br><b>取捨：</b>極度清晰，但視覺無圓角與現代漸層裝飾。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">05. 人文刊物</b></td>
+                            <td>長文替代指南刊物</td>
+                            <td>雜誌刊物橫幅 + 7:5 雙欄</td>
+                            <td>右側溫潤小卡</td>
+                            <td>左側長篇刊載各科室急件紙本三聯單替代作法</td>
+                            <td><b>適用：</b>重大維護頻繁與需要詳盡說明的組織。<br><b>取捨：</b>文字量大，需要同仁願意閱讀。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">06. 步驟卡片流</b></td>
+                            <td>流程引導卡片橫軸</td>
+                            <td>橫向 3 聯卡 (1-2-3 流程)</td>
+                            <td>中間卡片 (Step 2)</td>
+                            <td>第 1 張卡片專責服務狀態檢視</td>
+                            <td><b>適用：</b>新進人員較多之大型院區。<br><b>取捨：</b>桌機寬螢幕體驗佳，手機版變為垂直三段。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">07. 側邊導航</b></td>
+                            <td>大型工作站門戶</td>
+                            <td>290px 固定深色左側欄 + 右工作區</td>
+                            <td>右側工作區居中卡片</td>
+                            <td>左側欄常駐 6 大系統燈號與緊急專線</td>
+                            <td><b>適用：</b>臨床醫護工作站與常態開啟之瀏覽器分頁。<br><b>取捨：</b>占據固定左側空間。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">08. 現代模組</b></td>
+                            <td>現代雲端 SaaS 網格</td>
+                            <td>4 塊自適應模組卡片</td>
+                            <td>左上模組卡</td>
+                            <td>右上模組獨立呈現即時維護告警</td>
+                            <td><b>適用：</b>新世代醫療資訊平台。<br><b>取捨：</b>微互動豐富，需現代瀏覽器支援良好。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">09. 工程藍圖</b></td>
+                            <td>技術規範與稽核藍圖</td>
+                            <td>CAD 圖框與點矩陣底圖</td>
+                            <td>身分授權檢核模組</td>
+                            <td>系統拓撲狀態模組 + 整合條件宣告</td>
+                            <td><b>適用：</b>工務設備、資安稽核與伺服器機房。<br><b>取捨：</b>等寬字型視覺特殊。</td>
+                        </tr>
+                        <tr>
+                            <td><b class="text-info">10. 友善觸控</b></td>
+                            <td>公用端點與觸控推車</td>
+                            <td>單欄大版面直立流動</td>
+                            <td>左側 60px 超大輸入框</td>
+                            <td>右側超大字服務狀態與 5888 專線</td>
+                            <td><b>適用：</b>病房護理推車、急診掛號櫃檯觸控機。<br><b>取捨：</b>字體極大，資訊密度較低。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 選型建議 (Top 3 Recommendations) -->
+    <section class="container my-5" id="recommendations">
+        <div class="card bg-dark border-secondary p-4">
+            <h4 class="fw-bold text-white mb-3"><i class="bi bi-award-fill text-warning me-2"></i>資訊室主任選型建議：最適合正式入口的前三款</h4>
+            <div class="row g-4">
+                
+                <div class="col-lg-4">
+                    <div class="p-3 bg-secondary bg-opacity-10 border border-warning rounded h-100">
+                        <span class="badge bg-warning text-dark fw-bold mb-2">首選推薦 No.1</span>
+                        <h5 class="fw-bold text-white">Style 01: 雙欄標準管理型</h5>
+                        <p class="small text-secondary mb-2">
+                            <b>推薦理由：</b>資訊架構平衡度最高。符合醫院使用者「左眼看登入、右眼看公告」的習慣路徑。頁籤能容納豐富維護日誌，且不會造成首頁資訊過載。
+                        </p>
+                        <div class="small text-white-50 border-top border-secondary pt-2">
+                            <b>落地調整建議：</b>在手機響應式時，可預設將重大異常橫幅置於表單最上方，確保行動端同仁在送出前能看見。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="p-3 bg-secondary bg-opacity-10 border border-info rounded h-100">
+                        <span class="badge bg-info text-dark fw-bold mb-2">推薦 No.2</span>
+                        <h5 class="fw-bold text-white">Style 07: 側邊工作站導航型</h5>
+                        <p class="small text-secondary mb-2">
+                            <b>推薦理由：</b>最具醫院「工作站」專業格局。常駐的左側欄讓護理同仁隨時掌握服務台電話與各系統燈號，減少致電資訊室詢問「系統有沒有壞」的通話量。
+                        </p>
+                        <div class="small text-white-50 border-top border-secondary pt-2">
+                            <b>落地調整建議：</b>針對 1024x768 舊款病歷車螢幕，需設定左側欄在窄螢幕自動收合為漢堡選單。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="p-3 bg-secondary bg-opacity-10 border border-success rounded h-100">
+                        <span class="badge bg-success text-white fw-bold mb-2">推薦 No.3</span>
+                        <h5 class="fw-bold text-white">Style 10: 全齡友善觸控型</h5>
+                        <p class="small text-secondary mb-2">
+                            <b>推薦理由：</b>在公用工作站、急診櫃檯與高齡主治醫師情境下表現最好。60px 觸控目標與防窺警告，實質杜絕誤按與帳號被偷看的稽核風險。
+                        </p>
+                        <div class="small text-white-50 border-top border-secondary pt-2">
+                            <b>落地調整建議：</b>可透過前端 UserAgent 或 IP 網段自動判斷，若是臨床診間特定 IP 網段則自動切換此大字模式。
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 落地整合待確認事項 (Integration Considerations) -->
+    <section class="container my-5" id="integration">
+        <div class="card bg-dark border-secondary p-4">
+            <h4 class="fw-bold text-white mb-3"><i class="bi bi-gear-wide-connected text-info me-2"></i>系統落地整合待確認事項 (IT Implementation Checklist)</h4>
+            <div class="row g-3 small text-secondary">
+                <div class="col-md-6">
+                    <div class="p-3 bg-black bg-opacity-40 border border-secondary rounded h-100">
+                        <h6 class="text-white fw-bold"><i class="bi bi-key me-1 text-warning"></i>1. 帳號來源與目錄服務 (AD / LDAP)</h6>
+                        <p class="mb-0">
+                            共用入口需介接全院 Windows AD 或 OpenLDAP，目前原型為前端模擬。正式上線前需確認：帳號啟用狀態欄位、兼職醫師多重身分規則、以及帳號鎖定 (BadPwdCount) 的同步機制。
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-black bg-opacity-40 border border-secondary rounded h-100">
+                        <h6 class="text-white fw-bold"><i class="bi bi-shield-lock me-1 text-info"></i>2. 驗證協定 (SAML 2.0 / OIDC)</h6>
+                        <p class="mb-0">
+                            「多系統共用登入」不等於已完成單一簽入 (SSO)。需確認各業務系統（HIS、NIS、HRM）是否支援標準 SAML 2.0 或 OAuth2/OIDC 權杖轉發，以實現一次登入後免密碼安全跳轉。
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-black bg-opacity-40 border border-secondary rounded h-100">
+                        <h6 class="text-white fw-bold"><i class="bi bi-arrow-left-right me-1 text-success"></i>3. 目標系統導向與返回回跳機制 (ReturnUrl)</h6>
+                        <p class="mb-0">
+                            由特定系統導向共用入口時，URL 須帶入加密之 ReturnUrl 與 State Token；登入完成後透過後端重定向導回，並防止開放重定向 (Open Redirect) 資安漏洞。
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-black bg-opacity-40 border border-secondary rounded h-100">
+                        <h6 class="text-white fw-bold"><i class="bi bi-activity me-1 text-danger"></i>4. 即時服務狀態與探測介接 (Health Check API)</h6>
+                        <p class="mb-0">
+                            服務狀態矩陣需對接資訊室 APM 或伺服器健康探測 API，每 5~10 分鐘更新。若探測服務暫時離線，前端應顯示「狀態確認中」，嚴禁無依據直接顯示「全數正常」。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-white-50 small border-top border-secondary border-opacity-25">
+        <div class="container">
+            <div>振興醫療財團法人振興醫院 資訊室 · 多系統共用入口規劃專案</div>
+            <div class="mt-1">架構規範：Bootstrap 5.3.3 ｜ jQuery 3.7.1 ｜ 離線完整可用 ｜ 支援情境互動測試</div>
+        </div>
+    </footer>
+
+    <script src="assets/libs/jquery/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

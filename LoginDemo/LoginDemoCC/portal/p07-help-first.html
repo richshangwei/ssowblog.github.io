@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P07 意圖導向｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P07 意圖導向 Help First ======================================
+           版面結構：最上方三個「我要做什麼」大按鈕，選了才展開對應內容
+           登入區位置：第一個意圖「我要登入」內，預設開啟
+           公告呈現：登入意圖內以清單呈現；異常公告同時出現在「我登不進去」
+           導覽方式：意圖分頁（不是功能分頁），用使用者的話而不是系統的話
+           視覺語言：大按鈕、問句式標題，像服務台窗口
+           ================================================================= */
+        :root { --pt-brand: #1e5f4f; }
+
+        .p-head { background: #123f35; color: #fff; }
+        .p-head-inner { max-width: 1100px; margin: 0 auto; padding: 1.2rem 1rem; }
+        .p-head .pt-purpose { color: #b9dbd0; }
+        .p-head .pt-logo { color: #fff; }
+
+        .p-wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem 2.5rem; }
+
+        .p-intents { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-bottom: 1.25rem; }
+        .p-intent {
+            display: flex; gap: .75rem; align-items: flex-start; text-align: left;
+            font: inherit; cursor: pointer; min-height: 76px; padding: .9rem 1rem;
+            background: #fff; border: 2px solid var(--pt-line); border-radius: .6rem; color: var(--pt-ink);
+        }
+        .p-intent i { font-size: 1.5rem; color: var(--pt-brand); line-height: 1.3; }
+        .p-intent b { display: block; font-size: 1.05rem; }
+        .p-intent small { color: var(--pt-muted); }
+        .p-intent[aria-selected="true"] { border-color: var(--pt-brand); background: #eef7f4; }
+        .p-intent:hover { border-color: var(--pt-brand); }
+
+        .p-panel { background: #fff; border: 1px solid var(--pt-line); border-radius: .6rem; padding: 1.4rem 1.5rem; }
+        .p-panel h2 { font-size: 1.2rem; font-weight: 800; margin: 0 0 .3rem; }
+        .p-panel .p-lead { color: var(--pt-muted); font-size: .92rem; margin: 0 0 1.1rem; }
+
+        .p-two { display: grid; grid-template-columns: 420px 1fr; gap: 1.5rem; align-items: start; }
+
+        .p-reasons { list-style: none; margin: 0 0 1.25rem; padding: 0; }
+        .p-reasons li { border: 1px solid var(--pt-line); border-radius: .5rem; padding: .7rem .9rem; margin-bottom: .5rem; }
+        .p-reasons b { display: block; }
+        .p-reasons span { font-size: .88rem; color: #33414f; }
+
+        .p-foot { background: #fff; border-top: 1px solid var(--pt-line); }
+        .p-foot-inner { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+        @media (max-width: 991.98px) {
+            .p-intents { grid-template-columns: 1fr; }
+            .p-two { grid-template-columns: 1fr; }
+            .p-panel { padding: 1.1rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <header class="p-head">
+        <div class="p-head-inner" id="slotIdentity"></div>
+    </header>
+
+    <main class="p-wrap">
+        <div id="slotAlerts"></div>
+
+        <div class="p-intents" role="tablist" aria-label="我要做什麼">
+            <button class="p-intent" type="button" role="tab" aria-selected="true" data-intent="login">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                <span><b>我要登入</b><small>輸入帳號密碼進入系統</small></span>
+            </button>
+            <button class="p-intent" type="button" role="tab" aria-selected="false" data-intent="trouble">
+                <i class="bi bi-emoji-frown" aria-hidden="true"></i>
+                <span><b>我登不進去</b><small>常見原因、服務狀態與問題回報</small></span>
+            </button>
+            <button class="p-intent" type="button" role="tab" aria-selected="false" data-intent="apply">
+                <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+                <span><b>我要申請帳號或權限</b><small>還沒有帳號、看不到某個系統</small></span>
+            </button>
+        </div>
+
+        <!-- 我要登入 -->
+        <section class="p-panel" data-pane="login">
+            <div class="p-two">
+                <div>
+                    <h2>登入</h2>
+                    <p class="p-lead">請使用 [組織名稱] 核發的公務帳號。</p>
+                    <div id="slotLogin"></div>
+                    <div id="slotResult"></div>
+                </div>
+                <div>
+                    <div id="slotStatus"></div>
+                    <div id="slotNotices"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 我登不進去 -->
+        <section class="p-panel" data-pane="trouble" hidden>
+            <h2>登不進去的常見原因</h2>
+            <p class="p-lead">請由上往下確認。若都不是，請直接使用下方的問題回報或聯絡 [資訊室／維護單位]。</p>
+            <ul class="p-reasons">
+                <li><b>1. 帳號或密碼輸入錯誤</b><span>請確認大小寫與輸入法。可用「顯示密碼」檢查後再送出。仍不行請用「忘記密碼」。</span></li>
+                <li><b>2. 系統正在維護或部分異常</b><span>請看右側服務狀態與公告，維護中的系統暫時無法登入，公告會寫出替代方式。</span></li>
+                <li><b>3. 有帳號但沒有該系統的權限</b><span>登入會成功，但看不到系統。請使用「權限申請」。</span></li>
+                <li><b>4. 帳號可能已被停用或鎖定</b><span>停用與鎖定規則待確認。請於 [服務時段] 聯絡 [資訊室／維護單位] 分機 [資訊室分機] 協助確認。</span></li>
+                <li><b>5. 網路或登入服務暫時無法連線</b><span>畫面會顯示「目前無法連線至登入服務」。請稍後再試，或改用其他電腦確認。</span></li>
+            </ul>
+
+            <div class="p-two">
+                <div id="slotHelp"></div>
+                <div id="slotStatus2"></div>
+            </div>
+        </section>
+
+        <!-- 我要申請 -->
+        <section class="p-panel" data-pane="apply" hidden>
+            <h2>申請帳號或權限</h2>
+            <p class="p-lead">兩者不同：沒有帳號要「帳號申請」；有帳號但看不到系統要「權限申請」。</p>
+            <div class="p-two">
+                <div>
+                    <ul class="p-reasons">
+                        <li><b>帳號申請</b><span>適用尚未取得公務帳號者（新進、支援或外部合作人員）。需要的文件與核章流程待確認。</span></li>
+                        <li><b>權限申請</b><span>已有帳號，但需要新增某個系統的使用權限。權限由各系統業務單位核定。</span></li>
+                        <li><b>首次使用</b><span>第一次登入前，建議先看「首次使用說明」確認帳號格式與密碼原則。</span></li>
+                    </ul>
+                    <div id="slotHelp2"></div>
+                </div>
+                <div id="slotSystems"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="p-foot">
+        <div class="p-foot-inner" id="slotFooter"></div>
+    </footer>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function ($) {
+            Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp',
+                    systems: '#slotSystems', footer: '#slotFooter'
+                },
+                variants: { status: 'chips', notices: 'list', help: 'cards', systems: 'cards' },
+                noticeLimit: 2,
+                afterRender: function () {
+                    /* 「我登不進去」與「我要申請」重複使用同樣的區塊，確保求助路徑一致 */
+                    $('#slotStatus2').html($('#slotStatus').html());
+                    $('#slotHelp2').html($('#slotHelp').html());
+                }
+            });
+
+            $('.p-intent').on('click', function () {
+                var v = $(this).data('intent');
+                $('.p-intent').attr('aria-selected', 'false');
+                $(this).attr('aria-selected', 'true');
+                $('[data-pane]').prop('hidden', true).filter('[data-pane="' + v + '"]').prop('hidden', false);
+                if (v === 'login') { $('#ptAccount').trigger('focus'); }
+            });
+        });
+    </script>
+</body>
+
+</html>

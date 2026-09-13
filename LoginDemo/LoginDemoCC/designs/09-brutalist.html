@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>款式 09｜粗野主義</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        /* ===== 款式 09：粗野主義 Brutalist ==================================
+           零圓角、3px 純黑硬邊、硬投影、螢光黃強調色。
+           資訊用「標籤貼紙」方式硬貼上去，系統名稱大到佔滿整行。
+           視覺辨識度最高，也最不容易跟其他系統搞混。
+           ================================================================= */
+        :root {
+            --ink: #000; --paper: #f2f0e9; --yellow: #ffe600; --red: #ff3b30;
+            --blue: #0047ff; --green: #00a86b; --muted: #555;
+        }
+        body {
+            margin: 0; background: var(--paper); color: var(--ink);
+            font-family: "Noto Sans TC", "Microsoft JhengHei", "Arial Black", system-ui, sans-serif;
+        }
+        a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+        .box { border: 3px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 var(--ink); }
+        .box + .box { margin-top: 1.25rem; }
+        .box > .hd {
+            background: var(--ink); color: var(--paper); padding: .4rem .8rem;
+            font-weight: 900; letter-spacing: .18em; font-size: .82rem; text-transform: uppercase;
+            display: flex; align-items: center; gap: .5rem;
+        }
+        .box > .bd { padding: 1rem; }
+
+        .masthead { border-bottom: 3px solid var(--ink); background: var(--yellow); }
+        .masthead .sysname {
+            font-size: clamp(2rem, 6vw, 4.2rem); font-weight: 900; line-height: .98;
+            letter-spacing: -.02em; margin: 0; text-transform: none;
+        }
+        .stamp {
+            border: 3px solid var(--ink); background: #fff; padding: .15rem .6rem;
+            font-weight: 900; letter-spacing: .12em; display: inline-block;
+        }
+        .stamp.code { font-family: Consolas, monospace; }
+        .stamp.env { background: var(--green); color: #fff; }
+        .stamp.warn { background: var(--red); color: #fff; }
+
+        .form-control {
+            border: 3px solid var(--ink); border-radius: 0; padding: .7rem .8rem; background: #fff; font-weight: 700;
+        }
+        .form-control:focus { border-color: var(--blue); box-shadow: 4px 4px 0 var(--blue); }
+        .form-label { font-weight: 900; letter-spacing: .08em; font-size: .84rem; }
+        .input-group-text { border: 3px solid var(--ink); border-left: none; border-radius: 0; background: var(--yellow); cursor: pointer; }
+        .btn-hard {
+            width: 100%; border: 3px solid var(--ink); border-radius: 0; background: var(--yellow);
+            font-weight: 900; letter-spacing: .14em; padding: .8rem; box-shadow: 5px 5px 0 var(--ink);
+        }
+        .btn-hard:hover { background: var(--ink); color: var(--yellow); box-shadow: 5px 5px 0 var(--red); }
+        .form-check-input { border: 2px solid var(--ink); border-radius: 0; width: 1.15rem; height: 1.15rem; }
+        .form-check-input:checked { background-color: var(--ink); border-color: var(--ink); }
+
+        .tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
+        .tab {
+            border: 3px solid var(--ink); background: #fff; padding: .25rem .7rem;
+            font-weight: 900; font-size: .82rem; letter-spacing: .06em; cursor: pointer;
+        }
+        .tab.active { background: var(--ink); color: var(--yellow); }
+
+        .note { border: 3px solid var(--ink); padding: .8rem .9rem; margin-bottom: .9rem; background: #fff; }
+        .note.pin { box-shadow: 5px 5px 0 var(--red); }
+        .note h3 { font-size: 1.1rem; font-weight: 900; margin: .4rem 0 .4rem; line-height: 1.3; }
+        .note p { margin: 0 0 .4rem; font-size: .92rem; }
+        .note .meta { font-size: .78rem; color: var(--muted); font-family: Consolas, monospace; }
+        .lbl { font-weight: 900; font-size: .74rem; letter-spacing: .1em; border: 2px solid var(--ink); padding: 0 .35rem; margin-right: .3rem; display: inline-block; }
+        .lbl-danger { background: var(--red); color: #fff; }
+        .lbl-warning { background: var(--yellow); }
+        .lbl-info { background: var(--blue); color: #fff; }
+        .lbl-success { background: var(--green); color: #fff; }
+
+        table.t { width: 100%; border-collapse: collapse; font-size: .9rem; }
+        table.t th, table.t td { border: 2px solid var(--ink); padding: .4rem .6rem; }
+        table.t th { background: var(--paper); width: 38%; text-align: left; font-weight: 900; white-space: nowrap; }
+        table.t td { word-break: break-word; font-weight: 600; }
+
+        .rel-block { border-bottom: 3px solid var(--ink); padding-bottom: .8rem; margin-bottom: .8rem; }
+        .rel-block:last-child { border-bottom: none; margin-bottom: 0; }
+        .rel-head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+        .rel-ver { font-family: Consolas, monospace; font-weight: 900; font-size: 1.2rem; }
+        .rel-now { background: var(--green); color: #fff; border: 2px solid var(--ink); font-size: .72rem; padding: 0 .35rem; font-weight: 900; }
+        .rel-date, .rel-sum { font-size: .82rem; color: var(--muted); }
+        .rel-list { list-style: none; margin: .5rem 0 0; padding: 0; }
+        .rel-item { display: flex; gap: .5rem; font-size: .9rem; padding: .2rem 0; }
+        .rel-tag { font-weight: 900; font-size: .72rem; border: 2px solid var(--ink); padding: 0 .35rem; white-space: nowrap; height: 1.35rem; }
+        .t-feature { background: var(--blue); color: #fff; }
+        .t-fix { background: var(--red); color: #fff; }
+        .t-security { background: #8b5cf6; color: #fff; }
+        .t-change { background: var(--yellow); }
+
+        .help-item { display: block; border: 3px solid var(--ink); padding: .5rem .7rem; margin-bottom: .5rem; background: #fff; text-decoration: none; font-weight: 700; }
+        .help-item:hover { background: var(--yellow); }
+        .help-item small { display: block; font-weight: 400; color: var(--muted); }
+
+        @media (max-width: 767.98px) {
+            .box { box-shadow: 4px 4px 0 var(--ink); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 報頭 -->
+    <header class="masthead py-3">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2" style="font-weight:900;letter-spacing:.12em;font-size:.8rem">
+                <span id="org">—</span>
+                <span id="clock">—</span>
+            </div>
+            <h1 class="sysname mb-3" id="sysName">—</h1>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="stamp code" id="sysCode">—</span>
+                <span class="stamp env" id="sysEnv">—</span>
+                <span class="stamp" id="sysVer">—</span>
+                <span class="stamp warn">尚未登入</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <div class="row g-4">
+
+            <!-- 左 -->
+            <div class="col-12 col-lg-5">
+                <div class="box">
+                    <div class="hd"><i class="bi bi-box-arrow-in-right"></i>LOGIN／登入</div>
+                    <div class="bd">
+                        <form id="loginForm" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label" for="account">帳號（員工編號）</label>
+                                <input type="text" class="form-control" id="account" placeholder="A12345" autocomplete="username" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="password">密碼</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" placeholder="●●●●●●●●" autocomplete="current-password" />
+                                    <span class="input-group-text" id="tp" role="button" tabindex="0" aria-label="顯示密碼"><i class="bi bi-eye" id="tpi"></i></span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rm" />
+                                    <label class="form-check-label small fw-bold" for="rm">記住此電腦</label>
+                                </div>
+                                <div class="small fw-bold"><a href="#">忘記密碼</a>　<a href="#">變更密碼</a></div>
+                            </div>
+                            <div id="msg" class="alert py-2 px-3 small d-none" style="border:3px solid #000;border-radius:0"></div>
+                            <button class="btn btn-hard" type="submit">登　入 <span id="short"></span></button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="hd"><i class="bi bi-pc-display"></i>CLIENT／登入端電腦</div>
+                    <div class="bd">
+                        <table class="t mb-3"><tbody id="clientRows"></tbody></table>
+                        <div class="hd mb-2" style="background:var(--paper);color:var(--ink);border:2px solid var(--ink)">最後一次登入</div>
+                        <table class="t"><tbody id="lastRows"></tbody></table>
+                        <div class="mt-3 d-none" id="failBox" style="border:3px solid var(--red);padding:.6rem .7rem;font-weight:700"></div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="hd"><i class="bi bi-life-preserver"></i>DOCS／教學與說明</div>
+                    <div class="bd" id="helpList"></div>
+                </div>
+            </div>
+
+            <!-- 右 -->
+            <div class="col-12 col-lg-7">
+                <div class="box">
+                    <div class="hd">
+                        <i class="bi bi-megaphone"></i>NOTICE／公告
+                        <span class="ms-auto tabs">
+                            <span class="tab active" data-scope="ALL">全部</span>
+                            <span class="tab" data-scope="GLOBAL">全系統</span>
+                            <span class="tab" data-scope="SYSTEM">本系統</span>
+                        </span>
+                    </div>
+                    <div class="bd" id="noticeList"></div>
+                </div>
+
+                <div class="box">
+                    <div class="hd"><i class="bi bi-arrow-repeat"></i>CHANGELOG／更版資訊</div>
+                    <div class="bd" id="releaseList"></div>
+                </div>
+
+                <div class="box">
+                    <div class="hd"><i class="bi bi-info-circle"></i>SYSTEM／版本資訊</div>
+                    <div class="bd"><table class="t"><tbody id="sysRows"></tbody></table></div>
+                </div>
+
+                <div class="box">
+                    <div class="hd"><i class="bi bi-person-gear"></i>OWNER／維護者與聯絡方式</div>
+                    <div class="bd"><table class="t"><tbody id="maintRows"></tbody></table></div>
+                </div>
+            </div>
+        </div>
+
+        <p class="mt-4 mb-0 fw-bold small" id="footer">—</p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="../assets/js/data.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        jQuery(function ($) {
+            var I = LD.identity();
+            LD.applyEnv();
+            LD.fill({
+                '#org': I.org + '　' + I.orgSub, '#sysName': I.name, '#sysCode': I.code,
+                '#sysEnv': I.envText, '#sysVer': I.version,
+                '#short': I.short ? '（' + I.short + '）' : '', '#footer': I.footer
+            });
+            LD.startClock(function (t) { $('#clock').text(t.date + '　' + t.time); });
+
+            $('#sysRows').html(LD.tableRows(LD.systemRows()));
+            $('#maintRows').html(LD.tableRows(LD.maintainerRows(), true));
+            $('#clientRows').html(LD.tableRows(LD.clientItems().map(function (i) { return [i.label, i.value]; })));
+            $('#lastRows').html(LD.tableRows(LD.lastLoginRows()));
+            $('#releaseList').html(LD.releaseHtml());
+            $('#helpList').html(LD.helpHtml(function (h) {
+                return '<a class="help-item" href="' + LD.esc(h.href) + '">' + LD.esc(h.title) +
+                    '<small>' + LD.esc(h.desc) + '</small></a>';
+            }));
+
+            var ft = LD.failedLoginText();
+            if (ft) { $('#failBox').removeClass('d-none').text('！' + ft); }
+
+            function renderNotices(scope) {
+                $('#noticeList').html(LD.noticeHtml(scope, function (n) {
+                    return '<article class="note' + (n.pinned ? ' pin' : '') + '">' +
+                        '<span class="lbl lbl-' + LD.esc(n.level) + '">' + LD.esc(n.levelName) + '</span>' +
+                        '<span class="lbl">' + LD.esc(n.scopeName) + '</span>' +
+                        (n.pinned ? '<span class="lbl lbl-danger">置頂</span>' : '') +
+                        '<h3>' + LD.esc(n.title) + '</h3>' +
+                        '<p>' + LD.esc(n.content) + '</p>' +
+                        '<div class="meta">' + LD.esc(n.date) + ' / ' + LD.esc(n.publisher) + ' / ' + LD.esc(n.id) + '</div></article>';
+                }, '<p class="fw-bold mb-0">沒有符合條件的公告。</p>'));
+            }
+            renderNotices('ALL');
+            $('.tab').on('click', function () {
+                $('.tab').removeClass('active'); $(this).addClass('active');
+                renderNotices($(this).data('scope'));
+            });
+
+            LD.bindPasswordToggle('#password', '#tp', '#tpi');
+            LD.bindDemoLogin('#loginForm', '#account', '#password', function (m, t) {
+                $('#msg').removeClass('d-none alert-warning alert-info').addClass('alert-' + t).text(m);
+            });
+        });
+    </script>
+</body>
+
+</html>

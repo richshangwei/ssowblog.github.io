@@ -1,0 +1,131 @@
+{
+  "results": [
+    {
+      "id": "01-clinical-blue",
+      "name": "澄藍秩序",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "02-midnight-command",
+      "name": "午夜指揮所",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "03-paper-journal",
+      "name": "紙感院刊",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "04-garden-courtyard",
+      "name": "庭院綠境",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "05-cobalt-signal",
+      "name": "鈷藍信號",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "06-wisteria-journal",
+      "name": "紫藤雅緻",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "07-nordic-space",
+      "name": "北歐留白",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "08-urban-tiles",
+      "name": "都會磁磚",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "09-precision-blueprint",
+      "name": "精密藍圖",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    },
+    {
+      "id": "10-terracotta-light",
+      "name": "陶土日光",
+      "libraries": {
+        "jquery": "3.7.1",
+        "bootstrap": "5.3.3"
+      },
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "remoteRequests": [],
+  "checks": [
+    "Bootstrap 5.3.3 and jQuery 3.7.1 loaded locally",
+    "all required sections and unique IDs",
+    "system identity in title",
+    "announcement global/system filters",
+    "Bootstrap modals and Escape",
+    "required fields and password toggle",
+    "demo submission and password clearing",
+    "all help links",
+    "375/390/768/1024/1440 widths, 812x375 landscape",
+    "reduced motion",
+    "ten-card gallery"
+  ],
+  "finalLayoutChecks": {
+    "concepts": [
+      "01-clinical-blue",
+      "02-midnight-command",
+      "03-paper-journal",
+      "04-garden-courtyard",
+      "05-cobalt-signal",
+      "06-wisteria-journal",
+      "07-nordic-space",
+      "08-urban-tiles",
+      "09-precision-blueprint",
+      "10-terracotta-light"
+    ],
+    "widths": [
+      375,
+      768,
+      1024,
+      1440
+    ],
+    "landscape": "812x375",
+    "passed": true
+  }
+}

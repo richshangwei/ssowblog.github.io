@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P01 中央聚焦｜共用系統登入入口（原型）</title>
+    <link rel="stylesheet" href="../assets/libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/libs/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/portal-base.css" />
+    <style>
+        /* ===== P01 中央聚焦 Focus Column ====================================
+           版面結構：單欄置中，由上而下＝識別 → 重大公告 → 登入 → 狀態 → 公告 → 協助
+           登入區位置：畫面正中央偏上，第一屏就是登入
+           公告呈現：精簡單行清單（限 2 則）＋ 查看全部
+           導覽方式：無導覽，靠捲動與對話框
+           視覺語言：白底、細線、藍色主色，資訊量最低
+           ================================================================= */
+        :root { --pt-brand: #14496f; }
+
+        .p-top { background: #fff; border-bottom: 1px solid var(--pt-line); }
+        .p-top-inner { max-width: 1100px; margin: 0 auto; padding: .55rem 1rem; display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; font-size: .86rem; }
+        .p-top strong { font-weight: 800; }
+        .p-top .p-top-right { margin-left: auto; color: var(--pt-muted); }
+
+        .p-main { max-width: 620px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+        .p-card { background: #fff; border: 1px solid var(--pt-line); border-radius: .7rem; padding: 1.5rem; box-shadow: 0 10px 30px rgba(20, 73, 111, .07); }
+        .p-main .pt-identity { margin-bottom: 1.25rem; }
+        .p-main .pt-portal-name { font-size: 1.75rem; }
+
+        .p-sub { margin: 1.5rem 0 0; }
+        .p-sub .pt-block { background: #fff; border: 1px solid var(--pt-line); border-radius: .7rem; padding: 1rem 1.1rem; margin-bottom: 1rem; }
+
+        .p-foot { background: #fff; border-top: 1px solid var(--pt-line); }
+        .p-foot-inner { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+        @media (max-width: 575.98px) {
+            .p-main { padding: 1.25rem .9rem 2rem; }
+            .p-card { padding: 1.1rem; border-radius: .5rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="pt-skip" href="#ptForm">跳到登入表單</a>
+
+    <header class="p-top">
+        <div class="p-top-inner">
+            <strong>[組織名稱]</strong>
+            <span>共用系統登入入口</span>
+            <span class="p-top-right">款式 P01：中央聚焦（原型）</span>
+        </div>
+    </header>
+
+    <main class="p-main">
+        <div id="slotIdentity"></div>
+        <div id="slotAlerts"></div>
+
+        <section class="p-card" aria-label="登入">
+            <div id="slotLogin"></div>
+            <div id="slotResult"></div>
+        </section>
+
+        <div class="p-sub">
+            <div id="slotStatus"></div>
+            <div id="slotNotices"></div>
+            <div id="slotHelp"></div>
+            <div id="slotSystems"></div>
+        </div>
+    </main>
+
+    <footer class="p-foot">
+        <div class="p-foot-inner" id="slotFooter"></div>
+    </footer>
+
+    <script src="../assets/libs/jquery/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/portal-data.js"></script>
+    <script src="assets/portal-core.js"></script>
+    <script>
+        jQuery(function () {
+            Portal.mount({
+                slots: {
+                    identity: '#slotIdentity', alerts: '#slotAlerts', login: '#slotLogin', result: '#slotResult',
+                    status: '#slotStatus', notices: '#slotNotices', help: '#slotHelp',
+                    systems: '#slotSystems', footer: '#slotFooter'
+                },
+                variants: { status: 'chips', notices: 'compact', help: 'actions', systems: 'list' },
+                noticeLimit: 2
+            });
+        });
+    </script>
+</body>
+
+</html>

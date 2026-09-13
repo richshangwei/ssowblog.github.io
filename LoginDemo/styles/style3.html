@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>風格三：極簡中央 — 振興醫院登入</title>
+    <style>
+        /* ===== 風格三：Minimal 極簡中央卡片 ===== */
+        :root {
+            --ch-primary: #003366; --ch-primary-dark: #002244;
+            --ch-secondary: #C19A6B; --ch-secondary-dark: #a07a4d;
+            --ch-success: #558B2F; --ch-danger: #A31D1D; --ch-light: #F9F7F2;
+            --ch-font-sans: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+            --ch-font-serif: "Noto Serif TC", "Times New Roman", serif;
+            --tr: 0.3s ease;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body { font-family: var(--ch-font-sans); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; color: #2c2c2c; padding: 24px; }
+        /* 極簡：背景以細微頂部色帶呈現主題，主畫面維持米白 */
+        .bg-layer { position: fixed; inset: 0; z-index: -2; background: var(--ch-light); }
+        .bg-layer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 8px; background-image: linear-gradient(90deg, #003366, #00528a, #335c85); transition: background-image 0.9s ease; }
+        .bg-layer.theme-sun::before { background-image: linear-gradient(90deg, #4a2c1a, #003366); }
+        .bg-layer.theme-mon::before { background-image: linear-gradient(90deg, #002244, #00528a); }
+        .bg-layer.theme-tue::before { background-image: linear-gradient(90deg, #003a4d, #558B2F); }
+        .bg-layer.theme-wed::before { background-image: linear-gradient(90deg, #003366, #335c85); }
+        .bg-layer.theme-thu::before { background-image: linear-gradient(90deg, #1a2d3a, #00528a); }
+        .bg-layer.theme-fri::before { background-image: linear-gradient(90deg, #003366, #C19A6B); }
+        .bg-layer.theme-sat::before { background-image: linear-gradient(90deg, #2a3b1a, #003366); }
+        .bg-layer.theme-newyear::before { background-image: linear-gradient(90deg, #5a1010, #003366); }
+        .bg-layer.theme-lunar::before { background-image: linear-gradient(90deg, #8c1c13, #5a0b08); }
+        .bg-layer.theme-christmas::before { background-image: linear-gradient(90deg, #0c2e23, #558B2F); }
+        .bg-layer.theme-midautumn::before { background-image: linear-gradient(90deg, #1a2a3a, #335c85); }
+        .bg-layer.theme-anniversary::before { background-image: linear-gradient(90deg, #003366, #a07a4d); }
+        /* 端午：粽葉綠 → 暖陽 色帶 */
+        .bg-layer.theme-dragonboat::before { height: 8px; background-image: linear-gradient(90deg, #1f5c3d, #2e7d52, #c97f3a); }
+        /* 端午時，極簡背景加入淡粽葉色暈 */
+        body[data-festival="dragonboat"] .bg-pattern { background: radial-gradient(circle at 85% 12%, rgba(201,127,58,0.1), transparent 42%), radial-gradient(circle at 12% 88%, rgba(31,92,61,0.12), transparent 45%); }
+        /* 極淡背景紋理 */
+        .bg-pattern { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(circle at 85% 15%, rgba(193,154,107,0.07), transparent 40%), radial-gradient(circle at 12% 88%, rgba(0,51,102,0.05), transparent 42%); }
+        .card { width: min(420px, 100%); background: #fff; border-radius: 18px; padding: 46px 42px; box-shadow: 0 12px 40px rgba(0,51,102,0.1); border: 1px solid #efe9dd; animation: rise 0.6s ease; text-align: center; }
+        @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .brand-mark { width: 64px; height: 64px; margin: 0 auto 16px; display: grid; place-items: center; border-radius: 50%; background: var(--ch-light); border: 1px solid #ece5d6; overflow: hidden; }
+        .brand-logo-img { max-height: 48px; max-width: 56px; object-fit: contain; }
+        /* 節慶橫幅（極簡：置中藥丸） */
+        .festival-banner { display: inline-flex; align-items: center; gap: 8px; margin: 0 auto 18px; padding: 7px 16px; border-radius: 999px; background: var(--ch-light); border: 1px solid #ece5d6; }
+        .festival-banner .fb-icon { font-size: 1.05rem; }
+        .festival-banner .fb-label { font-family: var(--ch-font-serif); font-weight: 700; font-size: 0.9rem; color: var(--ch-primary); }
+        .festival-banner .fb-wish { font-size: 0.74rem; color: #999; }
+        .brand-eyebrow { font-size: 0.64rem; letter-spacing: 3px; color: var(--ch-secondary); font-weight: 600; }
+        .company-name { font-family: var(--ch-font-serif); font-size: 1.6rem; color: var(--ch-primary); letter-spacing: 3px; margin: 2px 0; }
+        .company-slogan { font-size: 0.8rem; color: #999; margin-bottom: 26px; }
+        .login-form { display: flex; flex-direction: column; gap: 16px; text-align: left; }
+        .field-label { font-size: 0.78rem; font-weight: 600; color: var(--ch-primary); margin-bottom: 6px; display: block; }
+        .field-input { position: relative; display: flex; align-items: center; }
+        .field-input input { width: 100%; padding: 12px 14px; border: none; border-bottom: 2px solid #e3dccb; border-radius: 0; font-size: 0.95rem; background: transparent; outline: none; transition: var(--tr); }
+        .field-input input:focus { border-bottom-color: var(--ch-secondary); }
+        .toggle-password { position: absolute; right: 4px; bottom: 8px; border: none; background: transparent; color: var(--ch-secondary-dark); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .field-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; }
+        .checkbox { display: flex; align-items: center; gap: 6px; cursor: pointer; color: #666; }
+        .checkbox input { accent-color: var(--ch-primary); }
+        .link-forgot { color: var(--ch-secondary-dark); text-decoration: none; }
+        .form-message { min-height: 16px; font-size: 0.8rem; color: var(--ch-danger); text-align: center; }
+        .form-message.success { color: var(--ch-success); }
+        .btn-login { margin-top: 4px; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(180deg, var(--ch-primary), var(--ch-primary-dark)); color: #fff; font-size: 1rem; letter-spacing: 6px; font-weight: 600; cursor: pointer; transition: var(--tr), transform 0.15s; }
+        .btn-login:hover { box-shadow: 0 10px 24px rgba(0,51,102,0.3); transform: translateY(-2px); }
+        .btn-login:disabled { opacity: 0.65; cursor: not-allowed; }
+        /* 公告：精簡橫向，僅顯示最新一則 + 日期 */
+        .announce-bar { margin-top: 24px; padding-top: 18px; border-top: 1px dashed #e3dccb; font-size: 0.78rem; color: #777; text-align: left; }
+        .announce-bar .ahd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .announce-bar .ahd b { color: var(--ch-primary); font-family: var(--ch-font-serif); font-size: 0.86rem; }
+        .announcement-list { list-style: none; max-height: 96px; overflow-y: auto; }
+        .announcement-list li { padding: 6px 0; line-height: 1.45; border-bottom: 1px dotted #efe9dd; }
+        .announcement-list li:last-child { border-bottom: none; }
+        .announcement-list .tag { display: inline-block; font-size: 0.62rem; padding: 1px 7px; border-radius: 999px; margin-right: 6px; background: #eee; color: #555; }
+        .announcement-list .tag.urgent { background: var(--ch-danger); color: #fff; }
+        .announcement-list .tag.event { background: var(--ch-secondary); color: #2c1a00; }
+        .login-foot { margin-top: 18px; font-size: 0.7rem; color: #b3aa97; }
+        #greeting { display: block; margin-top: 6px; color: #999; }
+        .back-link { position: fixed; top: 18px; left: 18px; z-index: 10; color: var(--ch-primary); background: #fff; border: 1px solid #e3dccb; padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: 0.82rem; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← 返回款式選擇</a>
+    <div id="bgLayer" class="bg-layer"></div>
+    <div class="bg-pattern"></div>
+    <main class="card">
+        <div class="brand-mark" id="brandLogo"><svg viewBox="0 0 56 56" width="34" height="34" fill="none"><path d="M28 13v30M13 28h30" stroke="#C19A6B" stroke-width="5" stroke-linecap="round" /></svg></div>
+        <div class="festival-banner" id="festivalBanner" style="display:none"></div>
+        <p class="brand-eyebrow">CHENG HSIN GENERAL HOSPITAL</p>
+        <h1 class="company-name">振興醫院</h1>
+        <p class="company-slogan">員工資訊整合入口</p>
+        <form id="loginForm" class="login-form" novalidate>
+            <div><label class="field-label" for="username">帳號</label><div class="field-input"><input type="text" id="username" name="username" placeholder="請輸入員工編號或帳號" required /></div></div>
+            <div><label class="field-label" for="password">密碼</label><div class="field-input"><input type="password" id="password" name="password" placeholder="請輸入密碼" required /><button type="button" class="toggle-password" id="togglePassword">顯示</button></div></div>
+            <div class="field-row"><label class="checkbox"><input type="checkbox" id="remember" /><span>記住我</span></label><a href="#" class="link-forgot">忘記密碼？</a></div>
+            <p class="form-message" id="formMessage" role="alert"></p>
+            <button type="submit" class="btn-login">登 入</button>
+        </form>
+        <div class="announce-bar">
+            <div class="ahd"><b>系統公告</b><span class="announcement-date" id="todayLabel"></span></div>
+            <ul class="announcement-list" id="announcementList"></ul>
+        </div>
+        <p class="login-foot">© <span id="year"></span> 振興醫院 Cheng Hsin General Hospital<span id="greeting"></span></p>
+    </main>
+    <script src="../shared/login-core.js"></script>
+</body>
+</html>

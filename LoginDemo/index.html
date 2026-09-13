@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>振興醫院 — 系統登入介面設計展示總覽大廳 (Master Demo Center)</title>
+    <!-- 本機離線函式庫 -->
+    <link rel="stylesheet" href="assets/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/libs/bootstrap-icons/bootstrap-icons.css">
+    <style>
+        :root {
+            --master-bg: #0b1120;
+            --master-card: #1e293b;
+            --master-border: rgba(255, 255, 255, 0.1);
+            --master-primary: #38bdf8;
+            --master-accent: #6366f1;
+        }
+        body {
+            background-color: var(--master-bg);
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hero-banner {
+            background: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #0b1120 75%);
+            padding: 3.5rem 0 2.5rem 0;
+            border-bottom: 1px solid var(--master-border);
+        }
+        .suite-highlight-card {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--master-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            height: 100%;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .suite-highlight-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+        .style-item-card {
+            background: #1e293b;
+            border: 1px solid var(--master-border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .style-item-card:hover {
+            transform: translateY(-4px);
+            border-color: #38bdf8;
+        }
+        .style-item-thumb {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .nav-pills-custom .nav-link {
+            color: #94a3b8;
+            font-weight: 600;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            margin-right: 0.5rem;
+        }
+        .nav-pills-custom .nav-link.active {
+            background-color: #38bdf8;
+            color: #0b1120;
+        }
+        /* Iframe Modal Preview */
+        .preview-modal-dialog {
+            max-width: 95vw;
+            margin: 1.5rem auto;
+        }
+        .preview-modal-content {
+            background-color: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .preview-toolbar {
+            background-color: #1e293b;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--master-border);
+        }
+        .preview-iframe-wrapper {
+            flex: 1;
+            background-color: #334155;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            overflow: hidden;
+        }
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+        .badge-agy {
+            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+            color: #ffffff;
+        }
+        .badge-cc {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: #ffffff;
+        }
+        .badge-code {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Hero Banner -->
+    <header class="hero-banner">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary px-3 py-2 fs-6">CHGH</span>
+                    <span class="text-white-50 small">振興醫療財團法人振興醫院 ｜ 資訊室官方展示門戶</span>
+                </div>
+                <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1">
+                    <i class="bi bi-hdd-network me-1"></i>離線自給自足 · 40+ 款原型一站即點即看
+                </span>
+            </div>
+
+            <h1 class="display-6 fw-bold text-white mb-2">
+                全院系統登入介面設計 · 旗艦展示總覽大廳
+            </h1>
+            <p class="lead text-light text-opacity-75 max-w-700 fs-6 mb-4">
+                將三大獨立研發之登入展示專案（<b>LoginDemoAgy</b>、<b>LoginDemoCC</b>、<b>LoginDemoCode</b>）全數整合於單一頁面。<br>
+                支援<b>直接開啟跳轉</b>或<b>內建多裝置視窗即時預覽</b>，一站式檢視與決策。
+            </p>
+
+            <!-- 數據統計條 -->
+            <div class="row g-3 text-center max-w-700">
+                <div class="col-4">
+                    <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                        <div class="fs-4 fw-bold text-info">3 大</div>
+                        <div class="small text-white-50">專案旗艦系列</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                        <div class="fs-4 fw-bold text-warning">40+ 款</div>
+                        <div class="small text-white-50">全方位風格原型</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                        <div class="fs-4 fw-bold text-success">100%</div>
+                        <div class="small text-white-50">本機離線可操作</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 三大專案系列旗艦導引卡 (Top 3 Suites) -->
+    <section class="container my-5">
+        <h4 class="fw-bold text-white mb-3"><i class="bi bi-collection-fill text-info me-2"></i>三大 DEMO 專案系列導航</h4>
+        
+        <div class="row g-4">
+            
+            <!-- 系列一：LoginDemoAgy -->
+            <div class="col-lg-4">
+                <div class="suite-highlight-card">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge badge-agy px-2 py-1 fs-6">LoginDemoAgy</span>
+                        <span class="badge bg-warning text-dark fw-bold">資訊室主任推薦</span>
+                    </div>
+                    <h5 class="fw-bold text-white mt-1">多系統共用入口 · 10 款架構原型</h5>
+                    <p class="small text-white-50 flex-grow-1">
+                        專為大型醫療組織設計的多業務系統共用登入門戶。全系列配備<b>「展示情境切換條」</b>（正常/重大異常/驗證失敗/服務逾時）與雙入口情境（直接開啟 vs 特定系統導向），嚴格落實替代作法與免登入報修通道。
+                    </p>
+                    <div class="p-2 bg-black bg-opacity-30 rounded border border-white border-opacity-10 small mb-3 text-secondary">
+                        <i class="bi bi-check2-circle text-info me-1"></i>10 款實質結構差異版型<br>
+                        <i class="bi bi-check2-circle text-info me-1"></i>解決「不知開哪套系統」稽核痛點
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-info btn-sm flex-fill" onclick="openPreviewModal('LoginDemoAgy/index.html', 'LoginDemoAgy — 總覽評估大廳')">
+                            <i class="bi bi-eye me-1"></i>即時預覽
+                        </button>
+                        <a href="LoginDemoAgy/index.html" class="btn btn-info btn-sm flex-fill fw-bold text-dark" target="_blank">
+                            新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系列二：LoginDemoCC -->
+            <div class="col-lg-4">
+                <div class="suite-highlight-card">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge badge-cc px-2 py-1 fs-6">LoginDemoCC</span>
+                        <span class="badge bg-success text-white">醫院員工入口 ESS</span>
+                    </div>
+                    <h5 class="fw-bold text-white mt-1">差勤簽核主系統與雙組專題</h5>
+                    <p class="small text-white-50 flex-grow-1">
+                        以人事差勤與員工自主服務 (ESS) 為核心。包含經典雙欄 4 頁籤主系統，以及兩套專題展示：<b>portal/</b> (10款醫院入口) 與 <b>designs/</b> (10款視覺概念比較)。
+                    </p>
+                    <div class="p-2 bg-black bg-opacity-30 rounded border border-white border-opacity-10 small mb-3 text-secondary">
+                        <i class="bi bi-check2-circle text-success me-1"></i>雙欄 4 頁籤主版 (index.html)<br>
+                        <i class="bi bi-check2-circle text-success me-1"></i>portal/ 與 designs/ 雙主題專區
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-success btn-sm flex-fill" onclick="openPreviewModal('LoginDemoCC/index.html', 'LoginDemoCC — 醫院員工入口主版')">
+                            <i class="bi bi-eye me-1"></i>即時預覽
+                        </button>
+                        <a href="LoginDemoCC/index.html" class="btn btn-success btn-sm flex-fill fw-bold text-white" target="_blank">
+                            新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系列三：LoginDemoCode -->
+            <div class="col-lg-4">
+                <div class="suite-highlight-card">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge badge-code px-2 py-1 fs-6">LoginDemoCode</span>
+                        <span class="badge bg-light text-dark">設計決策典藏</span>
+                    </div>
+                    <h5 class="fw-bold text-white mt-1">色彩排版探索與決策中心</h5>
+                    <p class="small text-white-50 flex-grow-1">
+                        深度視覺語言探索與選型決策中心。內建 10 款 Portal 服務台系列、10 款視覺探索系列、4 款深度人文刊物設計，並附有完整的決策指引報告 (decision.html)。
+                    </p>
+                    <div class="p-2 bg-black bg-opacity-30 rounded border border-white border-opacity-10 small mb-3 text-secondary">
+                        <i class="bi bi-check2-circle text-purple me-1"></i>決策手冊 (decision.html)<br>
+                        <i class="bi bi-check2-circle text-purple me-1"></i>24+ 款深度色彩與字型版型
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-light btn-sm flex-fill" onclick="openPreviewModal('LoginDemoCode/decision.html', 'LoginDemoCode — 決策總覽')">
+                            <i class="bi bi-eye me-1"></i>即時預覽
+                        </button>
+                        <a href="LoginDemoCode/index.html" class="btn btn-light btn-sm flex-fill fw-bold text-dark" target="_blank">
+                            新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 方案全覽切換與搜尋過濾 (All Demos Filterable Grid) -->
+    <section class="container my-5" id="all-demos">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h4 class="fw-bold text-white mb-1"><i class="bi bi-grid-3x3-gap-fill text-info me-2"></i>全站版型快速點選展示廳</h4>
+                <div class="text-white-50 small">點選下方標籤切換專案分類，或於右側搜尋風格名稱</div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <!-- 篩選標籤 -->
+                <div class="btn-group btn-group-sm" role="group" id="filterGroup">
+                    <button type="button" class="btn btn-info active" data-filter="all">全部 (All)</button>
+                    <button type="button" class="btn btn-outline-info" data-filter="agy">LoginDemoAgy (10款)</button>
+                    <button type="button" class="btn btn-outline-info" data-filter="cc">LoginDemoCC (3入口)</button>
+                    <button type="button" class="btn btn-outline-info" data-filter="code">LoginDemoCode (3專題)</button>
+                </div>
+
+                <!-- 搜尋框 -->
+                <div class="input-group input-group-sm" style="width: 200px;">
+                    <span class="input-group-text bg-dark border-secondary text-white-50"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control bg-dark border-secondary text-white" id="searchInput" placeholder="搜尋風格...">
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3" id="demoGrid">
+            
+            <!-- ====== LoginDemoAgy 10 款 ====== -->
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="01 雙欄標準管理型 醫療湛藍旗艦">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #073b66 0%, #0077b6 100%);">
+                        <div class="text-white text-center"><i class="bi bi-layout-split me-1"></i>Agy-01 雙欄標準</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 01</span>
+                            <small class="text-warning fw-bold">推薦 No.1</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">雙欄標準管理型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">左登入右頁籤，資訊架構最平衡。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/01-medical-flagship/index.html', 'Agy-01: 雙欄標準管理型')">預覽</button>
+                            <a href="LoginDemoAgy/01-medical-flagship/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="02 戰情運維導向型 深色戰情指揮">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #030712 0%, #0b1120 100%); border-bottom: 2px solid #06b6d4;">
+                        <div class="text-info text-center"><i class="bi bi-terminal-fill me-1"></i>Agy-02 戰情運維</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 02</span>
+                            <small class="text-info">運維儀表</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">戰情運維導向型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">主視覺 6 大系統狀態矩陣與運維條。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/02-cyber-console/index.html', 'Agy-02: 戰情運維導向型')">預覽</button>
+                            <a href="LoginDemoAgy/02-cyber-console/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="03 置中專注抽屜型 極簡毛玻璃">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);">
+                        <div class="text-white text-center"><i class="bi bi-layers-half me-1"></i>Agy-03 置中抽屜</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 03</span>
+                            <small class="text-light">毛玻璃</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">置中專注抽屜型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">中心浮動卡，狀態收納於側邊抽屜。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/03-modern-glass/index.html', 'Agy-03: 置中專注抽屜型')">預覽</button>
+                            <a href="LoginDemoAgy/03-modern-glass/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="04 瑞士高對比網格型 無障礙大字">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: #ffe600; color: #111111;">
+                        <div class="text-center fw-bold"><i class="bi bi-grid-3x3 me-1"></i>Agy-04 瑞士網格</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 04</span>
+                            <small class="text-warning">投影稽核</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">瑞士高對比網格型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">3 等欄純黑線框，超大文字高對比。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/04-swiss-grid/index.html', 'Agy-04: 瑞士高對比排版型')">預覽</button>
+                            <a href="LoginDemoAgy/04-swiss-grid/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="05 人文刊物長文型 替代作法指南">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #fbf9f5 0%, #e8e2d8 100%); color: #78350f;">
+                        <div class="text-center"><i class="bi bi-journal-bookmark me-1"></i>Agy-05 人文刊物</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 05</span>
+                            <small class="text-warning">長文指南</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">人文刊物長文型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">刊物長篇詳述衛材三聯單替代作法。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/05-warm-editorial/index.html', 'Agy-05: 人文刊物長文型')">預覽</button>
+                            <a href="LoginDemoAgy/05-warm-editorial/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="06 橫向步驟卡片流型 流程引導">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
+                        <div class="text-white text-center"><i class="bi bi-arrow-right-circle me-1"></i>Agy-06 步驟卡流</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 06</span>
+                            <small class="text-success">1-2-3 步驟</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">橫向步驟卡片流型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">橫向 3 聯卡 (看狀態->登入->求助)。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/06-eco-forest/index.html', 'Agy-06: 橫向步驟卡片流型')">預覽</button>
+                            <a href="LoginDemoAgy/06-eco-forest/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="07 側邊工作站導航型 臨床工作站">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
+                        <div class="text-white text-center"><i class="bi bi-layout-sidebar-inset me-1"></i>Agy-07 側邊導航</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 07</span>
+                            <small class="text-warning fw-bold">推薦 No.2</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">側邊工作站導航型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">290px 左欄常駐狀態與 5888 專線。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/07-bulletin-priority/index.html', 'Agy-07: 側邊工作站導航型')">預覽</button>
+                            <a href="LoginDemoAgy/07-bulletin-priority/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="08 現代模組浮動卡型 現代SaaS">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);">
+                        <div class="text-white text-center"><i class="bi bi-bounding-box-circles me-1"></i>Agy-08 模組浮卡</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 08</span>
+                            <small class="text-light">現代網格</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">現代模組浮動卡型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">4 塊自適應卡片，獨立呈現告警與求助。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/08-nordic-gradient/index.html', 'Agy-08: 現代模組浮動卡型')">預覽</button>
+                            <a href="LoginDemoAgy/08-nordic-gradient/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="09 流程防呆藍圖型 CAD藍圖">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: #0a2540; border-bottom: 2px dashed #00b4d8; color: #00b4d8;">
+                        <div class="text-center font-monospace"><i class="bi bi-diagram-3-fill me-1"></i>Agy-09 工程藍圖</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 09</span>
+                            <small class="text-info">資安稽核</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">流程防呆藍圖型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">工程圖框與點矩陣底圖，標記整合拓撲。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/09-technical-blueprint/index.html', 'Agy-09: 流程防呆藍圖型')">預覽</button>
+                            <a href="LoginDemoAgy/09-technical-blueprint/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="10 全齡友善觸控型 護理推車 櫃檯">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: #002855; border-bottom: 4px solid #ffb703; color: #ffb703;">
+                        <div class="text-center fw-bold"><i class="bi bi-hand-index-thumb-fill me-1"></i>Agy-10 友善觸控</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-agy">Agy 10</span>
+                            <small class="text-warning fw-bold">推薦 No.3</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">全齡友善觸控型</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">60px 超大輸入框與按鈕，防窺醒目防呆。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/10-accessible-touch/index.html', 'Agy-10: 全齡友善觸控型')">預覽</button>
+                            <a href="LoginDemoAgy/10-accessible-touch/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== LoginDemoCC 三大入口 ====== -->
+            <div class="col-md-6 col-lg-4 demo-card" data-category="cc" data-title="LoginDemoCC 主系統雙欄 員工差勤 ESS">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #065f46 0%, #047857 100%);">
+                        <div class="text-white text-center"><i class="bi bi-hospital me-1"></i>CC 主系統雙欄</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-cc">LoginDemoCC</span>
+                            <small class="text-success">主系統</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">員工差勤入口 (ESS 主版)</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">雙欄排版、4 分頁（公告/更版/系統/端點檢驗）與多系統防呆列。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-success flex-fill" onclick="openPreviewModal('LoginDemoCC/index.html', 'LoginDemoCC: 員工差勤入口主版')">預覽</button>
+                            <a href="LoginDemoCC/index.html" target="_blank" class="btn btn-sm btn-success flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 demo-card" data-category="cc" data-title="LoginDemoCC portal 10款醫院入口專案">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);">
+                        <div class="text-white text-center"><i class="bi bi-grid me-1"></i>CC Portal 專題</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-cc">LoginDemoCC</span>
+                            <small class="text-light">10 款方案</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">CC Portal 10 款專題大廳</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">包含 Focus、Split、Status Banner、Kiosk 等 10 款入口。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-success flex-fill" onclick="openPreviewModal('LoginDemoCC/portal/index.html', 'LoginDemoCC: Portal 10款專題')">預覽</button>
+                            <a href="LoginDemoCC/portal/index.html" target="_blank" class="btn btn-sm btn-success flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 demo-card" data-category="cc" data-title="LoginDemoCC designs 10款視覺概念比較">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #047857 0%, #064e3b 100%);">
+                        <div class="text-white text-center"><i class="bi bi-palette me-1"></i>CC Designs 概念</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-cc">LoginDemoCC</span>
+                            <small class="text-light">10 款概念</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">CC Designs 視覺概念比較廳</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">包含 Split Diagonal、Metro Tiles、Terminal、Glass 等概念版型。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-success flex-fill" onclick="openPreviewModal('LoginDemoCC/designs/index.html', 'LoginDemoCC: Designs 視覺概念比較')">預覽</button>
+                            <a href="LoginDemoCC/designs/index.html" target="_blank" class="btn btn-sm btn-success flex-fill">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== LoginDemoCode 三大入口 ====== -->
+            <div class="col-md-6 col-lg-4 demo-card" data-category="code" data-title="LoginDemoCode decision 決策指南與總覽">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);">
+                        <div class="text-white text-center"><i class="bi bi-award me-1"></i>Code 決策中心</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-code">LoginDemoCode</span>
+                            <small class="text-warning">決策指引</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">設計選型決策總覽 (decision.html)</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">全方位評估報告、情境矩陣與推薦選型指引。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-light flex-fill" onclick="openPreviewModal('LoginDemoCode/decision.html', 'LoginDemoCode: 決策總覽 (decision.html)')">預覽</button>
+                            <a href="LoginDemoCode/decision.html" target="_blank" class="btn btn-sm btn-light flex-fill text-dark">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 demo-card" data-category="code" data-title="LoginDemoCode index 畫廊總覽 24款版型">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);">
+                        <div class="text-white text-center"><i class="bi bi-images me-1"></i>Code 畫廊總覽</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-code">LoginDemoCode</span>
+                            <small class="text-light">畫廊索引</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">設計典藏畫廊 (index.html)</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">涵蓋 10 款 Portal、10 款視覺探索與 4 款人文版型之總入口。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-light flex-fill" onclick="openPreviewModal('LoginDemoCode/index.html', 'LoginDemoCode: 畫廊總覽')">預覽</button>
+                            <a href="LoginDemoCode/index.html" target="_blank" class="btn btn-sm btn-light flex-fill text-dark">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 demo-card" data-category="code" data-title="LoginDemoCode prior designs 10款經典視覺">
+                <div class="style-item-card">
+                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);">
+                        <div class="text-white text-center"><i class="bi bi-palette2 me-1"></i>Code 經典視覺</div>
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-code">LoginDemoCode</span>
+                            <small class="text-light">10 款視覺</small>
+                        </div>
+                        <h6 class="fw-bold text-white mb-1">10 款經典視覺展覽 (prior-designs.html)</h6>
+                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">Clinical Blue、Midnight Command、Paper Journal 等經典款。</p>
+                        <div class="d-flex gap-1 mt-2">
+                            <button class="btn btn-sm btn-outline-light flex-fill" onclick="openPreviewModal('LoginDemoCode/prior-designs.html', 'LoginDemoCode: 經典視覺展覽')">預覽</button>
+                            <a href="LoginDemoCode/prior-designs.html" target="_blank" class="btn btn-sm btn-light flex-fill text-dark">開啟 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 即時預覽互動 Modal (Live View with Device Switcher) -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog preview-modal-dialog">
+            <div class="preview-modal-content">
+                
+                <!-- 預覽工具列 -->
+                <div class="preview-toolbar">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary">即時檢視</span>
+                        <h6 class="modal-title fw-bold text-white mb-0 text-truncate" id="previewModalLabel" style="max-width:350px;">頁面預覽</h6>
+                    </div>
+
+                    <!-- 裝置視窗切換 -->
+                    <div class="btn-group btn-group-sm" role="group" aria-label="裝置寬度切換">
+                        <button type="button" class="btn btn-dark active" onclick="setIframeWidth('100%', this)" title="桌機寬度 (100%)">
+                            <i class="bi bi-display me-1"></i>桌機
+                        </button>
+                        <button type="button" class="btn btn-dark" onclick="setIframeWidth('768px', this)" title="平板寬度 (768px)">
+                            <i class="bi bi-tablet me-1"></i>平板
+                        </button>
+                        <button type="button" class="btn btn-dark" onclick="setIframeWidth('375px', this)" title="手機寬度 (375px)">
+                            <i class="bi bi-phone me-1"></i>手機
+                        </button>
+                    </div>
+
+                    <!-- 動作按鈕 -->
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-outline-light btn-sm py-1" onclick="reloadIframe()" title="重新整理">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                        <a href="#" id="openNewTabBtn" target="_blank" class="btn btn-outline-info btn-sm py-1">
+                            <i class="bi bi-box-arrow-up-right me-1"></i>新分頁開啟
+                        </a>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <!-- Iframe 視窗區域 -->
+                <div class="preview-iframe-wrapper">
+                    <iframe id="previewIframe" class="preview-iframe" src="about:blank"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="text-center py-4 text-white-50 small border-top border-secondary border-opacity-25 mt-5">
+        <div class="container">
+            <div>振興醫療財團法人振興醫院 Cheng Hsin General Hospital · 登入介面設計大廳</div>
+            <div class="mt-1">
+                整合索引：LoginDemoAgy (10款) ｜ LoginDemoCC (主版+雙專區) ｜ LoginDemoCode (決策+畫廊)
+            </div>
+        </div>
+    </footer>
+
+    <!-- 函式庫與控制邏輯 -->
+    <script src="assets/libs/jquery/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var previewModal = null;
+        $(function () {
+            previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+
+            // 1. 分類標籤篩選
+            $('#filterGroup button').on('click', function () {
+                var filter = $(this).data('filter');
+                $('#filterGroup button').removeClass('active btn-info').addClass('btn-outline-info');
+                $(this).addClass('active btn-info').removeClass('btn-outline-info');
+
+                if (filter === 'all') {
+                    $('.demo-card').show();
+                } else {
+                    $('.demo-card').hide();
+                    $('.demo-card[data-category="' + filter + '"]').fadeIn(200);
+                }
+            });
+
+            // 2. 關鍵字即時搜尋
+            $('#searchInput').on('input', function () {
+                var q = $.trim($(this).val()).toLowerCase();
+                if (!q) {
+                    $('#filterGroup button.active').trigger('click');
+                    return;
+                }
+                $('.demo-card').each(function () {
+                    var title = ($(this).data('title') || '').toLowerCase();
+                    if (title.indexOf(q) !== -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+
+        // 開啟 Modal 即時預覽
+        function openPreviewModal(url, title) {
+            $('#previewModalLabel').text(title);
+            $('#openNewTabBtn').attr('href', url);
+            $('#previewIframe').attr('src', url);
+            // 重設寬度為 100%
+            setIframeWidth('100%', $('.preview-toolbar .btn-group button:first-child')[0]);
+            previewModal.show();
+        }
+
+        // 切換 Iframe 寬度 (桌機/平板/手機)
+        function setIframeWidth(width, btn) {
+            $('#previewIframe').css('width', width);
+            $('.preview-toolbar .btn-group button').removeClass('active text-info');
+            if (btn) $(btn).addClass('active text-info');
+        }
+
+        // 重新載入 Iframe
+        function reloadIframe() {
+            var src = $('#previewIframe').attr('src');
+            $('#previewIframe').attr('src', src);
+        }
+
+        // Modal 關閉時卸載 Iframe 節省資源
+        document.getElementById('previewModal').addEventListener('hidden.bs.modal', function () {
+            $('#previewIframe').attr('src', 'about:blank');
+        });
+    </script>
+</body>
+</html>

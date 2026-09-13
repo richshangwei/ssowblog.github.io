@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>款式 05｜報紙排版</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap/bootstrap.min.css';" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          onerror="this.onerror=null;this.href='../assets/libs/bootstrap-icons/bootstrap-icons.css';" />
+    <style>
+        /* ===== 款式 05：報紙排版 Newspaper ==================================
+           襯線字、報頭、細分隔線、多欄文字。公告像頭版新聞一樣被「讀」而非「掃」。
+           系統名稱就是報頭，代碼與環境印在報眉，稽核時像看報紙抬頭一樣清楚。
+           ================================================================= */
+        :root {
+            --ink: #14120f; --muted: #6a6259; --line: #cfc7ba; --paper: #f7f4ee; --red: #8c1c13;
+            --serif: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, "Times New Roman", serif;
+        }
+        body {
+            margin: 0; background: var(--paper); color: var(--ink);
+            font-family: var(--serif); line-height: 1.7;
+        }
+        a { color: var(--red); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .sheet { max-width: 1180px; margin: 0 auto; background: var(--paper); padding: 1.5rem 1.25rem 3rem; }
+
+        /* 報眉 */
+        .masthead-top {
+            display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem;
+            font-size: .8rem; letter-spacing: .08em; color: var(--muted);
+            border-bottom: 1px solid var(--line); padding-bottom: .4rem;
+        }
+        .masthead {
+            text-align: center; border-bottom: 4px double var(--ink); padding: 1rem 0 .8rem; margin-bottom: .4rem;
+        }
+        .masthead .org { font-size: .9rem; letter-spacing: .5em; color: var(--muted); }
+        .masthead h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 900; letter-spacing: .04em; margin: .2rem 0; }
+        .masthead .sub { font-size: .92rem; color: var(--muted); }
+        .rule-row {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem;
+            font-size: .84rem; letter-spacing: .1em; border-bottom: 1px solid var(--ink);
+            padding-bottom: .4rem; margin-bottom: 1.25rem;
+        }
+        .rule-row .code { font-family: Consolas, monospace; }
+        .rule-row .env { font-weight: 800; color: var(--red); }
+
+        h2.sec {
+            font-size: 1rem; font-weight: 900; letter-spacing: .22em; text-transform: uppercase;
+            border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line);
+            padding: .3rem 0; margin: 0 0 .8rem;
+        }
+
+        /* 登入欄（像報紙的方塊廣告） */
+        .adbox { border: 3px double var(--ink); padding: 1.1rem; background: #fffdf8; }
+        .adbox h3 { font-size: 1.15rem; font-weight: 900; letter-spacing: .1em; text-align: center; margin: 0 0 .8rem; }
+        .form-control {
+            border: 1px solid var(--ink); border-radius: 0; background: #fff;
+            font-family: var(--serif); padding: .6rem .7rem;
+        }
+        .form-control:focus { border-color: var(--red); box-shadow: 0 0 0 .15rem rgba(140,28,19,.15); }
+        .form-label { font-size: .85rem; letter-spacing: .1em; color: var(--muted); }
+        .input-group-text { border: 1px solid var(--ink); border-radius: 0; background: #f1ece2; cursor: pointer; }
+        .btn-news {
+            width: 100%; border: none; border-radius: 0; background: var(--ink); color: var(--paper);
+            font-family: var(--serif); font-weight: 800; letter-spacing: .2em; padding: .65rem;
+        }
+        .btn-news:hover { background: var(--red); color: #fff; }
+
+        /* 頭條 */
+        .lead { border-bottom: 1px solid var(--line); padding-bottom: .9rem; margin-bottom: .9rem; }
+        .lead .kicker { font-size: .8rem; letter-spacing: .18em; color: var(--red); font-weight: 800; }
+        .lead h3 { font-size: 1.5rem; font-weight: 900; line-height: 1.35; margin: .2rem 0 .4rem; }
+        .lead p { margin: 0 0 .35rem; }
+        .byline { font-size: .8rem; color: var(--muted); font-style: italic; }
+
+        .story { break-inside: avoid; border-bottom: 1px solid var(--line); padding-bottom: .7rem; margin-bottom: .7rem; }
+        .story h4 { font-size: 1.05rem; font-weight: 800; margin: .15rem 0 .3rem; }
+        .story p { font-size: .92rem; margin: 0 0 .3rem; }
+        .cols { column-count: 2; column-gap: 1.6rem; column-rule: 1px solid var(--line); }
+
+        .tag { font-size: .75rem; letter-spacing: .12em; border: 1px solid var(--ink); padding: 0 .35rem; }
+        .tag-red { background: var(--red); color: #fff; border-color: var(--red); }
+
+        table.t { width: 100%; border-collapse: collapse; font-size: .9rem; }
+        table.t th, table.t td { border-bottom: 1px solid var(--line); padding: .35rem .2rem; vertical-align: top; }
+        table.t th { text-align: left; color: var(--muted); font-weight: 500; width: 40%; white-space: nowrap; }
+        table.t td { word-break: break-word; }
+
+        .rel-block { border-bottom: 1px solid var(--line); padding-bottom: .6rem; margin-bottom: .6rem; break-inside: avoid; }
+        .rel-head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; }
+        .rel-ver { font-weight: 900; font-size: 1.05rem; }
+        .rel-now { background: var(--ink); color: var(--paper); font-size: .72rem; padding: 0 .35rem; letter-spacing: .1em; }
+        .rel-date, .rel-sum { font-size: .84rem; color: var(--muted); }
+        .rel-list { list-style: none; margin: .3rem 0 0; padding: 0; }
+        .rel-item { display: flex; gap: .5rem; font-size: .9rem; padding: .12rem 0; }
+        .rel-tag { font-size: .74rem; letter-spacing: .08em; border: 1px solid var(--line); padding: 0 .3rem; white-space: nowrap; height: 1.4rem; }
+
+        .help-item { display: block; border-bottom: 1px dotted var(--line); padding: .4rem 0; color: var(--ink); }
+        .help-item small { display: block; color: var(--muted); font-size: .84rem; }
+
+        .colophon { border-top: 2px solid var(--ink); margin-top: 1.5rem; padding-top: .6rem; font-size: .82rem; color: var(--muted); text-align: center; letter-spacing: .06em; }
+
+        @media (max-width: 767.98px) {
+            .cols { column-count: 1; }
+            .masthead h1 { letter-spacing: .02em; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sheet">
+
+        <!-- 報眉 -->
+        <div class="masthead-top">
+            <span id="org">—</span>
+            <span id="clock">—</span>
+        </div>
+
+        <header class="masthead">
+            <div class="org" id="orgSub">—</div>
+            <h1 id="sysName">—</h1>
+            <div class="sub" id="tagline">—</div>
+        </header>
+
+        <div class="rule-row">
+            <span>系統代碼 <span class="code" id="sysCode">—</span></span>
+            <span class="env" id="sysEnv">—</span>
+            <span>版本 <span id="ver">—</span></span>
+            <span id="urlLine">—</span>
+        </div>
+
+        <div class="row g-4">
+            <!-- 左：登入與資訊欄 -->
+            <div class="col-12 col-lg-4">
+                <div class="adbox mb-4">
+                    <h3>員 工 登 入</h3>
+                    <form id="loginForm" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="account">帳號（員工編號）</label>
+                            <input type="text" class="form-control" id="account" placeholder="例如：A12345" autocomplete="username" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">密碼</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password" placeholder="請輸入密碼" autocomplete="current-password" />
+                                <span class="input-group-text" id="tp" role="button" tabindex="0" aria-label="顯示密碼"><i class="bi bi-eye" id="tpi"></i></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3 small">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rm" />
+                                <label class="form-check-label" for="rm">記住此電腦</label>
+                            </div>
+                            <div><a href="#">忘記密碼</a>　<a href="#">變更密碼</a></div>
+                        </div>
+                        <div id="msg" class="alert py-2 px-3 small d-none" style="border-radius:0"></div>
+                        <button class="btn-news" type="submit">登　入 <span id="short"></span></button>
+                    </form>
+                </div>
+
+                <h2 class="sec">本機與最後登入</h2>
+                <table class="t mb-3"><tbody id="clientRows"></tbody></table>
+                <table class="t"><tbody id="lastRows"></tbody></table>
+                <p class="small mt-2 d-none" id="failBox" style="color:var(--red)"></p>
+
+                <h2 class="sec mt-4">教學與說明</h2>
+                <div id="helpList"></div>
+            </div>
+
+            <!-- 右：公告版面 -->
+            <div class="col-12 col-lg-8">
+                <h2 class="sec d-flex flex-wrap align-items-center gap-2">
+                    <span>公告</span>
+                    <span class="ms-auto d-flex gap-1" style="letter-spacing:normal;text-transform:none;font-weight:400">
+                        <button class="tag tag-red" data-scope="ALL">全部</button>
+                        <button class="tag" data-scope="GLOBAL">全系統</button>
+                        <button class="tag" data-scope="SYSTEM">本系統</button>
+                    </span>
+                </h2>
+
+                <div id="leadStory"></div>
+                <div class="cols" id="stories"></div>
+
+                <h2 class="sec mt-4">更版資訊</h2>
+                <div id="releaseList"></div>
+
+                <div class="row g-4 mt-1">
+                    <div class="col-12 col-md-6">
+                        <h2 class="sec">版本資訊</h2>
+                        <table class="t"><tbody id="sysRows"></tbody></table>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <h2 class="sec">維護者與聯絡方式</h2>
+                        <table class="t"><tbody id="maintRows"></tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="colophon" id="footer">—</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../assets/libs/jquery/jquery.min.js"><\/script>');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="../assets/libs/bootstrap/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="../assets/js/data.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        jQuery(function ($) {
+            var I = LD.identity();
+            LD.applyEnv();
+            LD.fill({
+                '#org': I.org, '#orgSub': I.orgSub, '#sysName': I.name, '#tagline': I.tagline,
+                '#sysCode': I.code, '#sysEnv': I.envText, '#ver': I.version, '#urlLine': I.url,
+                '#short': I.short ? '（' + I.short + '）' : '', '#footer': I.footer
+            });
+            LD.startClock(function (t) { $('#clock').text(t.date + '　' + t.time); });
+
+            $('#sysRows').html(LD.tableRows(LD.systemRows()));
+            $('#maintRows').html(LD.tableRows(LD.maintainerRows(), true));
+            $('#clientRows').html(LD.tableRows(LD.clientItems().map(function (i) { return [i.label, i.value]; })));
+            $('#lastRows').html(LD.tableRows(LD.lastLoginRows()));
+            $('#releaseList').html(LD.releaseHtml({ tagCls: function () { return 'rel-tag'; } }));
+            $('#helpList').html(LD.helpHtml(function (h) {
+                return '<a class="help-item" href="' + LD.esc(h.href) + '"><strong>' + LD.esc(h.title) +
+                    '</strong><small>' + LD.esc(h.desc) + '</small></a>';
+            }));
+
+            var ft = LD.failedLoginText();
+            if (ft) { $('#failBox').removeClass('d-none').text('※ ' + ft); }
+
+            function renderNotices(scope) {
+                var list = LD.notices(scope);
+                if (!list.length) {
+                    $('#leadStory').html('<p>目前沒有符合條件的公告。</p>');
+                    $('#stories').empty();
+                    return;
+                }
+                var lead = list[0], rest = list.slice(1);
+                $('#leadStory').html(
+                    '<article class="lead"><div class="kicker">' + LD.esc(lead.levelName) + '　|　' +
+                    LD.esc(lead.scopeName) + (lead.pinned ? '　|　置頂' : '') + '</div>' +
+                    '<h3>' + LD.esc(lead.title) + '</h3>' +
+                    '<p>' + LD.esc(lead.content) + '</p>' +
+                    '<div class="byline">' + LD.esc(lead.publisher) + '　' + LD.esc(lead.date) + '　編號 ' + LD.esc(lead.id) + '</div></article>'
+                );
+                $('#stories').html(rest.map(function (n) {
+                    return '<article class="story">' +
+                        '<span class="tag">' + LD.esc(n.levelName) + '</span> <span class="tag">' + LD.esc(n.scopeName) + '</span>' +
+                        '<h4>' + LD.esc(n.title) + '</h4>' +
+                        '<p>' + LD.esc(n.content) + '</p>' +
+                        '<div class="byline">' + LD.esc(n.publisher) + '　' + LD.esc(n.date) + '　' + LD.esc(n.id) + '</div></article>';
+                }).join(''));
+            }
+            renderNotices('ALL');
+            $('[data-scope]').on('click', function () {
+                $('[data-scope]').removeClass('tag-red'); $(this).addClass('tag-red');
+                renderNotices($(this).data('scope'));
+            });
+
+            LD.bindPasswordToggle('#password', '#tp', '#tpi');
+            LD.bindDemoLogin('#loginForm', '#account', '#password', function (m, t) {
+                $('#msg').removeClass('d-none alert-warning alert-info').addClass('alert-' + t).text(m);
+            });
+        });
+    </script>
+</body>
+
+</html>

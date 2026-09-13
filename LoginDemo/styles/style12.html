@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>風格十二：現代新粗獷｜振興醫院登入</title>
+    <link rel="stylesheet" href="../shared/login-trends.css">
+</head>
+<body class="trend-brutal">
+    <a class="back-link" href="../index.html">返回款式選擇</a><div id="bgLayer" class="bg-layer"></div><div class="decor"></div>
+    <main class="portal">
+        <section class="info">
+            <div class="brand"><span id="brandLogo"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="25" stroke="#111" stroke-width="3"/><path d="M28 15v26M15 28h26" stroke="#111" stroke-width="6"/></svg></span><div><div class="company-name">振興醫院</div><p class="brand-en">CHENG HSIN GENERAL HOSPITAL</p></div></div>
+            <div class="hero"><p class="eyebrow">NO-NONSENSE STAFF PORTAL</p><h1>先看公告<br>再登入</h1><p>直接、醒目、不藏資訊。重要維護與院內活動在進入系統前完整顯示。</p></div>
+            <aside class="announcement"><div class="announcement-head"><h2 class="announcement-title">必讀公告</h2><span class="announcement-date" id="todayLabelAnn"></span></div><ul class="announcement-list" id="announcementList"></ul></aside>
+        </section>
+        <section class="access">
+            <div class="festival-banner" id="festivalBanner" style="display:none"></div><p class="login-kicker">AUTHORIZED STAFF ONLY</p><h1 class="login-title">登入系統</h1><p class="login-subtitle" id="greeting"></p>
+            <form class="login-form" id="loginForm" novalidate>
+                <div><label class="field-label" for="username">帳號 ACCOUNT</label><div class="field-input"><input id="username" name="username" type="text" autocomplete="username" placeholder="員工編號或帳號" required></div></div>
+                <div><label class="field-label" for="password">密碼 PASSWORD</label><div class="field-input"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" required><button class="toggle-password" id="togglePassword" type="button">顯示</button></div></div>
+                <div class="field-row"><label class="checkbox"><input type="checkbox">記住我</label><a class="link-forgot" href="#">需要協助？</a></div><p class="form-message" id="formMessage" role="alert"></p><button class="btn-login" type="submit">立即登入</button>
+            </form><div class="access-foot"><span id="todayLabel"></span><br>© <span id="year"></span> 振興醫院</div>
+        </section>
+    </main><script src="../shared/login-core.js"></script>
+</body>
+</html>

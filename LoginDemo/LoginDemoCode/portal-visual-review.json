@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "id": "portal-01-service-desk",
+      "responsive": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "responsive": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "responsive": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "responsive": true
+    },
+    {
+      "id": "portal-05-guided",
+      "responsive": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "responsive": true
+    },
+    {
+      "id": "portal-07-index",
+      "responsive": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "responsive": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "responsive": true
+    },
+    {
+      "id": "portal-10-layered",
+      "responsive": true
+    }
+  ],
+  "contrastIssues": [],
+  "note": "Computed text contrast spot checks on solid backgrounds, not a complete WCAG audit."
+}
