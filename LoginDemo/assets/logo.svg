@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" width="200" height="56" role="img" aria-label="振興醫院 Logo">
+    <!-- 醫療十字標記 -->
+    <circle cx="28" cy="28" r="24" fill="none" stroke="#C19A6B" stroke-width="2.5" />
+    <path d="M28 14v28M14 28h28" stroke="#C19A6B" stroke-width="5" stroke-linecap="round" />
+    <!-- 院名 -->
+    <text x="64" y="26" font-family="'Noto Serif TC','Times New Roman',serif" font-size="22" font-weight="700" fill="#ffffff" letter-spacing="3">振興醫院</text>
+    <text x="64" y="44" font-family="'Noto Sans TC',sans-serif" font-size="8.5" fill="#C19A6B" letter-spacing="1.5">CHENG HSIN GENERAL HOSPITAL</text>
+</svg>
