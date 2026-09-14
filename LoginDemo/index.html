@@ -3,744 +3,1522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>振興醫院 — 系統登入介面設計展示總覽大廳 (Master Demo Center)</title>
-    <!-- 本機離線函式庫 -->
+    <title>三大工具設計成果整合大廳｜振興醫院資訊服務</title>
     <!-- Bootstrap 5 CSS（CDN優先，本機為備援） -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" onerror="this.onerror=null;this.href='assets/libs/bootstrap/css/bootstrap.min.css';">
     <!-- Bootstrap Icons（CDN優先，本機為備援） -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" onerror="this.onerror=null;this.href='assets/libs/bootstrap-icons/bootstrap-icons.css';">
     <style>
         :root {
-            --master-bg: #0b1120;
-            --master-card: #1e293b;
-            --master-border: rgba(255, 255, 255, 0.1);
-            --master-primary: #38bdf8;
-            --master-accent: #6366f1;
+            --bg-color: #0b1120;
+            --sidebar-bg: #111827;
+            --sidebar-sub: #1f2937;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.25);
+            --accent-agy: #38bdf8;
+            --accent-cc: #34d399;
+            --accent-code: #a78bfa;
+            --accent-hospital: #fbbf24;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
         }
-        body {
-            background-color: var(--master-bg);
-            color: #f8fafc;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-        .hero-banner {
-            background: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #0b1120 75%);
-            padding: 3.5rem 0 2.5rem 0;
-            border-bottom: 1px solid var(--master-border);
-        }
-        .suite-highlight-card {
-            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--master-border);
-            border-radius: 16px;
-            padding: 1.75rem;
+        * { box-sizing: border-box; }
+        body, html {
             height: 100%;
-            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .suite-highlight-card:hover {
-            transform: translateY(-5px);
-            border-color: #38bdf8;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-        }
-        .style-item-card {
-            background: #1e293b;
-            border: 1px solid var(--master-border);
-            border-radius: 12px;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans TC", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             overflow: hidden;
+        }
+        #app-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 左側選單欄 */
+        #sidebar {
+            width: 380px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            height: 100%;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            flex-shrink: 0;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
         }
-        .style-item-card:hover {
-            transform: translateY(-4px);
-            border-color: #38bdf8;
+        .sidebar-header {
+            padding: 1.1rem 1.25rem 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            background: #090e1a;
         }
-        .style-item-thumb {
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        .nav-pills-custom .nav-link {
-            color: #94a3b8;
-            font-weight: 600;
-            border-radius: 50px;
-            padding: 0.5rem 1.25rem;
-            margin-right: 0.5rem;
-        }
-        .nav-pills-custom .nav-link.active {
-            background-color: #38bdf8;
-            color: #0b1120;
-        }
-        /* Iframe Modal Preview */
-        .preview-modal-dialog {
-            max-width: 95vw;
-            margin: 1.5rem auto;
-        }
-        .preview-modal-content {
-            background-color: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-            overflow: hidden;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .preview-toolbar {
-            background-color: #1e293b;
-            padding: 0.6rem 1rem;
+        .sidebar-title-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--master-border);
+            margin-bottom: 0.75rem;
         }
-        .preview-iframe-wrapper {
+        .sidebar-title {
+            font-weight: 800;
+            font-size: 1.08rem;
+            letter-spacing: -0.01em;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #ffffff;
+        }
+        .brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 999px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        /* 搜尋框與篩選列 */
+        .search-box-wrap {
+            position: relative;
+            margin-bottom: 0.6rem;
+        }
+        .search-box-wrap i.search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        .search-input {
+            width: 100%;
+            background: #1f2937;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 0.45rem 2rem 0.45rem 2.2rem;
+            font-size: 0.85rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            background: #273549;
+        }
+        .clear-search-btn {
+            position: absolute;
+            right: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        /* 工具切換 Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 0.3rem;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+        }
+        .filter-tabs::-webkit-scrollbar { display: none; }
+        .filter-tab-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .filter-tab-btn:hover {
+            color: #ffffff;
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .filter-tab-btn.active {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+        }
+        .filter-tab-btn .badge {
+            font-size: 0.65rem;
+            padding: 0.15em 0.4em;
+        }
+
+        /* 導覽列表本體 */
+        .sidebar-body {
             flex: 1;
-            background-color: #334155;
+            overflow-y: auto;
+            padding: 0.6rem 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: #374151 transparent;
+        }
+        .sidebar-body::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar-body::-webkit-scrollbar-thumb {
+            background-color: #374151;
+            border-radius: 4px;
+        }
+
+        /* 分組折疊群組 (Accordion) */
+        .nav-group {
+            margin-bottom: 0.65rem;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.015);
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+        .nav-group:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .nav-group-header {
+            padding: 0.55rem 0.75rem;
+            background: #172133;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            transition: background 0.15s ease;
+        }
+        .nav-group-header:hover {
+            background: #1e2c44;
+        }
+        .nav-group-title {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .nav-group-header i.chevron {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+            color: #94a3b8;
+        }
+        .nav-group.collapsed .nav-group-header i.chevron {
+            transform: rotate(-90deg);
+        }
+        .nav-group-items {
+            display: flex;
+            flex-direction: column;
+            padding: 0.35rem 0.35rem 0.45rem;
+            gap: 2px;
+        }
+        .nav-group.collapsed .nav-group-items {
+            display: none;
+        }
+
+        /* 單個項目按鈕 */
+        .nav-item-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: 1px solid transparent;
+            color: #cbd5e1;
+            padding: 0.45rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            cursor: pointer;
+            gap: 0.4rem;
+        }
+        .nav-item-btn:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-item-btn.active {
+            background-color: #0369a1;
+            color: #ffffff;
+            font-weight: 600;
+            border-color: #38bdf8;
+            box-shadow: 0 2px 10px rgba(3, 105, 161, 0.5);
+        }
+        .nav-item-title {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+        .nav-item-num {
+            font-size: 0.72rem;
+            opacity: 0.6;
+            font-family: monospace;
+            font-weight: bold;
+            min-width: 18px;
+        }
+        .nav-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-shrink: 0;
+        }
+        .nav-item-actions a.open-external {
+            color: #94a3b8;
+            opacity: 0;
+            transition: opacity 0.15s ease, color 0.15s ease;
+            padding: 0 0.2rem;
+        }
+        .nav-item-btn:hover .nav-item-actions a.open-external,
+        .nav-item-btn.active .nav-item-actions a.open-external {
+            opacity: 1;
+        }
+        .nav-item-actions a.open-external:hover {
+            color: #38bdf8;
+        }
+
+        /* 徽章樣式 */
+        .badge-agy { background-color: #0284c7; color: #ffffff; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; }
+        .badge-cc { background-color: #059669; color: #ffffff; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; }
+        .badge-code { background-color: #7c3aed; color: #ffffff; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; }
+        .badge-hospital { background-color: #d97706; color: #ffffff; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; }
+        .badge-star { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; }
+
+        /* 底部折疊/展開全部控制 */
+        .sidebar-footer {
+            padding: 0.6rem 0.8rem;
+            border-top: 1px solid var(--border-color);
+            background: #090e1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .sidebar-footer button {
+            background: none;
+            border: none;
+            color: #38bdf8;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+        .sidebar-footer button:hover {
+            text-decoration: underline;
+        }
+
+        /* 右側展示區 */
+        #content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #1e293b;
+            position: relative;
+            min-width: 0;
+        }
+        .topbar {
+            height: 54px;
+            background-color: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            flex-shrink: 0;
+            gap: 0.8rem;
+        }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            min-width: 0;
+        }
+        .current-product-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .current-url-text {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 260px;
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        /* 尺寸切換按鈕群 */
+        .viewport-btn-group .btn {
+            font-size: 0.78rem;
+            padding: 0.25rem 0.65rem;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .viewport-btn-group .btn.active {
+            background-color: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        /* 網頁嵌入容器 */
+        .viewer-container {
+            flex: 1;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: stretch;
+            background-color: #1e293b;
             overflow: hidden;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
-        .preview-iframe {
+        #productViewer {
             width: 100%;
             height: 100%;
             border: none;
-            background: #ffffff;
-            transition: width 0.3s ease;
+            background-color: #ffffff;
+            transition: width 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.4);
         }
-        .badge-agy {
-            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
-            color: #ffffff;
+        #productViewer.device-sim {
+            margin: 12px 0;
+            height: calc(100% - 24px);
+            border-radius: 12px;
+            border: 8px solid #0f172a;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
-        .badge-cc {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            color: #ffffff;
+
+        /* 載入動畫覆蓋層 */
+        .viewer-loading {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
         }
-        .badge-code {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: #ffffff;
+        .viewer-loading.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 側欄響應式 */
+        @media (max-width: 860px) {
+            #sidebar {
+                position: absolute;
+                height: 100%;
+                left: 0;
+                top: 0;
+                transform: translateX(-100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+                box-shadow: 12px 0 32px rgba(0, 0, 0, 0.7);
+            }
+            #sidebarToggle {
+                display: inline-flex !important;
+            }
+            .current-url-text {
+                display: none;
+            }
+        }
+        #sidebarToggle {
+            display: none;
+        }
+
+        /* 快速導航浮水印與大廳面板 */
+        .hub-welcome-panel {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: #0b1120;
+            overflow-y: auto;
+            padding: 2.5rem 2rem;
+            display: none;
+        }
+        .hub-welcome-panel.active {
+            display: block;
+        }
+        .hub-hero-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .tool-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+        .tool-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tool-stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+        }
+        .hub-hero-card p.text-muted, .tool-stat-card p.text-muted {
+            color: #cbd5e1 !important;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Hero Banner -->
-    <header class="hero-banner">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-primary px-3 py-2 fs-6">CHGH</span>
-                    <span class="text-white-50 small">振興醫療財團法人振興醫院 ｜ 資訊室官方展示門戶</span>
-                </div>
-                <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1">
-                    <i class="bi bi-hdd-network me-1"></i>離線自給自足 · 40+ 款原型一站即點即看
-                </span>
-            </div>
-
-            <h1 class="display-6 fw-bold text-white mb-2">
-                全院系統登入介面設計 · 旗艦展示總覽大廳
-            </h1>
-            <p class="lead text-light text-opacity-75 max-w-700 fs-6 mb-4">
-                將三大獨立研發之登入展示專案（<b>LoginDemoAgy</b>、<b>LoginDemoCC</b>、<b>LoginDemoCode</b>）全數整合於單一頁面。<br>
-                支援<b>直接開啟跳轉</b>或<b>內建多裝置視窗即時預覽</b>，一站式檢視與決策。
-            </p>
-
-            <!-- 數據統計條 -->
-            <div class="row g-3 text-center max-w-700">
-                <div class="col-4">
-                    <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
-                        <div class="fs-4 fw-bold text-info">3 大</div>
-                        <div class="small text-white-50">專案旗艦系列</div>
+    <div id="app-layout">
+        <!-- ==================== 左側選單欄 ==================== -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title-row">
+                    <div class="sidebar-title">
+                        <i class="bi bi-window-stack text-info fs-5"></i>
+                        <span>設計成果整合大廳</span>
                     </div>
-                </div>
-                <div class="col-4">
-                    <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
-                        <div class="fs-4 fw-bold text-warning">40+ 款</div>
-                        <div class="small text-white-50">全方位風格原型</div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
-                        <div class="fs-4 fw-bold text-success">100%</div>
-                        <div class="small text-white-50">本機離線可操作</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- 三大專案系列旗艦導引卡 (Top 3 Suites) -->
-    <section class="container my-5">
-        <h4 class="fw-bold text-white mb-3"><i class="bi bi-collection-fill text-info me-2"></i>三大 DEMO 專案系列導航</h4>
-        
-        <div class="row g-4">
-            
-            <!-- 系列一：LoginDemoAgy -->
-            <div class="col-lg-4">
-                <div class="suite-highlight-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge badge-agy px-2 py-1 fs-6">LoginDemoAgy</span>
-                        <span class="badge bg-warning text-dark fw-bold">資訊室主任推薦</span>
-                    </div>
-                    <h5 class="fw-bold text-white mt-1">多系統共用入口 · 10 款架構原型</h5>
-                    <p class="small text-white-50 flex-grow-1">
-                        專為大型醫療組織設計的多業務系統共用登入門戶。全系列配備<b>「展示情境切換條」</b>（正常/重大異常/驗證失敗/服務逾時）與雙入口情境（直接開啟 vs 特定系統導向），嚴格落實替代作法與免登入報修通道。
-                    </p>
-                    <div class="p-2 bg-black bg-opacity-30 rounded border border-white border-opacity-10 small mb-3 text-secondary">
-                        <i class="bi bi-check2-circle text-info me-1"></i>10 款實質結構差異版型<br>
-                        <i class="bi bi-check2-circle text-info me-1"></i>解決「不知開哪套系統」稽核痛點
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-info btn-sm flex-fill" onclick="openPreviewModal('LoginDemoAgy/index.html', 'LoginDemoAgy — 總覽評估大廳')">
-                            <i class="bi bi-eye me-1"></i>即時預覽
-                        </button>
-                        <a href="LoginDemoAgy/index.html" class="btn btn-info btn-sm flex-fill fw-bold text-dark" target="_blank">
-                            新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 系列二：LoginDemoCC -->
-            <div class="col-lg-4">
-                <div class="suite-highlight-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge badge-cc px-2 py-1 fs-6">LoginDemoCC</span>
-                        <span class="badge bg-success text-white">醫院員工入口 ESS</span>
-                    </div>
-                    <h5 class="fw-bold text-white mt-1">差勤簽核主系統與雙組專題</h5>
-                    <p class="small text-white-50 flex-grow-1">
-                        以人事差勤與員工自主服務 (ESS) 為核心。包含經典雙欄 4 頁籤主系統，以及兩套專題展示：<b>portal/</b> (10款醫院入口) 與 <b>designs/</b> (10款視覺概念比較)。
-                    </p>
-                    <div class="p-2 bg-black bg-opacity-30 rounded border border-white border-opacity-10 small mb-3 text-secondary">
-                        <i class="bi bi-check2-circle text-success me-1"></i>雙欄 4 頁籤主版 (index.html)<br>
-                        <i class="bi bi-check2-circle text-success me-1"></i>portal/ 與 designs/ 雙主題專區
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-success btn-sm flex-fill" onclick="openPreviewModal('LoginDemoCC/index.html', 'LoginDemoCC — 醫院員工入口主版')">
-                            <i class="bi bi-eye me-1"></i>即時預覽
-                        </button>
-                        <a href="LoginDemoCC/index.html" class="btn btn-success btn-sm flex-fill fw-bold text-white" target="_blank">
-                            新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 系列三：LoginDemoCode -->
-            <div class="col-lg-4">
-                <div class="suite-highlight-card">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge badge-code px-2 py-1 fs-6">LoginDemoCode</span>
-                        <span class="badge bg-light text-dark">設計決策典藏</span>
-                    </div>
-                    <h5 class="fw-bold text-white mt-1">色彩排版探索與決策中心</h5>
-                    <p class="small text-white-50 flex-grow-1">
-                        深度視覺語言探索與選型決策中心。內建 10 款 Portal 服務台系列、10 款視覺探索系列、4 款深度人文刊物設計，並附有完整的決策指引報告 (decision.html)。
-                    </p>
-                    <div class="p-2 bg-black bg-opacity-30 rounded border border-white border-opacity-10 small mb-3 text-secondary">
-                        <i class="bi bi-check2-circle text-purple me-1"></i>決策手冊 (decision.html)<br>
-                        <i class="bi bi-check2-circle text-purple me-1"></i>24+ 款深度色彩與字型版型
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-light btn-sm flex-fill" onclick="openPreviewModal('LoginDemoCode/decision.html', 'LoginDemoCode — 決策總覽')">
-                            <i class="bi bi-eye me-1"></i>即時預覽
-                        </button>
-                        <a href="LoginDemoCode/index.html" class="btn btn-light btn-sm flex-fill fw-bold text-dark" target="_blank">
-                            新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 方案全覽切換與搜尋過濾 (All Demos Filterable Grid) -->
-    <section class="container my-5" id="all-demos">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-            <div>
-                <h4 class="fw-bold text-white mb-1"><i class="bi bi-grid-3x3-gap-fill text-info me-2"></i>全站版型快速點選展示廳</h4>
-                <div class="text-white-50 small">點選下方標籤切換專案分類，或於右側搜尋風格名稱</div>
-            </div>
-
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <!-- 篩選標籤 -->
-                <div class="btn-group btn-group-sm" role="group" id="filterGroup">
-                    <button type="button" class="btn btn-info active" data-filter="all">全部 (All)</button>
-                    <button type="button" class="btn btn-outline-info" data-filter="agy">LoginDemoAgy (10款)</button>
-                    <button type="button" class="btn btn-outline-info" data-filter="cc">LoginDemoCC (3入口)</button>
-                    <button type="button" class="btn btn-outline-info" data-filter="code">LoginDemoCode (3專題)</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary d-md-none" onclick="toggleSidebar()">
+                        <i class="bi bi-x-lg text-white"></i>
+                    </button>
                 </div>
 
                 <!-- 搜尋框 -->
-                <div class="input-group input-group-sm" style="width: 200px;">
-                    <span class="input-group-text bg-dark border-secondary text-white-50"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control bg-dark border-secondary text-white" id="searchInput" placeholder="搜尋風格...">
+                <div class="search-box-wrap">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="即時搜尋 78 款原型 (輸入關鍵字、編號)..." oninput="handleSearch(this.value)">
+                    <button type="button" id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()" title="清除搜尋">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </button>
                 </div>
-            </div>
-        </div>
 
-        <div class="row g-3" id="demoGrid">
-            
-            <!-- ====== LoginDemoAgy 10 款 ====== -->
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="01 雙欄標準管理型 醫療湛藍旗艦">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #073b66 0%, #0077b6 100%);">
-                        <div class="text-white text-center"><i class="bi bi-layout-split me-1"></i>Agy-01 雙欄標準</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 01</span>
-                            <small class="text-warning fw-bold">推薦 No.1</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">雙欄標準管理型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">左登入右頁籤，資訊架構最平衡。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/01-medical-flagship/index.html', 'Agy-01: 雙欄標準管理型')">預覽</button>
-                            <a href="LoginDemoAgy/01-medical-flagship/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="02 戰情運維導向型 深色戰情指揮">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #030712 0%, #0b1120 100%); border-bottom: 2px solid #06b6d4;">
-                        <div class="text-info text-center"><i class="bi bi-terminal-fill me-1"></i>Agy-02 戰情運維</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 02</span>
-                            <small class="text-info">運維儀表</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">戰情運維導向型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">主視覺 6 大系統狀態矩陣與運維條。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/02-cyber-console/index.html', 'Agy-02: 戰情運維導向型')">預覽</button>
-                            <a href="LoginDemoAgy/02-cyber-console/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
+                <!-- 工具篩選標籤 -->
+                <div class="filter-tabs">
+                    <button type="button" class="filter-tab-btn active" data-tool="all" onclick="filterByTool('all', this)">
+                        全部 <span class="badge bg-secondary">78</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" data-tool="agy" onclick="filterByTool('agy', this)">
+                        Agy <span class="badge bg-info text-dark">11</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" data-tool="cc" onclick="filterByTool('cc', this)">
+                        CC <span class="badge bg-success">23</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" data-tool="code" onclick="filterByTool('code', this)">
+                        Code <span class="badge" style="background:#7c3aed">27</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" data-tool="hospital" onclick="filterByTool('hospital', this)">
+                        院內風格 <span class="badge bg-warning text-dark">17</span>
+                    </button>
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="03 置中專注抽屜型 極簡毛玻璃">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);">
-                        <div class="text-white text-center"><i class="bi bi-layers-half me-1"></i>Agy-03 置中抽屜</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 03</span>
-                            <small class="text-light">毛玻璃</small>
+            <!-- 側欄項目列表 -->
+            <div class="sidebar-body" id="navContainer">
+
+                <!-- 整合大廳總覽按鈕 -->
+                <div class="mb-2">
+                    <button type="button" class="nav-item-btn active" id="btnHubOverview" onclick="showHubDashboard(this)">
+                        <div class="nav-item-title">
+                            <i class="bi bi-grid-1x2-fill text-info"></i>
+                            <span class="fw-bold">★ 整合總覽儀表板 (Dashboard)</span>
                         </div>
-                        <h6 class="fw-bold text-white mb-1">置中專注抽屜型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">中心浮動卡，狀態收納於側邊抽屜。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/03-modern-glass/index.html', 'Agy-03: 置中專注抽屜型')">預覽</button>
-                            <a href="LoginDemoAgy/03-modern-glass/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
+                        <span class="badge bg-info text-dark">首頁</span>
+                    </button>
                 </div>
-            </div>
 
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="04 瑞士高對比網格型 無障礙大字">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: #ffe600; color: #111111;">
-                        <div class="text-center fw-bold"><i class="bi bi-grid-3x3 me-1"></i>Agy-04 瑞士網格</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 04</span>
-                            <small class="text-warning">投影稽核</small>
+                <!-- ==================== 1. ANTIGRAVITY (11 款) ==================== -->
+                <div class="nav-group" data-tool-group="agy">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-agy">Agy</span>
+                            <span>LoginDemoAgy (11 款)</span>
                         </div>
-                        <h6 class="fw-bold text-white mb-1">瑞士高對比網格型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">3 等欄純黑線框，超大文字高對比。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/04-swiss-grid/index.html', 'Agy-04: 瑞士高對比排版型')">預覽</button>
-                            <a href="LoginDemoAgy/04-swiss-grid/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">11</span>
+                            <i class="bi bi-chevron-down chevron"></i>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="05 人文刊物長文型 替代作法指南">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #fbf9f5 0%, #e8e2d8 100%); color: #78350f;">
-                        <div class="text-center"><i class="bi bi-journal-bookmark me-1"></i>Agy-05 人文刊物</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 05</span>
-                            <small class="text-warning">長文指南</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">人文刊物長文型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">刊物長篇詳述衛材三聯單替代作法。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/05-warm-editorial/index.html', 'Agy-05: 人文刊物長文型')">預覽</button>
-                            <a href="LoginDemoAgy/05-warm-editorial/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="06 橫向步驟卡片流型 流程引導">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
-                        <div class="text-white text-center"><i class="bi bi-arrow-right-circle me-1"></i>Agy-06 步驟卡流</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 06</span>
-                            <small class="text-success">1-2-3 步驟</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">橫向步驟卡片流型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">橫向 3 聯卡 (看狀態->登入->求助)。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/06-eco-forest/index.html', 'Agy-06: 橫向步驟卡片流型')">預覽</button>
-                            <a href="LoginDemoAgy/06-eco-forest/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="07 側邊工作站導航型 臨床工作站">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
-                        <div class="text-white text-center"><i class="bi bi-layout-sidebar-inset me-1"></i>Agy-07 側邊導航</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 07</span>
-                            <small class="text-warning fw-bold">推薦 No.2</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">側邊工作站導航型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">290px 左欄常駐狀態與 5888 專線。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/07-bulletin-priority/index.html', 'Agy-07: 側邊工作站導航型')">預覽</button>
-                            <a href="LoginDemoAgy/07-bulletin-priority/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="08 現代模組浮動卡型 現代SaaS">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);">
-                        <div class="text-white text-center"><i class="bi bi-bounding-box-circles me-1"></i>Agy-08 模組浮卡</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 08</span>
-                            <small class="text-light">現代網格</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">現代模組浮動卡型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">4 塊自適應卡片，獨立呈現告警與求助。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/08-nordic-gradient/index.html', 'Agy-08: 現代模組浮動卡型')">預覽</button>
-                            <a href="LoginDemoAgy/08-nordic-gradient/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="09 流程防呆藍圖型 CAD藍圖">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: #0a2540; border-bottom: 2px dashed #00b4d8; color: #00b4d8;">
-                        <div class="text-center font-monospace"><i class="bi bi-diagram-3-fill me-1"></i>Agy-09 工程藍圖</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 09</span>
-                            <small class="text-info">資安稽核</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">流程防呆藍圖型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">工程圖框與點矩陣底圖，標記整合拓撲。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/09-technical-blueprint/index.html', 'Agy-09: 流程防呆藍圖型')">預覽</button>
-                            <a href="LoginDemoAgy/09-technical-blueprint/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 demo-card" data-category="agy" data-title="10 全齡友善觸控型 護理推車 櫃檯">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: #002855; border-bottom: 4px solid #ffb703; color: #ffb703;">
-                        <div class="text-center fw-bold"><i class="bi bi-hand-index-thumb-fill me-1"></i>Agy-10 友善觸控</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-agy">Agy 10</span>
-                            <small class="text-warning fw-bold">推薦 No.3</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">全齡友善觸控型</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">60px 超大輸入框與按鈕，防窺醒目防呆。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-info flex-fill" onclick="openPreviewModal('LoginDemoAgy/10-accessible-touch/index.html', 'Agy-10: 全齡友善觸控型')">預覽</button>
-                            <a href="LoginDemoAgy/10-accessible-touch/index.html" target="_blank" class="btn btn-sm btn-info flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== LoginDemoCC 三大入口 ====== -->
-            <div class="col-md-6 col-lg-4 demo-card" data-category="cc" data-title="LoginDemoCC 主系統雙欄 員工差勤 ESS">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #065f46 0%, #047857 100%);">
-                        <div class="text-white text-center"><i class="bi bi-hospital me-1"></i>CC 主系統雙欄</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-cc">LoginDemoCC</span>
-                            <small class="text-success">主系統</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">員工差勤入口 (ESS 主版)</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">雙欄排版、4 分頁（公告/更版/系統/端點檢驗）與多系統防呆列。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-success flex-fill" onclick="openPreviewModal('LoginDemoCC/index.html', 'LoginDemoCC: 員工差勤入口主版')">預覽</button>
-                            <a href="LoginDemoCC/index.html" target="_blank" class="btn btn-sm btn-success flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 demo-card" data-category="cc" data-title="LoginDemoCC portal 10款醫院入口專案">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);">
-                        <div class="text-white text-center"><i class="bi bi-grid me-1"></i>CC Portal 專題</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-cc">LoginDemoCC</span>
-                            <small class="text-light">10 款方案</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">CC Portal 10 款專題大廳</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">包含 Focus、Split、Status Banner、Kiosk 等 10 款入口。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-success flex-fill" onclick="openPreviewModal('LoginDemoCC/portal/index.html', 'LoginDemoCC: Portal 10款專題')">預覽</button>
-                            <a href="LoginDemoCC/portal/index.html" target="_blank" class="btn btn-sm btn-success flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 demo-card" data-category="cc" data-title="LoginDemoCC designs 10款視覺概念比較">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #047857 0%, #064e3b 100%);">
-                        <div class="text-white text-center"><i class="bi bi-palette me-1"></i>CC Designs 概念</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-cc">LoginDemoCC</span>
-                            <small class="text-light">10 款概念</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">CC Designs 視覺概念比較廳</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">包含 Split Diagonal、Metro Tiles、Terminal、Glass 等概念版型。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-success flex-fill" onclick="openPreviewModal('LoginDemoCC/designs/index.html', 'LoginDemoCC: Designs 視覺概念比較')">預覽</button>
-                            <a href="LoginDemoCC/designs/index.html" target="_blank" class="btn btn-sm btn-success flex-fill">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== LoginDemoCode 三大入口 ====== -->
-            <div class="col-md-6 col-lg-4 demo-card" data-category="code" data-title="LoginDemoCode decision 決策指南與總覽">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);">
-                        <div class="text-white text-center"><i class="bi bi-award me-1"></i>Code 決策中心</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-code">LoginDemoCode</span>
-                            <small class="text-warning">決策指引</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">設計選型決策總覽 (decision.html)</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">全方位評估報告、情境矩陣與推薦選型指引。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-light flex-fill" onclick="openPreviewModal('LoginDemoCode/decision.html', 'LoginDemoCode: 決策總覽 (decision.html)')">預覽</button>
-                            <a href="LoginDemoCode/decision.html" target="_blank" class="btn btn-sm btn-light flex-fill text-dark">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 demo-card" data-category="code" data-title="LoginDemoCode index 畫廊總覽 24款版型">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);">
-                        <div class="text-white text-center"><i class="bi bi-images me-1"></i>Code 畫廊總覽</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-code">LoginDemoCode</span>
-                            <small class="text-light">畫廊索引</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">設計典藏畫廊 (index.html)</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">涵蓋 10 款 Portal、10 款視覺探索與 4 款人文版型之總入口。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-light flex-fill" onclick="openPreviewModal('LoginDemoCode/index.html', 'LoginDemoCode: 畫廊總覽')">預覽</button>
-                            <a href="LoginDemoCode/index.html" target="_blank" class="btn btn-sm btn-light flex-fill text-dark">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 demo-card" data-category="code" data-title="LoginDemoCode prior designs 10款經典視覺">
-                <div class="style-item-card">
-                    <div class="style-item-thumb" style="background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);">
-                        <div class="text-white text-center"><i class="bi bi-palette2 me-1"></i>Code 經典視覺</div>
-                    </div>
-                    <div class="p-3 d-flex flex-column flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="badge badge-code">LoginDemoCode</span>
-                            <small class="text-light">10 款視覺</small>
-                        </div>
-                        <h6 class="fw-bold text-white mb-1">10 款經典視覺展覽 (prior-designs.html)</h6>
-                        <p class="small text-white-50 flex-grow-1" style="font-size:0.78rem;">Clinical Blue、Midnight Command、Paper Journal 等經典款。</p>
-                        <div class="d-flex gap-1 mt-2">
-                            <button class="btn btn-sm btn-outline-light flex-fill" onclick="openPreviewModal('LoginDemoCode/prior-designs.html', 'LoginDemoCode: 經典視覺展覽')">預覽</button>
-                            <a href="LoginDemoCode/prior-designs.html" target="_blank" class="btn btn-sm btn-light flex-fill text-dark">開啟 ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 即時預覽互動 Modal (Live View with Device Switcher) -->
-    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-        <div class="modal-dialog preview-modal-dialog">
-            <div class="preview-modal-content">
-                
-                <!-- 預覽工具列 -->
-                <div class="preview-toolbar">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-primary">即時檢視</span>
-                        <h6 class="modal-title fw-bold text-white mb-0 text-truncate" id="previewModalLabel" style="max-width:350px;">頁面預覽</h6>
-                    </div>
-
-                    <!-- 裝置視窗切換 -->
-                    <div class="btn-group btn-group-sm" role="group" aria-label="裝置寬度切換">
-                        <button type="button" class="btn btn-dark active" onclick="setIframeWidth('100%', this)" title="桌機寬度 (100%)">
-                            <i class="bi bi-display me-1"></i>桌機
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/index.html" data-name="【Agy 總覽】10款風格前端原型總覽與決策評估" onclick="loadProduct('LoginDemoAgy/index.html', '【Agy 總覽】10款風格前端原型總覽與決策評估', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">總覽</span>
+                                <span class="text-truncate">10款風格原型總覽與決策矩陣</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
                         </button>
-                        <button type="button" class="btn btn-dark" onclick="setIframeWidth('768px', this)" title="平板寬度 (768px)">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/01-medical-flagship/index.html" data-name="Agy 01. 雙欄標準管理型 (醫療湛藍旗艦)" onclick="loadProduct('LoginDemoAgy/01-medical-flagship/index.html', 'Agy 01. 雙欄標準管理型 (醫療湛藍旗艦)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">01</span>
+                                <span class="text-truncate">雙欄標準管理型 (醫療湛藍旗艦)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/01-medical-flagship/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/02-cyber-console/index.html" data-name="Agy 02. 戰情運維導向型 (即時指標與儀表)" onclick="loadProduct('LoginDemoAgy/02-cyber-console/index.html', 'Agy 02. 戰情運維導向型 (即時指標與儀表)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">02</span>
+                                <span class="text-truncate">戰情運維導向型 (即時指標與儀表)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/02-cyber-console/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/03-modern-glass/index.html" data-name="Agy 03. 置中專注抽屜型 (極簡主體與側欄)" onclick="loadProduct('LoginDemoAgy/03-modern-glass/index.html', 'Agy 03. 置中專注抽屜型 (極簡主體與側欄)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">03</span>
+                                <span class="text-truncate">置中專注抽屜型 (極簡主體與側欄)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/03-modern-glass/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/04-swiss-grid/index.html" data-name="Agy 04. 瑞士高對比網格型 (字體排印與分區)" onclick="loadProduct('LoginDemoAgy/04-swiss-grid/index.html', 'Agy 04. 瑞士高對比網格型 (字體排印與分區)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">04</span>
+                                <span class="text-truncate">瑞士高對比網格型 (字體排印與分區)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/04-swiss-grid/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/05-warm-editorial/index.html" data-name="Agy 05. 人文關懷刊物型 (溫暖柔和雜誌風)" onclick="loadProduct('LoginDemoAgy/05-warm-editorial/index.html', 'Agy 05. 人文關懷刊物型 (溫暖柔和雜誌風)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">05</span>
+                                <span class="text-truncate">人文關懷刊物型 (溫暖柔和雜誌風)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/05-warm-editorial/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/06-eco-forest/index.html" data-name="Agy 06. 步驟卡片流型 (精靈導航三部曲)" onclick="loadProduct('LoginDemoAgy/06-eco-forest/index.html', 'Agy 06. 步驟卡片流型 (精靈導航三部曲)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">06</span>
+                                <span class="text-truncate">步驟卡片流型 (精靈導航三部曲)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/06-eco-forest/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/07-bulletin-priority/index.html" data-name="Agy 07. 側邊導航工作站 (後台感全功能側欄)" onclick="loadProduct('LoginDemoAgy/07-bulletin-priority/index.html', 'Agy 07. 側邊導航工作站 (後台感全功能側欄)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">07</span>
+                                <span class="text-truncate">側邊導航工作站 (後台感全功能側欄)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/07-bulletin-priority/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/08-nordic-gradient/index.html" data-name="Agy 08. 現代模組浮動卡 (北歐漸層毛玻璃)" onclick="loadProduct('LoginDemoAgy/08-nordic-gradient/index.html', 'Agy 08. 現代模組浮動卡 (北歐漸層毛玻璃)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">08</span>
+                                <span class="text-truncate">現代模組浮動卡 (北歐漸層毛玻璃)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/08-nordic-gradient/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/09-technical-blueprint/index.html" data-name="Agy 09. 工程藍圖防呆型 (高密度精準排版)" onclick="loadProduct('LoginDemoAgy/09-technical-blueprint/index.html', 'Agy 09. 工程藍圖防呆型 (高密度精準排版)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">09</span>
+                                <span class="text-truncate">工程藍圖防呆型 (高密度精準排版)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/09-technical-blueprint/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoAgy/10-accessible-touch/index.html" data-name="Agy 10. 全齡友善大字型 (無障礙大按鈕)" onclick="loadProduct('LoginDemoAgy/10-accessible-touch/index.html', 'Agy 10. 全齡友善大字型 (無障礙大按鈕)', 'Agy', this)">
+                            <div class="nav-item-title">
+                                <span class="nav-item-num">10</span>
+                                <span class="text-truncate">全齡友善大字型 (無障礙大按鈕)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoAgy/10-accessible-touch/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==================== 2. CLAUDE CODE (23 款) ==================== -->
+                <!-- 2.1 CC 主版與共用入口 (12 款) -->
+                <div class="nav-group" data-tool-group="cc">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-cc">CC</span>
+                            <span>LoginDemoCC · 主版與共用入口 (12 款)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">12</span>
+                            <i class="bi bi-chevron-down chevron"></i>
+                        </div>
+                    </div>
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/index.html" data-name="★ CC 主版系統：ESS 雙欄4頁籤 主版核心登入" onclick="loadProduct('LoginDemoCC/index.html', '★ CC 主版系統：ESS 雙欄4頁籤 主版核心登入', 'CC', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">核心</span>
+                                <span class="text-truncate">★ ESS 雙欄4頁籤 主版核心系統</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCC/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/index.html" data-name="【CC 總覽】共用系統登入入口：十款設計總覽" onclick="loadProduct('LoginDemoCC/portal/index.html', '【CC 總覽】共用系統登入入口：十款設計總覽', 'CC', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">總覽</span>
+                                <span class="text-truncate">共用系統入口：十款設計總覽</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCC/portal/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p01-focus.html" data-name="CC P01. 中央聚焦 (Focus Column)" onclick="loadProduct('LoginDemoCC/portal/p01-focus.html', 'CC P01. 中央聚焦 (Focus Column)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">01</span><span class="text-truncate">P01. 中央聚焦 (Focus Column)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p01-focus.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p02-split.html" data-name="CC P02. 左右分割 (Split Screen)" onclick="loadProduct('LoginDemoCC/portal/p02-split.html', 'CC P02. 左右分割 (Split Screen)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">02</span><span class="text-truncate">P02. 左右分割 (Split Screen)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p02-split.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p03-status-banner.html" data-name="CC P03. 狀態橫幅三欄 (Status Banner 3-Col)" onclick="loadProduct('LoginDemoCC/portal/p03-status-banner.html', 'CC P03. 狀態橫幅三欄 (Status Banner 3-Col)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">03</span><span class="text-truncate">P03. 狀態橫幅三欄 (Status Banner 3-Col)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p03-status-banner.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p04-sidebar.html" data-name="CC P04. 側欄導覽 (Sidebar Navigation)" onclick="loadProduct('LoginDemoCC/portal/p04-sidebar.html', 'CC P04. 側欄導覽 (Sidebar Navigation)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">04</span><span class="text-truncate">P04. 側欄導覽 (Sidebar Navigation)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p04-sidebar.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p05-status-first.html" data-name="CC P05. 狀態看板優先 (Status-First)" onclick="loadProduct('LoginDemoCC/portal/p05-status-first.html', 'CC P05. 狀態看板優先 (Status-First)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">05</span><span class="text-truncate">P05. 狀態看板優先 (Status-First)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p05-status-first.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p06-steps.html" data-name="CC P06. 三步驟導航 (3-Steps Flow)" onclick="loadProduct('LoginDemoCC/portal/p06-steps.html', 'CC P06. 三步驟導航 (3-Steps Flow)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">06</span><span class="text-truncate">P06. 三步驟導航 (3-Steps Flow)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p06-steps.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p07-help-first.html" data-name="CC P07. 意圖導向 (Help & Intent First)" onclick="loadProduct('LoginDemoCC/portal/p07-help-first.html', 'CC P07. 意圖導向 (Help & Intent First)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">07</span><span class="text-truncate">P07. 意圖導向 (Help & Intent First)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p07-help-first.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p08-system-grid.html" data-name="CC P08. 系統目錄網格 (System Grid)" onclick="loadProduct('LoginDemoCC/portal/p08-system-grid.html', 'CC P08. 系統目錄網格 (System Grid)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">08</span><span class="text-truncate">P08. 系統目錄網格 (System Grid)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p08-system-grid.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p09-document.html" data-name="CC P09. 文件式長頁 (Document Style)" onclick="loadProduct('LoginDemoCC/portal/p09-document.html', 'CC P09. 文件式長頁 (Document Style)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">09</span><span class="text-truncate">P09. 文件式長頁 (Document Style)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p09-document.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/portal/p10-kiosk.html" data-name="CC P10. 共用工作站 (Kiosk Mode)" onclick="loadProduct('LoginDemoCC/portal/p10-kiosk.html', 'CC P10. 共用工作站 (Kiosk Mode)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">10</span><span class="text-truncate">P10. 共用工作站 (Kiosk Mode)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/portal/p10-kiosk.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2.2 CC 登入頁十款風格 (11 款) -->
+                <div class="nav-group" data-tool-group="cc">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-cc">CC</span>
+                            <span>LoginDemoCC · 登入頁風格篇 (11 款)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">11</span>
+                            <i class="bi bi-chevron-down chevron"></i>
+                        </div>
+                    </div>
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/index.html" data-name="【CC 總覽】登入頁十款風格總覽" onclick="loadProduct('LoginDemoCC/designs/index.html', '【CC 總覽】登入頁十款風格總覽', 'CC', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">總覽</span>
+                                <span class="text-truncate">登入頁十款風格設計總覽</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCC/designs/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/01-split-diagonal.html" data-name="CC 款式 01. 斜切雙欄 (Split Diagonal)" onclick="loadProduct('LoginDemoCC/designs/01-split-diagonal.html', 'CC 款式 01. 斜切雙欄 (Split Diagonal)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">01</span><span class="text-truncate">款式 01. 斜切雙欄 (Split Diagonal)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/01-split-diagonal.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/02-metro-tiles.html" data-name="CC 款式 02. 磁磚看板 (Metro Tiles)" onclick="loadProduct('LoginDemoCC/designs/02-metro-tiles.html', 'CC 款式 02. 磁磚看板 (Metro Tiles)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">02</span><span class="text-truncate">款式 02. 磁磚看板 (Metro Tiles)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/02-metro-tiles.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/03-terminal.html" data-name="CC 款式 03. 終端機 (Terminal Console)" onclick="loadProduct('LoginDemoCC/designs/03-terminal.html', 'CC 款式 03. 終端機 (Terminal Console)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">03</span><span class="text-truncate">款式 03. 終端機 (Terminal Console)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/03-terminal.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/04-glass.html" data-name="CC 款式 04. 玻璃擬態 (Glassmorphism)" onclick="loadProduct('LoginDemoCC/designs/04-glass.html', 'CC 款式 04. 玻璃擬態 (Glassmorphism)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">04</span><span class="text-truncate">款式 04. 玻璃擬態 (Glassmorphism)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/04-glass.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/05-newspaper.html" data-name="CC 款式 05. 報紙排版 (Hospital Gazette)" onclick="loadProduct('LoginDemoCC/designs/05-newspaper.html', 'CC 款式 05. 報紙排版 (Hospital Gazette)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">05</span><span class="text-truncate">款式 05. 報紙排版 (Hospital Gazette)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/05-newspaper.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/06-timeline.html" data-name="CC 款式 06. 時間軸 (Timeline Service)" onclick="loadProduct('LoginDemoCC/designs/06-timeline.html', 'CC 款式 06. 時間軸 (Timeline Service)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">06</span><span class="text-truncate">款式 06. 時間軸 (Timeline Service)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/06-timeline.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/07-wizard.html" data-name="CC 款式 07. 步驟引導 (Wizard Flow)" onclick="loadProduct('LoginDemoCC/designs/07-wizard.html', 'CC 款式 07. 步驟引導 (Wizard Flow)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">07</span><span class="text-truncate">款式 07. 步驟引導 (Wizard Flow)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/07-wizard.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/08-app-shell.html" data-name="CC 款式 08. 側欄應用 (App Shell)" onclick="loadProduct('LoginDemoCC/designs/08-app-shell.html', 'CC 款式 08. 側欄應用 (App Shell)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">08</span><span class="text-truncate">款式 08. 側欄應用 (App Shell)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/08-app-shell.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/09-brutalist.html" data-name="CC 款式 09. 粗野主義 (Neo-Brutalist)" onclick="loadProduct('LoginDemoCC/designs/09-brutalist.html', 'CC 款式 09. 粗野主義 (Neo-Brutalist)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">09</span><span class="text-truncate">款式 09. 粗野主義 (Neo-Brutalist)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/09-brutalist.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCC/designs/10-compact.html" data-name="CC 款式 10. 單屏密集 (Compact Screen)" onclick="loadProduct('LoginDemoCC/designs/10-compact.html', 'CC 款式 10. 單屏密集 (Compact Screen)', 'CC', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">10</span><span class="text-truncate">款式 10. 單屏密集 (Compact Screen)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCC/designs/10-compact.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==================== 3. CODEX / CODE (27 款) ==================== -->
+                <!-- 3.1 Code 決策中心與共用入口 (13 款) -->
+                <div class="nav-group" data-tool-group="code">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-code">Code</span>
+                            <span>LoginDemoCode · 決策與共用入口 (13 款)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">13</span>
+                            <i class="bi bi-chevron-down chevron"></i>
+                        </div>
+                    </div>
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/decision.html" data-name="★ Code 決策中心：比較、選型與整合條件 (decision.html)" onclick="loadProduct('LoginDemoCode/decision.html', '★ Code 決策中心：比較、選型與整合條件', 'Code', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">決策</span>
+                                <span class="text-truncate">★ 比較、選型與整合條件 (決策中心)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCode/decision.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/seasonal.html" data-name="Code 節慶外觀模組：多系統共用入口 (新春/中秋/端午)" onclick="loadProduct('LoginDemoCode/seasonal.html', 'Code 節慶外觀模組：多系統共用入口', 'Code', this)">
+                            <div class="nav-item-title">
+                                <span class="badge bg-danger">節慶</span>
+                                <span class="text-truncate">節慶外觀換膚模組 (seasonal.html)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCode/seasonal.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/index.html" data-name="【Code 總覽】十款多系統共用登入入口" onclick="loadProduct('LoginDemoCode/index.html', '【Code 總覽】十款多系統共用登入入口', 'Code', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">總覽</span>
+                                <span class="text-truncate">十款共用入口探索總覽 (index.html)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCode/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-01-service-desk/index.html" data-name="Code Portal 01. 晴白服務台 (Service Desk)" onclick="loadProduct('LoginDemoCode/portal-01-service-desk/index.html', 'Code Portal 01. 晴白服務台 (Service Desk)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">01</span><span class="text-truncate">Portal 01. 晴白服務台 (Service Desk)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-01-service-desk/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-02-focus-window/index.html" data-name="Code Portal 02. 靜心單窗 (Focus Window)" onclick="loadProduct('LoginDemoCode/portal-02-focus-window/index.html', 'Code Portal 02. 靜心單窗 (Focus Window)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">02</span><span class="text-truncate">Portal 02. 靜心單窗 (Focus Window)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-02-focus-window/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-03-night-command/index.html" data-name="Code Portal 03. 夜班指揮 (Night Command)" onclick="loadProduct('LoginDemoCode/portal-03-night-command/index.html', 'Code Portal 03. 夜班指揮 (Night Command)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">03</span><span class="text-truncate">Portal 03. 夜班指揮 (Night Command)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-03-night-command/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-04-bulletin/index.html" data-name="Code Portal 04. 資訊公報 (Bulletin Board)" onclick="loadProduct('LoginDemoCode/portal-04-bulletin/index.html', 'Code Portal 04. 資訊公報 (Bulletin Board)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">04</span><span class="text-truncate">Portal 04. 資訊公報 (Bulletin Board)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-04-bulletin/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-05-guided/index.html" data-name="Code Portal 05. 清楚三步 (Guided Access)" onclick="loadProduct('LoginDemoCode/portal-05-guided/index.html', 'Code Portal 05. 清楚三步 (Guided Access)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">05</span><span class="text-truncate">Portal 05. 清楚三步 (Guided Access)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-05-guided/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-06-conversation/index.html" data-name="Code Portal 06. 親切接待 (Conversation)" onclick="loadProduct('LoginDemoCode/portal-06-conversation/index.html', 'Code Portal 06. 親切接待 (Conversation)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">06</span><span class="text-truncate">Portal 06. 親切接待 (Conversation)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-06-conversation/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-07-index/index.html" data-name="Code Portal 07. 資訊索引 (Service Index)" onclick="loadProduct('LoginDemoCode/portal-07-index/index.html', 'Code Portal 07. 資訊索引 (Service Index)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">07</span><span class="text-truncate">Portal 07. 資訊索引 (Service Index)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-07-index/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-08-workstation/index.html" data-name="Code Portal 08. 高效工作站 (Workstation)" onclick="loadProduct('LoginDemoCode/portal-08-workstation/index.html', 'Code Portal 08. 高效工作站 (Workstation)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">08</span><span class="text-truncate">Portal 08. 高效工作站 (Workstation)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-08-workstation/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-09-mobile/index.html" data-name="Code Portal 09. 隨行服務 (Mobile Responsive)" onclick="loadProduct('LoginDemoCode/portal-09-mobile/index.html', 'Code Portal 09. 隨行服務 (Mobile Responsive)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">09</span><span class="text-truncate">Portal 09. 隨行服務 (Mobile Responsive)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-09-mobile/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/portal-10-layered/index.html" data-name="Code Portal 10. 分層服務 (Layered Services)" onclick="loadProduct('LoginDemoCode/portal-10-layered/index.html', 'Code Portal 10. 分層服務 (Layered Services)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">10</span><span class="text-truncate">Portal 10. 分層服務 (Layered Services)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/portal-10-layered/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3.2 Code 登入頁十款設計 (11 款) -->
+                <div class="nav-group" data-tool-group="code">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-code">Code</span>
+                            <span>LoginDemoCode · 登入頁設計篇 (11 款)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">11</span>
+                            <i class="bi bi-chevron-down chevron"></i>
+                        </div>
+                    </div>
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/prior-designs.html" data-name="【Code 總覽】10 款登入頁設計總覽 (prior-designs.html)" onclick="loadProduct('LoginDemoCode/prior-designs.html', '【Code 總覽】10 款登入頁設計總覽', 'Code', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">總覽</span>
+                                <span class="text-truncate">10 款登入頁設計總覽 (prior-designs)</span>
+                            </div>
+                            <div class="nav-item-actions">
+                                <a href="LoginDemoCode/prior-designs.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a>
+                            </div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/01-clinical-blue/index.html" data-name="Code 01. 澄藍秩序 (Clinical Clarity)" onclick="loadProduct('LoginDemoCode/01-clinical-blue/index.html', 'Code 01. 澄藍秩序 (Clinical Clarity)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">01</span><span class="text-truncate">01. 澄藍秩序 (Clinical Clarity)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/01-clinical-blue/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/02-midnight-command/index.html" data-name="Code 02. 午夜指揮所 (Midnight Command)" onclick="loadProduct('LoginDemoCode/02-midnight-command/index.html', 'Code 02. 午夜指揮所 (Midnight Command)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">02</span><span class="text-truncate">02. 午夜指揮所 (Midnight Command)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/02-midnight-command/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/03-paper-journal/index.html" data-name="Code 03. 紙感院刊 (Paper Journal)" onclick="loadProduct('LoginDemoCode/03-paper-journal/index.html', 'Code 03. 紙感院刊 (Paper Journal)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">03</span><span class="text-truncate">03. 紙感院刊 (Paper Journal)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/03-paper-journal/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/04-garden-courtyard/index.html" data-name="Code 04. 庭院綠境 (Garden Courtyard)" onclick="loadProduct('LoginDemoCode/04-garden-courtyard/index.html', 'Code 04. 庭院綠境 (Garden Courtyard)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">04</span><span class="text-truncate">04. 庭院綠境 (Garden Courtyard)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/04-garden-courtyard/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/05-cobalt-signal/index.html" data-name="Code 05. 鈷藍信號 (Cobalt Signal)" onclick="loadProduct('LoginDemoCode/05-cobalt-signal/index.html', 'Code 05. 鈷藍信號 (Cobalt Signal)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">05</span><span class="text-truncate">05. 鈷藍信號 (Cobalt Signal)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/05-cobalt-signal/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/06-wisteria-journal/index.html" data-name="Code 06. 紫藤雅緻 (Wisteria Journal)" onclick="loadProduct('LoginDemoCode/06-wisteria-journal/index.html', 'Code 06. 紫藤雅緻 (Wisteria Journal)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">06</span><span class="text-truncate">06. 紫藤雅緻 (Wisteria Journal)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/06-wisteria-journal/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/07-nordic-space/index.html" data-name="Code 07. 北歐留白 (Nordic Space)" onclick="loadProduct('LoginDemoCode/07-nordic-space/index.html', 'Code 07. 北歐留白 (Nordic Space)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">07</span><span class="text-truncate">07. 北歐留白 (Nordic Space)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/07-nordic-space/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/08-urban-tiles/index.html" data-name="Code 08. 都會磁磚 (Urban Tiles)" onclick="loadProduct('LoginDemoCode/08-urban-tiles/index.html', 'Code 08. 都會磁磚 (Urban Tiles)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">08</span><span class="text-truncate">08. 都會磁磚 (Urban Tiles)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/08-urban-tiles/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/09-precision-blueprint/index.html" data-name="Code 09. 精密藍圖 (Precision Blueprint)" onclick="loadProduct('LoginDemoCode/09-precision-blueprint/index.html', 'Code 09. 精密藍圖 (Precision Blueprint)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">09</span><span class="text-truncate">09. 精密藍圖 (Precision Blueprint)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/09-precision-blueprint/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/10-terracotta-light/index.html" data-name="Code 10. 陶土日光 (Terracotta Light)" onclick="loadProduct('LoginDemoCode/10-terracotta-light/index.html', 'Code 10. 陶土日光 (Terracotta Light)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">10</span><span class="text-truncate">10. 陶土日光 (Terracotta Light)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/10-terracotta-light/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3.3 Code 經典探索概念 (4 款) -->
+                <div class="nav-group" data-tool-group="code">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-code">Code</span>
+                            <span>LoginDemoCode · 經典探索概念 (4 款)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">4</span>
+                            <i class="bi bi-chevron-down chevron"></i>
+                        </div>
+                    </div>
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/01-warm-editorial/index.html" data-name="Code 概念 01. 暖白人文 (Warm Editorial)" onclick="loadProduct('LoginDemoCode/01-warm-editorial/index.html', 'Code 概念 01. 暖白人文 (Warm Editorial)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">01</span><span class="text-truncate">概念 01. 暖白人文 (Warm Editorial)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/01-warm-editorial/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/02-midnight-connect/index.html" data-name="Code 概念 02. 深色科技 (Midnight Connect)" onclick="loadProduct('LoginDemoCode/02-midnight-connect/index.html', 'Code 概念 02. 深色科技 (Midnight Connect)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">02</span><span class="text-truncate">概念 02. 深色科技 (Midnight Connect)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/02-midnight-connect/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/03-swiss-essential/index.html" data-name="Code 概念 03. 瑞士編輯 (Swiss Essential)" onclick="loadProduct('LoginDemoCode/03-swiss-essential/index.html', 'Code 概念 03. 瑞士編輯 (Swiss Essential)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">03</span><span class="text-truncate">概念 03. 瑞士編輯 (Swiss Essential)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/03-swiss-essential/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="LoginDemoCode/04-nature-retreat/index.html" data-name="Code 概念 04. 自然療癒 (Nature Retreat)" onclick="loadProduct('LoginDemoCode/04-nature-retreat/index.html', 'Code 概念 04. 自然療癒 (Nature Retreat)', 'Code', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">04</span><span class="text-truncate">概念 04. 自然療癒 (Nature Retreat)</span></div>
+                            <div class="nav-item-actions"><a href="LoginDemoCode/04-nature-retreat/index.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==================== 4. 振興醫院專屬風格庫 (17 款) ==================== -->
+                <div class="nav-group" data-tool-group="hospital">
+                    <div class="nav-group-header" onclick="toggleGroup(this)">
+                        <div class="nav-group-title">
+                            <span class="badge badge-hospital">院內風格</span>
+                            <span>振興醫院特定專案風格庫 (17 款)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-dark border border-secondary text-white-50">17</span>
+                            <i class="bi bi-chevron-down chevron"></i>
+                        </div>
+                    </div>
+                    <div class="nav-group-items">
+                        <button type="button" class="nav-item-btn" data-url="home-preview.html" data-name="★ 振興醫院 ESS 員工入口交互原型 (home-preview.html)" onclick="loadProduct('home-preview.html', '★ 振興醫院 ESS 員工入口交互原型', 'Hospital', this)">
+                            <div class="nav-item-title">
+                                <span class="badge-star">原型</span>
+                                <span class="text-truncate">★ ESS 員工入口交互原型 (完整功能)</span>
+                            </div>
+                            <div class="nav-item-actions"><a href="home-preview.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/original-home.html" data-name="振興醫院原始登入頁 (original-home.html)" onclick="loadProduct('styles/original-home.html', '振興醫院原始登入頁', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">00</span><span class="text-truncate">原始登入頁 (original-home.html)</span></div>
+                            <div class="nav-item-actions"><a href="styles/original-home.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style1.html" data-name="風格一：飯店雙欄 (Hotel Split)" onclick="loadProduct('styles/style1.html', '風格一：飯店雙欄 (Hotel Split)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">01</span><span class="text-truncate">風格一：飯店雙欄 (Hotel Split)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style1.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style2.html" data-name="風格二：玻璃擬態 (Glassmorphism)" onclick="loadProduct('styles/style2.html', '風格二：玻璃擬態 (Glassmorphism)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">02</span><span class="text-truncate">風格二：玻璃擬態 (Glassmorphism)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style2.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style3.html" data-name="風格三：極簡中央 (Minimal Center)" onclick="loadProduct('styles/style3.html', '風格三：極簡中央 (Minimal Center)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">03</span><span class="text-truncate">風格三：極簡中央 (Minimal Center)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style3.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style4.html" data-name="風格四：便當格儀表板 (Bento Grid)" onclick="loadProduct('styles/style4.html', '風格四：便當格儀表板 (Bento Grid)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">04</span><span class="text-truncate">風格四：便當格儀表板 (Bento Grid)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style4.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style5.html" data-name="風格五：深色豪華 (Dark Luxury)" onclick="loadProduct('styles/style5.html', '風格五：深色豪華 (Dark Luxury)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">05</span><span class="text-truncate">風格五：深色豪華 (Dark Luxury)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style5.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style6.html" data-name="風格六：臨床編輯室 (Clinical Editorial)" onclick="loadProduct('styles/style6.html', '風格六：臨床編輯室 (Clinical Editorial)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">06</span><span class="text-truncate">風格六：臨床編輯室 (Clinical Editorial)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style6.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style7.html" data-name="風格七：療癒庭院 (Healing Garden)" onclick="loadProduct('styles/style7.html', '風格七：療癒庭院 (Healing Garden)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">07</span><span class="text-truncate">風格七：療癒庭院 (Healing Garden)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style7.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style8.html" data-name="風格八：瑞士訊號 (Swiss Signal)" onclick="loadProduct('styles/style8.html', '風格八：瑞士訊號 (Swiss Signal)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">08</span><span class="text-truncate">風格八：瑞士訊號 (Swiss Signal)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style8.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style9.html" data-name="風格九：液態玻璃 (Liquid Glass)" onclick="loadProduct('styles/style9.html', '風格九：液態玻璃 (Liquid Glass)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">09</span><span class="text-truncate">風格九：液態玻璃 (Liquid Glass)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style9.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style10.html" data-name="風格十：空間分層 (Spatial Layering)" onclick="loadProduct('styles/style10.html', '風格十：空間分層 (Spatial Layering)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">10</span><span class="text-truncate">風格十：空間分層 (Spatial Layering)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style10.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style11.html" data-name="風格十一：柔和觸感 (Soft Tactile)" onclick="loadProduct('styles/style11.html', '風格十一：柔和觸感 (Soft Tactile)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">11</span><span class="text-truncate">風格十一：柔和觸感 (Soft Tactile)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style11.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style12.html" data-name="風格十二：現代新粗獷 (Neo-Brutalist)" onclick="loadProduct('styles/style12.html', '風格十二：現代新粗獷 (Neo-Brutalist)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">12</span><span class="text-truncate">風格十二：現代新粗獷 (Neo-Brutalist)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style12.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style13.html" data-name="風格十三：字體優先 (Typography First)" onclick="loadProduct('styles/style13.html', '風格十三：字體優先 (Typography First)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">13</span><span class="text-truncate">風格十三：字體優先 (Typography First)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style13.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                        <button type="button" class="nav-item-btn" data-url="styles/style14.html" data-name="風格十四：滿版劇場 (Full-bleed Theater)" onclick="loadProduct('styles/style14.html', '風格十四：滿版劇場 (Full-bleed Theater)', 'Hospital', this)">
+                            <div class="nav-item-title"><span class="nav-item-num">14</span><span class="text-truncate">風格十四：滿版劇場 (Full-bleed Theater)</span></div>
+                            <div class="nav-item-actions"><a href="styles/style14.html" target="_blank" class="open-external" title="新分頁開啟" onclick="event.stopPropagation()"><i class="bi bi-box-arrow-up-right"></i></a></div>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 側欄底部控制列 -->
+            <div class="sidebar-footer">
+                <div>共 <strong id="visibleCount" class="text-white">78</strong> 個設計原型</div>
+                <div class="d-flex gap-2">
+                    <button type="button" onclick="expandAllGroups()">展開全部</button>
+                    <span>·</span>
+                    <button type="button" onclick="collapseAllGroups()">收合全部</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ==================== 右側展示與操作視窗 ==================== -->
+        <main id="content-area">
+            <!-- 頂部操作條 -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button id="sidebarToggle" class="btn btn-outline-light btn-sm px-2" onclick="toggleSidebar()" title="切換選單">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm border-secondary text-info px-2" onclick="showHubDashboard()" title="回到整合總覽大廳">
+                        <i class="bi bi-house-door-fill"></i>
+                    </button>
+                    <div class="current-product-name" id="displayTitle">
+                        <span id="toolBadge" class="badge badge-agy">Agy</span>
+                        <span id="titleText">載入中...</span>
+                    </div>
+                    <span id="currentUrlText" class="current-url-text d-none d-lg-inline-block">/</span>
+                </div>
+
+                <!-- 頂部工具按鈕組 -->
+                <div class="topbar-right">
+                    <!-- 上一款 / 下一款快捷切換 -->
+                    <div class="btn-group btn-group-sm me-1" role="group">
+                        <button type="button" class="btn btn-outline-secondary text-white" onclick="prevProduct()" title="前一個設計 (鍵盤 Left)">
+                            <i class="bi bi-arrow-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary text-white" onclick="nextProduct()" title="後一個設計 (鍵盤 Right)">
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- 裝置模擬切換按鈕群 -->
+                    <div class="btn-group btn-group-sm viewport-btn-group d-none d-sm-flex" role="group">
+                        <button type="button" class="btn btn-dark active" onclick="setViewWidth('100%', this)" title="桌機滿版 (100%)">
+                            <i class="bi bi-display me-1"></i>滿版
+                        </button>
+                        <button type="button" class="btn btn-dark" onclick="setViewWidth('1200px', this)" title="筆電寬度 (1200px)">
+                            <i class="bi bi-laptop me-1"></i>筆電
+                        </button>
+                        <button type="button" class="btn btn-dark" onclick="setViewWidth('768px', this)" title="平板寬度 (768px)">
                             <i class="bi bi-tablet me-1"></i>平板
                         </button>
-                        <button type="button" class="btn btn-dark" onclick="setIframeWidth('375px', this)" title="手機寬度 (375px)">
+                        <button type="button" class="btn btn-dark" onclick="setViewWidth('375px', this)" title="手機寬度 (375px)">
                             <i class="bi bi-phone me-1"></i>手機
                         </button>
                     </div>
 
-                    <!-- 動作按鈕 -->
-                    <div class="d-flex align-items-center gap-2">
-                        <button class="btn btn-outline-light btn-sm py-1" onclick="reloadIframe()" title="重新整理">
-                            <i class="bi bi-arrow-clockwise"></i>
-                        </button>
-                        <a href="#" id="openNewTabBtn" target="_blank" class="btn btn-outline-info btn-sm py-1">
-                            <i class="bi bi-box-arrow-up-right me-1"></i>新分頁開啟
-                        </a>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- 重新整理 -->
+                    <button class="btn btn-outline-secondary btn-sm text-white" onclick="reloadViewer()" title="重新整理當前原型">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+
+                    <!-- 新分頁獨立開啟 -->
+                    <a href="#" id="openTabBtn" target="_blank" class="btn btn-info btn-sm fw-bold text-dark text-nowrap">
+                        新分頁開啟 <i class="bi bi-box-arrow-up-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 網頁嵌入即時觀看區 -->
+            <div class="viewer-container">
+                <!-- 載入中 Spinner -->
+                <div class="viewer-loading" id="viewerLoading">
+                    <div class="spinner-border text-info mb-2" role="status"></div>
+                    <span class="small text-white-50">載入設計原型中...</span>
+                </div>
+
+                <!-- 嵌入 iframe -->
+                <iframe id="productViewer" src="about:blank"></iframe>
+
+                <!-- 整合總覽儀表板面板 (當點選首頁或總覽時展示) -->
+                <div class="hub-welcome-panel" id="hubDashboardPanel">
+                    <div class="hub-hero-card">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 pb-3 border-bottom border-secondary mb-4">
+                            <div>
+                                <span class="brand-pill mb-2"><i class="bi bi-hospital"></i> 振興醫院資訊服務設計展</span>
+                                <h1 class="h3 fw-bold text-white mb-1">三大工具設計成果全整合大廳</h1>
+                                <p class="text-muted mb-0">彙整 Google Antigravity、Claude Code、Codex/Code 三大 AI 輔助設計所產出之 78 款網頁原型。</p>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary fs-6 px-3 py-2"><i class="bi bi-check-circle-fill me-1"></i> 78 款全部收錄</span>
+                                <span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-laptop me-1"></i> 100% 本機可用</span>
+                            </div>
+                        </div>
+
+                        <!-- 統計與導覽矩陣卡片 -->
+                        <div class="tool-matrix-grid">
+                            <!-- Agy -->
+                            <div class="tool-stat-card" onclick="selectFirstInGroup('agy')">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="badge badge-agy fs-6">Google Antigravity</span>
+                                    <span class="badge bg-dark border border-info text-info">11 款</span>
+                                </div>
+                                <h4 class="h5 fw-bold text-white mb-2">醫療湛藍與資訊戰情</h4>
+                                <p class="small text-muted mb-3">包含 10 款兼顧醫療、戰情、瑞士網格與無障礙觸控的完整前端原型，以及完整選型決策矩陣。</p>
+                                <div class="d-flex align-items-center justify-content-between text-info small fw-bold">
+                                    <span>立即瀏覽 Agy 作品</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- CC -->
+                            <div class="tool-stat-card" onclick="selectFirstInGroup('cc')">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="badge badge-cc fs-6">Claude Code</span>
+                                    <span class="badge bg-dark border border-success text-success">23 款</span>
+                                </div>
+                                <h4 class="h5 fw-bold text-white mb-2">ESS 雙欄主版與多元入口</h4>
+                                <p class="small text-muted mb-3">包含 ESS 主版系統、10 款入口首頁 (中央聚焦、左右分割、狀態看板) 及 10 款特色風格 (終端機、粗野主義等)。</p>
+                                <div class="d-flex align-items-center justify-content-between text-success small fw-bold">
+                                    <span>立即瀏覽 CC 作品</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Code -->
+                            <div class="tool-stat-card" onclick="selectFirstInGroup('code')">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="badge badge-code fs-6">Codex / Code</span>
+                                    <span class="badge bg-dark border border-primary" style="color:#a78bfa">27 款</span>
+                                </div>
+                                <h4 class="h5 fw-bold text-white mb-2">多系統共用入口與選型決策</h4>
+                                <p class="small text-muted mb-3">包含決策選型中心、節慶外觀模組、10 款共用入口首頁、10 款登入頁及 4 款早期概念探索。</p>
+                                <div class="d-flex align-items-center justify-content-between small fw-bold" style="color:#a78bfa">
+                                    <span>立即瀏覽 Code 作品</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Hospital Styles -->
+                            <div class="tool-stat-card" onclick="selectFirstInGroup('hospital')">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="badge badge-hospital fs-6">院內風格庫</span>
+                                    <span class="badge bg-dark border border-warning text-warning">17 款</span>
+                                </div>
+                                <h4 class="h5 fw-bold text-white mb-2">振興醫院專屬主題系列</h4>
+                                <p class="small text-muted mb-3">涵蓋飯店雙欄、玻璃擬態、極簡、便當格、深色豪華、臨床編輯室、滿版劇場等 14 款專屬風格與原創原型。</p>
+                                <div class="d-flex align-items-center justify-content-between text-warning small fw-bold">
+                                    <span>立即瀏覽院內風格</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 推薦亮點快速捷徑 -->
+                        <div class="mt-4 pt-3 border-top border-secondary">
+                            <div class="fw-bold text-white-50 small mb-2"><i class="bi bi-stars text-warning me-1"></i> 精選代表作品推薦直接看：</div>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('LoginDemoCC/index.html')">★ CC ESS 雙欄主版核心</button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('LoginDemoCode/decision.html')">★ Code 選型決策中心</button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('LoginDemoAgy/01-medical-flagship/index.html')">Agy 醫療湛藍旗艦</button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('LoginDemoCC/designs/03-terminal.html')">CC 終端機風格</button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('LoginDemoCode/portal-03-night-command/index.html')">Code 夜班指揮共用入口</button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('LoginDemoCode/seasonal.html')">Code 節慶換膚外觀模組</button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickLoad('styles/style14.html')">風格十四：滿版劇場</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Iframe 視窗區域 -->
-                <div class="preview-iframe-wrapper">
-                    <iframe id="previewIframe" class="preview-iframe" src="about:blank"></iframe>
-                </div>
-
             </div>
-        </div>
+        </main>
     </div>
 
-    <!-- 頁尾 -->
-    <footer class="text-center py-4 text-white-50 small border-top border-secondary border-opacity-25 mt-5">
-        <div class="container">
-            <div>振興醫療財團法人振興醫院 Cheng Hsin General Hospital · 登入介面設計大廳</div>
-            <div class="mt-1">
-                整合索引：LoginDemoAgy (10款) ｜ LoginDemoCC (主版+雙專區) ｜ LoginDemoCode (決策+畫廊)
-            </div>
-        </div>
-    </footer>
-
-    <!-- 函式庫與控制邏輯 -->
     <!-- 函式庫（CDN優先，本機為備援） -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="assets/libs/jquery/jquery.min.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>window.bootstrap || document.write('<script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"><\/script>');</script>
+
     <script>
-        var previewModal = null;
-        $(function () {
-            previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+        let currentUrl = '';
+        let currentTitle = '';
+        let currentTool = '';
 
-            // 1. 分類標籤篩選
-            $('#filterGroup button').on('click', function () {
-                var filter = $(this).data('filter');
-                $('#filterGroup button').removeClass('active btn-info').addClass('btn-outline-info');
-                $(this).addClass('active btn-info').removeClass('btn-outline-info');
+        function loadProduct(url, title, tool, btn) {
+            hideHubDashboard();
+            $('#viewerLoading').addClass('active');
 
-                if (filter === 'all') {
-                    $('.demo-card').show();
-                } else {
-                    $('.demo-card').hide();
-                    $('.demo-card[data-category="' + filter + '"]').fadeIn(200);
-                }
-            });
+            currentUrl = url;
+            currentTitle = title;
+            currentTool = tool || detectTool(url);
 
-            // 2. 關鍵字即時搜尋
-            $('#searchInput').on('input', function () {
-                var q = $.trim($(this).val()).toLowerCase();
-                if (!q) {
-                    $('#filterGroup button.active').trigger('click');
-                    return;
-                }
-                $('.demo-card').each(function () {
-                    var title = ($(this).data('title') || '').toLowerCase();
-                    if (title.indexOf(q) !== -1) {
+            $('#productViewer').attr('src', url);
+            $('#titleText').text(title);
+            $('#currentUrlText').text(url);
+            $('#openTabBtn').attr('href', url);
+
+            updateToolBadge(currentTool);
+
+            $('.nav-item-btn').removeClass('active');
+            if (btn) {
+                $(btn).addClass('active');
+            } else {
+                $('.nav-item-btn[data-url="' + url + '"]').addClass('active');
+            }
+
+            window.location.hash = encodeURIComponent(url);
+
+            if ($(window).width() <= 860) {
+                $('#sidebar').removeClass('open');
+            }
+        }
+
+        function onIframeLoaded() {
+            $('#viewerLoading').removeClass('active');
+        }
+
+        function detectTool(url) {
+            if (url.startsWith('LoginDemoAgy')) return 'Agy';
+            if (url.startsWith('LoginDemoCC')) return 'CC';
+            if (url.startsWith('LoginDemoCode')) return 'Code';
+            return 'Hospital';
+        }
+
+        function updateToolBadge(tool) {
+            const $b = $('#toolBadge');
+            $b.removeClass('badge-agy badge-cc badge-code badge-hospital');
+            if (tool === 'Agy') {
+                $b.addClass('badge-agy').text('Antigravity');
+            } else if (tool === 'CC') {
+                $b.addClass('badge-cc').text('Claude Code');
+            } else if (tool === 'Code') {
+                $b.addClass('badge-code').text('Codex / Code');
+            } else {
+                $b.addClass('badge-hospital').text('院內風格庫');
+            }
+        }
+
+        function showHubDashboard(btn) {
+            $('#hubDashboardPanel').addClass('active');
+            $('#titleText').text('★ 三大工具設計成果全整合大廳');
+            $('#currentUrlText').text('Hub Overview');
+            $('#openTabBtn').attr('href', '#');
+            updateToolBadge('Hospital');
+
+            $('.nav-item-btn').removeClass('active');
+            if (btn) $(btn).addClass('active');
+            else $('#btnHubOverview').addClass('active');
+
+            if ($(window).width() <= 860) {
+                $('#sidebar').removeClass('open');
+            }
+        }
+
+        function hideHubDashboard() {
+            $('#hubDashboardPanel').removeClass('active');
+        }
+
+        function setViewWidth(width, btn) {
+            const $viewer = $('#productViewer');
+            $viewer.css('width', width);
+            if (width === '100%') {
+                $viewer.removeClass('device-sim');
+            } else {
+                $viewer.addClass('device-sim');
+            }
+            $('.viewport-btn-group button').removeClass('active');
+            if (btn) $(btn).addClass('active');
+        }
+
+        function reloadViewer() {
+            const src = $('#productViewer').attr('src');
+            if (src && src !== 'about:blank') {
+                $('#viewerLoading').addClass('active');
+                $('#productViewer').attr('src', src);
+            }
+        }
+
+        function toggleSidebar() {
+            $('#sidebar').toggleClass('open');
+        }
+
+        function toggleGroup(header) {
+            $(header).closest('.nav-group').toggleClass('collapsed');
+        }
+
+        function expandAllGroups() {
+            $('.nav-group').removeClass('collapsed');
+        }
+
+        function collapseAllGroups() {
+            $('.nav-group').addClass('collapsed');
+        }
+
+        function filterByTool(tool, tabBtn) {
+            $('.filter-tab-btn').removeClass('active');
+            $(tabBtn).addClass('active');
+
+            if (tool === 'all') {
+                $('.nav-group').show();
+            } else {
+                $('.nav-group').hide();
+                $('.nav-group[data-tool-group="' + tool + '"]').show().removeClass('collapsed');
+            }
+            updateVisibleCount();
+        }
+
+        function handleSearch(query) {
+            const q = query.trim().toLowerCase();
+            const $clearBtn = $('#clearSearchBtn');
+
+            if (q.length > 0) {
+                $clearBtn.show();
+                expandAllGroups();
+
+                let visibleTotal = 0;
+                $('.nav-group').each(function() {
+                    let groupHasMatch = false;
+                    $(this).find('.nav-item-btn').each(function() {
+                        const name = $(this).attr('data-name') || '';
+                        const url = $(this).attr('data-url') || '';
+                        const text = (name + ' ' + url).toLowerCase();
+
+                        if (text.includes(q)) {
+                            $(this).show();
+                            groupHasMatch = true;
+                            visibleTotal++;
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    if (groupHasMatch) {
                         $(this).show();
                     } else {
                         $(this).hide();
                     }
                 });
-            });
+
+                $('#visibleCount').text(visibleTotal);
+            } else {
+                $clearBtn.hide();
+                $('.nav-item-btn').show();
+                const currentTab = $('.filter-tab-btn.active').attr('data-tool') || 'all';
+                filterByTool(currentTab, $('.filter-tab-btn[data-tool="' + currentTab + '"]'));
+            }
+        }
+
+        function clearSearch() {
+            $('#searchInput').val('');
+            handleSearch('');
+        }
+
+        function updateVisibleCount() {
+            const count = $('.nav-item-btn:visible').not('#btnHubOverview').length;
+            $('#visibleCount').text(count);
+        }
+
+        function quickLoad(url) {
+            const $btn = $('.nav-item-btn[data-url="' + url + '"]');
+            if ($btn.length) {
+                $btn.trigger('click');
+                $btn.closest('.nav-group').removeClass('collapsed').show();
+            }
+        }
+
+        function selectFirstInGroup(toolGroup) {
+            const $group = $('.nav-group[data-tool-group="' + toolGroup + '"]').first();
+            $group.removeClass('collapsed').show();
+            const $first = $group.find('.nav-item-btn').first();
+            if ($first.length) {
+                $first.trigger('click');
+            }
+        }
+
+        function prevProduct() {
+            const visibleItems = $('.nav-item-btn:visible').not('#btnHubOverview');
+            const currentIndex = visibleItems.index($('.nav-item-btn.active'));
+            if (currentIndex > 0) {
+                visibleItems.eq(currentIndex - 1).trigger('click');
+            } else if (visibleItems.length > 0) {
+                visibleItems.last().trigger('click');
+            }
+        }
+
+        function nextProduct() {
+            const visibleItems = $('.nav-item-btn:visible').not('#btnHubOverview');
+            const currentIndex = visibleItems.index($('.nav-item-btn.active'));
+            if (currentIndex >= 0 && currentIndex < visibleItems.length - 1) {
+                visibleItems.eq(currentIndex + 1).trigger('click');
+            } else if (visibleItems.length > 0) {
+                visibleItems.first().trigger('click');
+            }
+        }
+
+        $(document).on('keydown', function(e) {
+            if ($(e.target).is('input, textarea')) return;
+            if (e.key === 'ArrowLeft') {
+                prevProduct();
+            } else if (e.key === 'ArrowRight') {
+                nextProduct();
+            }
         });
 
-        // 開啟 Modal 即時預覽
-        function openPreviewModal(url, title) {
-            $('#previewModalLabel').text(title);
-            $('#openNewTabBtn').attr('href', url);
-            $('#previewIframe').attr('src', url);
-            // 重設寬度為 100%
-            setIframeWidth('100%', $('.preview-toolbar .btn-group button:first-child')[0]);
-            previewModal.show();
-        }
+        $(function() {
+            $('#productViewer').on('load', onIframeLoaded);
+            updateVisibleCount();
 
-        // 切換 Iframe 寬度 (桌機/平板/手機)
-        function setIframeWidth(width, btn) {
-            $('#previewIframe').css('width', width);
-            $('.preview-toolbar .btn-group button').removeClass('active text-info');
-            if (btn) $(btn).addClass('active text-info');
-        }
+            if (window.location.hash) {
+                const hashUrl = decodeURIComponent(window.location.hash.substring(1));
+                const $target = $('.nav-item-btn[data-url="' + hashUrl + '"]');
+                if ($target.length) {
+                    $target.trigger('click');
+                    $target.closest('.nav-group').removeClass('collapsed');
+                    return;
+                }
+            }
 
-        // 重新載入 Iframe
-        function reloadIframe() {
-            var src = $('#previewIframe').attr('src');
-            $('#previewIframe').attr('src', src);
-        }
-
-        // Modal 關閉時卸載 Iframe 節省資源
-        document.getElementById('previewModal').addEventListener('hidden.bs.modal', function () {
-            $('#previewIframe').attr('src', 'about:blank');
+            showHubDashboard();
         });
     </script>
 </body>

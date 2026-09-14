@@ -1,6 +1,7 @@
 /**
  * LoginDemoAgy - Common Interactive Engine for Multi-System Shared Portal
  * 包含完整情境展示器、表單驗證、雙登入情境處理、無登入報修、以及防探測錯誤機制
+ * 新增：模組化節日主題系統 (Modular Seasonal Themes) 與 背景優先沉浸模式 (Background-First Mode)
  */
 (function ($) {
     'use strict';
@@ -10,12 +11,17 @@
         scenario: 'NORMAL',          // NORMAL | INCIDENT | AUTH_FAIL | SERVICE_DOWN | TIMEOUT
         entryMode: 'DIRECT',         // DIRECT (直接開啟入口) | TARGET_REDIRECT (由特定系統導向)
         targetSystem: 'CHGH-HRM',    // 目標系統代碼 (CHGH-HRM / CHGH-HIS / CHGH-ERP)
-        userHasPermission: true      // 模擬使用者是否具備目標系統授權
+        userHasPermission: true,     // 模擬使用者是否具備目標系統授權
+        holidayTheme: 'default',     // default | spring-festival | mid-autumn | christmas | nurse-day
+        backgroundFirst: false       // 是否開啟背景優先沉浸模式 (點選後再展開次要資料)
     };
 
     $(function () {
         var data = window.LoginPortalData;
         if (!data) return;
+
+        // 0. 動態注入「節日主題切換」與「背景優先沉浸模式」到頂部情境列
+        initHolidayControls();
 
         // 1. 密碼眼睛顯示/隱藏切換
         $(document).on('click', '.btn-toggle-pwd', function () {
@@ -156,6 +162,109 @@
             $btn.text(window.CurrentDemoState.userHasPermission ? '權限狀態：有權限' : '權限狀態：無權限(示範)');
             $btn.toggleClass('btn-outline-success btn-outline-danger');
         });
+
+        // 4. 節日主題切換邏輯
+        $(document).on('change', '#selectHolidayTheme', function () {
+            var themeId = $(this).val();
+            window.CurrentDemoState.holidayTheme = themeId;
+            applyHolidayTheme(themeId);
+        });
+
+        // 5. 背景圖優先沉浸模式切換邏輯 ("把一些資料都藏起來只顯示一些必須要的登入資訊，其他都是點選後再展開")
+        $(document).on('click', '#btnToggleBackgroundFirst', function () {
+            window.CurrentDemoState.backgroundFirst = !window.CurrentDemoState.backgroundFirst;
+            applyBackgroundFirstMode();
+        });
+
+        // 次要資訊展開模態框關閉重置等支援
+        $(document).on('click', '.btn-expand-secondary-modal', function (e) {
+            e.preventDefault();
+            var targetModalId = $(this).data('modal-target');
+            if (targetModalId && $(targetModalId).length) {
+                var m = new bootstrap.Modal(document.querySelector(targetModalId));
+                m.show();
+            }
+        });
+
+        function initHolidayControls() {
+            var $ctrl = $('.portal-scenario-controller');
+            if (!$ctrl.length) return;
+
+            // 構建節日主題下拉選單
+            var themes = data.holidayThemes || [];
+            var selectHtml = '<select id="selectHolidayTheme" class="form-select form-select-sm d-inline-block w-auto ms-1 me-2">';
+            for (var i = 0; i < themes.length; i++) {
+                var t = themes[i];
+                selectHtml += '<option value="' + t.id + '">' + t.name + '</option>';
+            }
+            selectHtml += '</select>';
+
+            var holidayControlHtml = 
+                '<div class="d-flex align-items-center gap-1 border-start border-secondary ps-2 ms-2 flex-wrap">' +
+                '  <span class="text-info fw-semibold"><i class="bi bi-gift-fill me-1"></i>節日主題：</span>' +
+                   selectHtml +
+                '  <button type="button" id="btnToggleBackgroundFirst" class="btn btn-sm btn-outline-info py-0" title="點選後隱藏次要資料，以節日背景圖為主，其他點選展開">' +
+                '    <i class="bi bi-image me-1"></i>背景圖優先模式: <b>關閉</b>' +
+                '  </button>' +
+                '</div>';
+
+            // 插入至右上控制區
+            var $rightGroup = $ctrl.children().last();
+            $rightGroup.append(holidayControlHtml);
+
+            // 在登入卡片底部插入「背景優先模式下的點選展開次要資訊條」
+            var $loginForm = $('form.portal-login-form');
+            if ($loginForm.length && !$('.immersive-info-toggle-bar').length) {
+                var expandBarHtml = 
+                    '<div class="immersive-info-toggle-bar animate__animated animate__fadeIn">' +
+                    '  <button type="button" class="btn-glass-expand" data-bs-toggle="modal" data-bs-target="#modal-faqs">' +
+                    '    <i class="bi bi-bell-fill me-1 text-warning"></i>展開最新公告與維護' +
+                    '  </button>' +
+                    '  <button type="button" class="btn-glass-expand" data-bs-toggle="modal" data-bs-target="#modal-ticket">' +
+                    '    <i class="bi bi-headset me-1 text-info"></i>資訊室求助與狀態' +
+                    '  </button>' +
+                    '  <button type="button" class="btn-glass-expand" data-bs-toggle="modal" data-bs-target="#modal-permission">' +
+                    '    <i class="bi bi-shield-check me-1 text-success"></i>權限申請手冊' +
+                    '  </button>' +
+                    '</div>';
+                $loginForm.closest('.portal-card-main, .center-login-card, [class*="col-"]:has(.portal-login-form)').append(expandBarHtml);
+            }
+        }
+
+        function applyHolidayTheme(themeId) {
+            $('body').attr('data-holiday-theme', themeId);
+
+            var themeObj = (data.holidayThemes || []).find(function(t) { return t.id === themeId; });
+            $('.holiday-banner-pill').remove();
+
+            if (themeId !== 'default' && themeObj) {
+                var bannerHtml = 
+                    '<div class="holiday-banner-pill animate__animated animate__fadeInDown">' +
+                    '  <i class="bi bi-stars"></i> ' + themeObj.greeting +
+                    '</div>';
+                
+                // 插入於表單或主要標題上方
+                var $formParent = $('form.portal-login-form').parent();
+                if ($formParent.length) {
+                    $formParent.prepend(bannerHtml);
+                }
+            }
+        }
+
+        function applyBackgroundFirstMode() {
+            var isBgFirst = window.CurrentDemoState.backgroundFirst;
+            var $btn = $('#btnToggleBackgroundFirst');
+
+            if (isBgFirst) {
+                $('body').addClass('mode-background-first');
+                $btn.removeClass('btn-outline-info').addClass('btn-info text-dark fw-bold')
+                    .html('<i class="bi bi-image-fill me-1"></i>背景圖優先模式: <b>開啟</b>');
+            } else {
+                $('body').removeClass('mode-background-first');
+                $btn.addClass('btn-outline-info').removeClass('btn-info text-dark fw-bold')
+                    .html('<i class="bi bi-image me-1"></i>背景圖優先模式: <b>關閉</b>');
+            }
+        }
 
         function applyDemoScenario() {
             var st = window.CurrentDemoState;

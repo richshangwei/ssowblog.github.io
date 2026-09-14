@@ -7,6 +7,14 @@
     --agy-gray-bg: #f8fafc;
     --agy-text-main: #1e293b;
     --agy-border-subtle: #e2e8f0;
+
+    /* 節日主題動態變數 (預設：標準平日院區風格) */
+    --holiday-primary: #073b66;
+    --holiday-accent: #0077b6;
+    --holiday-card-bg: rgba(255, 255, 255, 0.96);
+    --holiday-card-border: #e2e8f0;
+    --holiday-badge-bg: #073b66;
+    --holiday-badge-text: #ffffff;
 }
 
 /* 頂部主管情境切換列 (Director Scenario Controller) */
@@ -14,7 +22,7 @@
     background-color: #09131f;
     color: #e2e8f0;
     font-size: 0.8rem;
-    padding: 0.4rem 1rem;
+    padding: 0.45rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     z-index: 1050;
     position: relative;
@@ -22,6 +30,18 @@
 .portal-scenario-controller .scenario-label {
     color: #38bdf8;
     font-weight: 700;
+}
+.portal-scenario-controller select.form-select-sm {
+    font-size: 0.76rem;
+    padding: 0.2rem 0.6rem;
+    height: auto;
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-color: #475569;
+}
+.portal-scenario-controller select.form-select-sm:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.25);
 }
 
 /* 重大異常橫幅 (可在登入前直接看見) */
@@ -69,4 +89,254 @@
 }
 .portal-card:hover {
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* ==========================================================================
+   節日主題模組化系統 (Modular Seasonal / Holiday Themes Engine)
+   支援自訂背景插畫、色彩光影、節日祝賀膠囊與背景為主之沉浸模式
+   ========================================================================== */
+
+/* 節日主題祝賀橫幅/膠囊提示 */
+.holiday-banner-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.95rem;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: var(--holiday-badge-bg);
+    color: var(--holiday-badge-text);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    transition: all 0.3s ease;
+}
+
+/* 節日主題：春節 / 新春 (Spring Festival) */
+body[data-holiday-theme="spring-festival"] {
+    --holiday-primary: #b91c1c;
+    --holiday-accent: #f59e0b;
+    --holiday-card-bg: rgba(255, 255, 255, 0.94);
+    --holiday-card-border: rgba(245, 158, 11, 0.4);
+    --holiday-badge-bg: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+    --holiday-badge-text: #fef08a;
+    background-color: #450a0a !important;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.28) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.35) 0%, transparent 45%),
+        linear-gradient(135deg, #7f1d1d 0%, #450a0a 55%, #1c0303 100%) !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+}
+body[data-holiday-theme="spring-festival"] .header-brand-bar {
+    background: rgba(69, 10, 10, 0.88) !important;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.35) !important;
+    color: #ffffff !important;
+}
+body[data-holiday-theme="spring-festival"] .header-brand-bar .text-dark {
+    color: #fef08a !important;
+}
+body[data-holiday-theme="spring-festival"] .header-brand-bar .text-muted {
+    color: #fca5a5 !important;
+}
+body[data-holiday-theme="spring-festival"] .btn-portal-primary,
+body[data-holiday-theme="spring-festival"] .btn-center-submit {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    border-color: #f59e0b !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.45) !important;
+}
+
+/* 節日主題：中秋佳節 (Mid-Autumn Moon Festival) */
+body[data-holiday-theme="mid-autumn"] {
+    --holiday-primary: #1e3a8a;
+    --holiday-accent: #fbbf24;
+    --holiday-card-bg: rgba(15, 23, 42, 0.90);
+    --holiday-card-border: rgba(251, 191, 36, 0.35);
+    --holiday-badge-bg: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    --holiday-badge-text: #fef08a;
+    background-color: #030712 !important;
+    background-image: 
+        radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.5) 0%, rgba(251, 191, 36, 0.12) 30%, transparent 65%),
+        radial-gradient(circle at 15% 85%, rgba(30, 58, 138, 0.45) 0%, transparent 55%),
+        linear-gradient(135deg, #0f172a 0%, #030712 100%) !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    color: #e2e8f0;
+}
+body[data-holiday-theme="mid-autumn"] .header-brand-bar {
+    background: rgba(15, 23, 42, 0.92) !important;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.3) !important;
+    color: #ffffff !important;
+}
+body[data-holiday-theme="mid-autumn"] .header-brand-bar .text-dark {
+    color: #fbbf24 !important;
+}
+body[data-holiday-theme="mid-autumn"] .header-brand-bar .text-muted {
+    color: #94a3b8 !important;
+}
+body[data-holiday-theme="mid-autumn"] .portal-card-main,
+body[data-holiday-theme="mid-autumn"] .center-login-card {
+    background: rgba(15, 23, 42, 0.90) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(251, 191, 36, 0.3) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+}
+body[data-holiday-theme="mid-autumn"] .portal-card-main .text-dark,
+body[data-holiday-theme="mid-autumn"] .center-login-card .text-dark {
+    color: #f8fafc !important;
+}
+body[data-holiday-theme="mid-autumn"] .btn-portal-primary,
+body[data-holiday-theme="mid-autumn"] .btn-center-submit {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+    border-color: #fbbf24 !important;
+    color: #ffffff !important;
+}
+
+/* 節日主題：聖誕與年終慶 (Christmas & Year-End) */
+body[data-holiday-theme="christmas"] {
+    --holiday-primary: #064e3b;
+    --holiday-accent: #e11d48;
+    --holiday-card-bg: rgba(255, 255, 255, 0.94);
+    --holiday-card-border: rgba(6, 78, 59, 0.25);
+    --holiday-badge-bg: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    --holiday-badge-text: #ffffff;
+    background-color: #022c22 !important;
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(225, 29, 72, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.28) 0%, transparent 45%),
+        linear-gradient(135deg, #064e3b 0%, #022c22 65%, #0b1512 100%) !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+}
+body[data-holiday-theme="christmas"] .header-brand-bar {
+    background: rgba(2, 44, 34, 0.92) !important;
+    border-bottom: 1px solid rgba(225, 29, 72, 0.35) !important;
+    color: #ffffff !important;
+}
+body[data-holiday-theme="christmas"] .header-brand-bar .text-dark {
+    color: #6ee7b7 !important;
+}
+body[data-holiday-theme="christmas"] .header-brand-bar .text-muted {
+    color: #a7f3d0 !important;
+}
+body[data-holiday-theme="christmas"] .btn-portal-primary,
+body[data-holiday-theme="christmas"] .btn-center-submit {
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4) !important;
+}
+
+/* 節日主題：國際護師節 / 院慶紀念 (Nurses Day & Anniversary) */
+body[data-holiday-theme="nurse-day"] {
+    --holiday-primary: #0284c7;
+    --holiday-accent: #0d9488;
+    --holiday-card-bg: rgba(255, 255, 255, 0.95);
+    --holiday-card-border: rgba(13, 148, 136, 0.25);
+    --holiday-badge-bg: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+    --holiday-badge-text: #ffffff;
+    background-color: #f0fdfa !important;
+    background-image: 
+        radial-gradient(circle at 20% 25%, rgba(13, 148, 136, 0.2) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(2, 132, 199, 0.2) 0%, transparent 50%),
+        linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 50%, #f0fdf4 100%) !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+}
+body[data-holiday-theme="nurse-day"] .header-brand-bar {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-bottom: 2px solid #0d9488 !important;
+}
+body[data-holiday-theme="nurse-day"] .btn-portal-primary,
+body[data-holiday-theme="nurse-day"] .btn-center-submit {
+    background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   沉浸模式 / 背景圖優先模式 (Immersive / Background-First Mode)
+   使用者需求：「把一些資料都藏起來只顯示一些必須要的登入資訊，
+   其他都是點選後再展開，否則都是背景圖為主的顯示。」
+   ========================================================================== */
+
+/* 當開啟背景優先模式時 */
+body.mode-background-first {
+    overflow-x: hidden;
+}
+
+/* 沉浸模式：隱藏非必要的巨大左右邊欄/公告區，登入卡片置中微浮 */
+body.mode-background-first main.container {
+    max-width: 580px !important;
+    margin-top: 2rem !important;
+    margin-bottom: 3rem !important;
+}
+
+/* 將 5:7 或多欄結構隱藏非登入欄位，讓背景大圖完整展現 */
+body.mode-background-first .row:has(.portal-login-form) > [class*="col-"]:not(:has(.portal-login-form)),
+body.mode-background-first .portal-secondary-content,
+body.mode-background-first .portal-side-rail,
+body.mode-background-first #tab-alerts,
+body.mode-background-first #tab-status,
+body.mode-background-first #tab-support,
+body.mode-background-first .matrix-section {
+    display: none !important;
+}
+
+/* 登入表單容器置中微浮 */
+body.mode-background-first .row:has(.portal-login-form) > [class*="col-"]:has(.portal-login-form) {
+    width: 100% !important;
+    max-width: 540px !important;
+    margin: 0 auto !important;
+}
+
+/* 登入卡片呈現通透磨砂玻璃效果，凸顯背景節日藝術 */
+body.mode-background-first .portal-card-main,
+body.mode-background-first .center-login-card,
+body.mode-background-first .portal-card {
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    background: var(--holiday-card-bg) !important;
+    border: 1px solid var(--holiday-card-border) !important;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35) !important;
+    border-radius: 16px !important;
+    transition: all 0.3s ease;
+}
+
+/* 背景優先模式下，次要資訊「點選後再展開」展開按鈕條 */
+.immersive-info-toggle-bar {
+    display: none;
+    margin-top: 1.25rem;
+    text-align: center;
+}
+body.mode-background-first .immersive-info-toggle-bar {
+    display: flex !important;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.btn-glass-expand {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+.btn-glass-expand:hover {
+    background: rgba(255, 255, 255, 0.45);
+    transform: translateY(-2px);
+    color: inherit;
+}
+body[data-holiday-theme="mid-autumn"] .btn-glass-expand,
+body[data-holiday-theme="spring-festival"] .btn-glass-expand {
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.25);
 }

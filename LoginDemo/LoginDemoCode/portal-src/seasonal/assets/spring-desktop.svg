@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" fill="none">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1460" y2="1100" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF9EC"/><stop offset=".56" stop-color="#FAF0DF"/><stop offset="1" stop-color="#F0DCCA"/></linearGradient>
+    <linearGradient id="red" x1="46" y1="107" x2="243" y2="277" gradientUnits="userSpaceOnUse"><stop stop-color="#BF4549"/><stop offset="1" stop-color="#8E2733"/></linearGradient>
+    <linearGradient id="fold" x1="0" y1="810" x2="920" y2="1120" gradientUnits="userSpaceOnUse"><stop stop-color="#AF353E"/><stop offset="1" stop-color="#D56D5B"/></linearGradient>
+    <radialGradient id="light" cx="0" cy="0" r="1" gradientTransform="translate(682 420) rotate(90) scale(612 830)" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFCF2"/><stop offset="1" stop-color="#FFFCF2" stop-opacity="0"/></radialGradient>
+    <g id="flower"><path d="M0-8C-24-41-39-6-13 5C-49 18-20 44-1 19C8 53 38 30 19 8C56 9 43-27 17-13C19-48-18-43 0-8Z" fill="#B43F45"/><circle r="6" cy="3" fill="#F7D79C"/><circle r="2" cy="3" fill="#8A5634"/></g>
+    <g id="smallFlower"><path d="M0-5C-13-25-26-7-10 2C-31 10-14 28-2 13C4 34 24 21 12 6C37 6 26-17 11-8C11-31-13-25 0-5Z" fill="#CF8276"/><circle r="4" cy="2" fill="#F9DEAB"/></g>
+  </defs>
+  <path fill="url(#paper)" d="M0 0h1600v1100H0z"/>
+  <path fill="url(#light)" d="M0 0h1600v1100H0z"/>
+  <path d="M-55 657C102 379 77 124 404-112" stroke="#E4C393" stroke-width="1.2" opacity=".6"/>
+  <path d="M-33 686C125 408 106 159 431-81" stroke="#E4C393" stroke-width="1.2" opacity=".38"/>
+  <path d="M1555-84C1530 206 1808 380 1579 739" stroke="#E4C393" stroke-width="1.2" opacity=".55"/>
+  <path d="M1534-89C1506 196 1784 375 1557 728" stroke="#E4C393" stroke-width="1.2" opacity=".35"/>
+  <path d="M707 0v160M641 0v160" stroke="#B68347" stroke-width="1.4" opacity=".8"/>
+  <g transform="translate(580 160) scale(.85)">
+  <path d="M149 0v109" stroke="#B68347" stroke-width="2"/>
+  <path d="M120 106h57v16h-57zM120 272h57v15h-57z" fill="#BD9057"/>
+  <path d="M93 130C119 105 182 103 207 131C249 177 242 232 203 262C175 282 121 281 94 261C49 228 52 172 93 130Z" fill="url(#red)"/>
+  <path d="M113 123C88 165 89 230 115 269M135 117C126 168 128 226 137 275M164 117C177 169 176 225 164 275M186 122C219 166 217 229 188 268" stroke="#DE8B70" stroke-width="1.5" opacity=".75"/>
+  <path d="M65 182c45 16 121 17 167 0M67 221c45 13 119 13 163 0" stroke="#DB8970" opacity=".5"/>
+  <path d="M149 287v38" stroke="#BD9057" stroke-width="2"/>
+  <circle cx="149" cy="329" r="5" fill="#BC8D4D"/>
+  <path d="M142 338v57M146 338v61M150 338v63M154 338v61M158 338v56" stroke="#AE3640" stroke-width="2.5"/>
+  <path d="M72 0v58" stroke="#B68347" stroke-width="1.5"/>
+  <path d="M64 60h16v15H64z" transform="rotate(45 72 68)" fill="#C49353"/>
+  <path d="M72 78v24" stroke="#B68347" stroke-width="1.5"/>
+  <path d="M70 102v27M74 102v27" stroke="#B04B45" stroke-width="1.8"/>
+  </g>
+  <g transform="translate(0 160) scale(1 .86)">
+  <path d="M-70 916C214 822 332 1008 558 987C761 968 816 884 1013 971C1225 1065 1331 1018 1670 956V1100H-70Z" fill="#E8CBA6" opacity=".5"/>
+  <path d="M-33 1003C180 867 312 907 461 996C677 1125 771 987 996 1100H-33Z" fill="url(#fold)"/>
+  <path d="M-14 1025C230 920 275 958 451 1031C624 1103 714 1052 792 1100" stroke="#E2AE77" stroke-width="1.5"/>
+  <path d="M-7 1046C180 987 292 970 420 1057C463 1086 523 1097 559 1100" stroke="#E2AE77" stroke-width="1.5" opacity=".65"/>
+  </g>
+  <g transform="translate(-25 430) scale(.78)">
+  <path d="M-17 807C92 794 164 846 242 874C298 894 317 935 364 959M61 821C114 763 121 732 131 686M164 849C191 795 227 778 271 762M244 875C260 841 303 813 329 808M132 686C146 668 164 659 182 655" stroke="#845C47" stroke-width="3" stroke-linecap="round"/>
+  <path d="M102 765C78 742 69 718 71 694M229 779C224 752 229 730 240 711M293 828C323 835 344 833 364 825" stroke="#845C47" stroke-width="2" stroke-linecap="round"/>
+  <use href="#flower" transform="translate(130 684) rotate(18) scale(.92)"/>
+  <use href="#flower" transform="translate(71 695) rotate(-10) scale(.75)"/>
+  <use href="#flower" transform="translate(227 779) rotate(27)"/>
+  <use href="#flower" transform="translate(329 808) rotate(-22) scale(.88)"/>
+  <use href="#smallFlower" transform="translate(182 655) rotate(-30)"/>
+  <use href="#smallFlower" transform="translate(240 711) rotate(15)"/>
+  <use href="#smallFlower" transform="translate(364 825) rotate(-15)"/>
+  <use href="#smallFlower" transform="translate(107 806) rotate(28) scale(.8)"/>
+  <path d="M408 863c-12-18-27-10-22 2 4 12 18 13 22-2Z" fill="#C97166" opacity=".7"/>
+  <path d="M313 663c-10-13-24-6-18 5 5 9 16 8 18-5Z" fill="#C97166" opacity=".55"/>
+  <path d="M64 572c-10-13-24-6-18 5 5 9 16 8 18-5Z" fill="#C97166" opacity=".55"/>
+  </g>
+  <circle cx="423" cy="167" r="3" fill="#C6995C" opacity=".45"/>
+  <circle cx="553" cy="817" r="2" fill="#C6995C" opacity=".6"/>
+  <circle cx="1398" cy="77" r="3" fill="#C6995C" opacity=".45"/>
+</svg>

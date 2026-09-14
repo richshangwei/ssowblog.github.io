@@ -1,0 +1,366 @@
+{
+  "checks": [
+    {
+      "id": "portal-01-service-desk",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-01-service-desk",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-01-service-desk",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-01-service-desk",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "spring",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "spring",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "midautumn",
+      "width": 1440,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "midautumn",
+      "width": 375,
+      "overflow": false,
+      "stacked": true,
+      "headingLeft": true,
+      "footerVisible": true
+    }
+  ],
+  "galleries": "index and seasonal mobile overflow and local links passed",
+  "note": "Focused final CSS review after interaction suite; not a complete accessibility audit."
+}

@@ -1,0 +1,635 @@
+{
+  "generatedAt": "2026-09-14T00:01:25.431Z",
+  "scope": "Desktop 1440×1050, both seasonal themes and both layouts across ten designs. Open disclosures and focused account/password fields included. Waits for artwork loading and all CSS transitions to finish before measuring. Ratios use computed text color against opaque solid ancestor backgrounds; image, gradient and opacity-dependent samples are explicitly skipped. Spot checks are not a complete WCAG audit.",
+  "checks": [
+    {
+      "id": "portal-01-service-desk",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-01-service-desk",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-01-service-desk",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-01-service-desk",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 75,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 75,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-02-focus-window",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-03-night-command",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-04-bulletin",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-05-guided",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-06-conversation",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 78,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-07-index",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 75,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 75,
+      "skipped": [],
+      "issues": []
+    },
+    {
+      "id": "portal-08-workstation",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 61,
+      "skipped": [
+        "#newsTitle",
+        "div.panel-heading > span.sample-badge",
+        "div.notice-filters > button.notice-filter",
+        "article.notice-item > div.notice-meta",
+        "div.notice-meta > span.notice-severity",
+        "h3 > button.notice-open",
+        "article.notice-item > p.notice-summary",
+        "#noticeCount",
+        "div.news-bottom > button.link-button"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 61,
+      "skipped": [
+        "#newsTitle",
+        "div.panel-heading > span.sample-badge",
+        "div.notice-filters > button.notice-filter",
+        "article.notice-item > div.notice-meta",
+        "div.notice-meta > span.notice-severity",
+        "h3 > button.notice-open",
+        "article.notice-item > p.notice-summary",
+        "#noticeCount",
+        "div.news-bottom > button.link-button"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-09-mobile",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "spring",
+      "layout": "standard",
+      "actualTheme": "spring",
+      "actualLayout": "standard",
+      "checked": 38,
+      "skipped": [
+        "#statusTitle",
+        "div.panel-heading > span.sample-badge",
+        "div.status-headline.status-tone > span.status-label",
+        "#statusSummary",
+        "#statusAction",
+        "#status-section > div.status-meta",
+        "#status-section > button.link-button",
+        "#newsTitle",
+        "div.notice-filters > button.notice-filter",
+        "article.notice-item > div.notice-meta",
+        "div.notice-meta > span.notice-severity",
+        "h3 > button.notice-open",
+        "article.notice-item > p.notice-summary",
+        "#noticeCount",
+        "div.news-bottom > button.link-button",
+        "#supportTitle",
+        "div > p.panel-label",
+        "#support-section > div.support-primary",
+        "#support-section > div.contact-lines",
+        "div > strong",
+        "details > summary",
+        "details > p",
+        "p > button.link-button"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "spring",
+      "layout": "immersive",
+      "actualTheme": "spring",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "midautumn",
+      "layout": "standard",
+      "actualTheme": "midautumn",
+      "actualLayout": "standard",
+      "checked": 38,
+      "skipped": [
+        "#statusTitle",
+        "div.panel-heading > span.sample-badge",
+        "div.status-headline.status-tone > span.status-label",
+        "#statusSummary",
+        "#statusAction",
+        "#status-section > div.status-meta",
+        "#status-section > button.link-button",
+        "#newsTitle",
+        "div.notice-filters > button.notice-filter",
+        "article.notice-item > div.notice-meta",
+        "div.notice-meta > span.notice-severity",
+        "h3 > button.notice-open",
+        "article.notice-item > p.notice-summary",
+        "#noticeCount",
+        "div.news-bottom > button.link-button",
+        "#supportTitle",
+        "div > p.panel-label",
+        "#support-section > div.support-primary",
+        "#support-section > div.contact-lines",
+        "div > strong",
+        "details > summary",
+        "details > p",
+        "p > button.link-button"
+      ],
+      "issues": []
+    },
+    {
+      "id": "portal-10-layered",
+      "theme": "midautumn",
+      "layout": "immersive",
+      "actualTheme": "midautumn",
+      "actualLayout": "immersive",
+      "checked": 81,
+      "skipped": [
+        "section.portal-intro > span.eyebrow",
+        "#portalTitle",
+        "section.portal-intro > p.portal-purpose",
+        "div.holiday-greeting > span.holiday-kicker",
+        "#holidayHeadline",
+        "#holidayMessage",
+        "div.holiday-story > span.holiday-art-note"
+      ],
+      "issues": []
+    }
+  ],
+  "issueCount": 0
+}

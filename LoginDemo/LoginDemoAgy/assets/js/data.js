@@ -192,7 +192,48 @@ window.LoginPortalData = (function () {
         sessionTimeout: '共用端點閒置保護政策預設為 15 分鐘無操作自動中斷工作階段 [待確認]'
     };
 
+    
+    // 9. 節日主題模組化設定庫 (可由管理後台或設定檔隨時抽換與新增節日)
+    var holidayThemes = [
+        {
+            id: 'default',
+            name: '平日標準藍調',
+            greeting: '全院醫療資訊服務共用入口',
+            badgeText: '標準院區主題',
+            description: '標準醫療院區深藍專業質感，注重資訊架構與各系統運作狀態。'
+        },
+        {
+            id: 'spring-festival',
+            name: '新春誌慶 (農曆春節)',
+            greeting: '🧧 恭賀新禧 · 萬象更新 · 祝全院同仁春節平安',
+            badgeText: '新春特別版',
+            description: '新春吉祥紅與璀璨暖金微光，呈現喜慶溫暖的過節氣氛。'
+        },
+        {
+            id: 'mid-autumn',
+            name: '中秋佳節 (月圓團圓)',
+            greeting: '🌕 月圓人團圓 · 佳節同樂 · 感謝輪值守護同仁',
+            badgeText: '中秋特別版',
+            description: '午夜湛藍星空與皎潔明月金輝，為夜班及值勤同仁帶來靜謐溫馨感受。'
+        },
+        {
+            id: 'christmas',
+            name: '聖誕歲末 (年終平安)',
+            greeting: '🎄 歲末平安 · 聖誕喜樂 · 迎接嶄新的一年',
+            badgeText: '歲末年終版',
+            description: '常青松柏綠搭配暖光與節慶絲帶，傳遞溫暖感恩氣氛。'
+        },
+        {
+            id: 'nurse-day',
+            name: '國際護師節 / 院慶紀念',
+            greeting: '🩺 致敬白衣天使 · 守護生命希望 · 院慶榮耀同慶',
+            badgeText: '護師節 / 院慶版',
+            description: '療癒湖水綠與清爽晴空藍，向全體醫護同仁致敬。'
+        }
+    ];
+
     return {
+        holidayThemes: holidayThemes,
         org: org,
         accountGuide: accountGuide,
         systems: systems,

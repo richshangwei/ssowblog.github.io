@@ -1,0 +1,307 @@
+/* ============================================================================
+ * theme.css — 節日主題層 + 背景優先（focus）版型
+ * ----------------------------------------------------------------------------
+ * 必須在 home.css 之後載入。
+ * 色彩全部來自 theme-config.js 寫進 <html> 的 CSS 變數，這個檔案不寫死任何節日。
+ *   <html data-theme="mid-autumn" data-layout="focus" data-stage-tone="dark">
+ * ==========================================================================*/
+
+:root {
+  --theme-accent: var(--green);
+  --theme-accent-soft: #eaf0ea;
+  --theme-on-stage: var(--ink);
+  --theme-on-stage-muted: var(--muted);
+  --theme-stage-opacity: .3;
+  --theme-card-veil: rgba(255, 255, 255, .96);
+  --theme-motion: .28s cubic-bezier(.22, .8, .3, 1);
+}
+
+body { background: transparent; }
+
+/* ---------------------------------------------------------------- 背景舞台 */
+.theme-stage {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.theme-stage > span { position: absolute; inset: 0; display: block; }
+
+.theme-stage__image {
+  background-image: var(--theme-bg-image, none), var(--theme-bg-gradient, none);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  opacity: var(--theme-stage-opacity);
+  transition: opacity var(--theme-motion);
+}
+.theme-stage__motif {
+  background-image: var(--theme-motif, none);
+  background-size: var(--theme-motif-size, 320px);
+  background-repeat: repeat;
+  opacity: calc(var(--theme-motif-opacity, .25) * var(--theme-stage-opacity));
+}
+.theme-stage__scrim { background: var(--theme-scrim, none); }
+/* full 版型：節日背景只當淡淡的底紋，上面蓋白紗確保長時間閱讀的對比度 */
+html[data-layout="full"] .theme-stage__scrim {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .74) 0%, rgba(255, 255, 255, .93) 46%, var(--bg) 100%);
+}
+html[data-stage-tone="light"][data-layout="full"] .theme-stage__scrim {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .82) 60%, var(--bg) 100%);
+}
+
+/* ------------------------------------------------------- 主題化的共用元件 */
+.theme-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: start;
+  margin-bottom: 14px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: var(--theme-accent);
+  background: var(--theme-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 22%, transparent);
+}
+html[data-layout="focus"] .theme-badge {
+  color: var(--theme-on-stage);
+  background: color-mix(in srgb, var(--theme-on-stage) 12%, transparent);
+  border-color: color-mix(in srgb, var(--theme-on-stage) 28%, transparent);
+  backdrop-filter: blur(6px);
+}
+.theme-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* =========================================================================
+ * FOCUS 版型：背景圖為主，只留必要的登入資訊，其餘點開才看
+ * =======================================================================*/
+html[data-layout="focus"] { --theme-stage-opacity: var(--theme-focus-opacity, 1); }
+html[data-layout="full"]  { --theme-stage-opacity: var(--theme-full-opacity, .3); }
+
+html[data-layout="focus"] body { min-height: 100vh; }
+
+/* 頁首：去掉白底，融進背景 */
+html[data-layout="focus"] header {
+  background: transparent;
+  border-bottom: 0;
+  color: var(--theme-on-stage);
+  height: 84px;
+}
+html[data-layout="focus"] .brand small,
+html[data-layout="focus"] nav button { color: var(--theme-on-stage-muted); }
+html[data-layout="focus"] nav button:hover { color: var(--theme-on-stage); }
+html[data-layout="focus"] .mark {
+  color: var(--theme-on-stage);
+  border-color: color-mix(in srgb, var(--theme-on-stage) 45%, transparent);
+}
+html[data-layout="focus"] .preview {
+  color: var(--theme-on-stage);
+  background: color-mix(in srgb, var(--theme-on-stage) 14%, transparent);
+}
+
+/* 主要區域：登入卡置中，其餘資訊收起 */
+html[data-layout="focus"] main {
+  max-width: 560px;
+  padding-top: 14px;
+  min-height: calc(100vh - 84px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+html[data-layout="focus"] .welcome {
+  display: block;
+  color: var(--theme-on-stage);
+  margin-bottom: 18px;
+}
+html[data-layout="focus"] .welcome .eyebrow,
+html[data-layout="focus"] .welcome p { color: var(--theme-on-stage-muted); }
+html[data-layout="focus"] .welcome h1 { font-size: 27px; }
+html[data-layout="focus"] .welcome time { display: none; }
+
+html[data-layout="focus"] .workspace {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+html[data-layout="focus"] .login-card {
+  background: var(--theme-card-veil);
+  backdrop-filter: blur(14px);
+  border-color: color-mix(in srgb, var(--theme-on-stage) 18%, transparent);
+  box-shadow: 0 24px 70px rgba(10, 20, 16, .32);
+}
+/* 沉浸模式下登入卡只留必要欄位，其餘收進頁尾細節 */
+html[data-layout="focus"] .system-banner { min-height: 84px; padding: 16px 25px; }
+html[data-layout="focus"] .system-banner p { display: none; }
+html[data-layout="focus"] .login-body { padding: 22px 30px 14px; }
+html[data-layout="focus"] .login-button { margin-top: 14px; }
+html[data-layout="focus"] #message { margin: 8px 0 10px; }
+html[data-layout="focus"] .login-body .intro { margin-bottom: 18px; }
+html[data-layout="focus"] .security { display: none; }
+
+html[data-layout="focus"] footer {
+  color: var(--theme-on-stage-muted);
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 52px;
+}
+html[data-layout="focus"] footer button { color: var(--theme-on-stage-muted); }
+html[data-layout="focus"] footer button:hover { color: var(--theme-on-stage); }
+html[data-layout="focus"] footer i { border-color: color-mix(in srgb, var(--theme-on-stage) 35%, transparent); }
+
+/* ------------------------------------------------------------- 收合 chip 列 */
+.theme-dock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 2px;
+}
+.theme-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--theme-on-stage);
+  background: color-mix(in srgb, var(--theme-on-stage) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-on-stage) 26%, transparent);
+  backdrop-filter: blur(8px);
+  transition: background var(--theme-motion), transform var(--theme-motion);
+}
+.theme-chip:hover {
+  color: var(--theme-on-stage);
+  background: color-mix(in srgb, var(--theme-on-stage) 20%, transparent);
+  transform: translateY(-1px);
+}
+.theme-chip[aria-expanded="true"] {
+  background: var(--theme-on-stage);
+  color: var(--bg);
+}
+.theme-chip svg { width: 16px; height: 16px; }
+.theme-chip .count {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 20%, transparent);
+}
+
+/* ------------------------------------------------------------------ 抽屜 */
+.theme-drawer[hidden] { display: none; }
+.theme-drawer { position: fixed; inset: 0; z-index: 60; }
+.theme-drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 26, 22, .5);
+  backdrop-filter: blur(3px);
+  animation: theme-fade var(--theme-motion);
+}
+.theme-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(520px, 100%);
+  background: var(--bg);
+  border-left: 1px solid var(--line);
+  box-shadow: -24px 0 70px rgba(10, 20, 16, .3);
+  display: flex;
+  flex-direction: column;
+  animation: theme-slide-in var(--theme-motion);
+}
+.theme-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.theme-drawer__head h2 { font-size: 16px; margin: 0; letter-spacing: 1px; }
+.theme-drawer__close { font-size: 26px; min-width: 44px; min-height: 44px; color: var(--muted); }
+.theme-drawer__body { flex: 1; overflow: auto; padding: 20px; }
+.theme-panel[hidden] { display: none; }
+/* 被搬進抽屜的原有區塊，去掉外距讓它貼齊面板 */
+.theme-drawer__body > .theme-panel > * { margin-top: 0; }
+.theme-drawer__body > .theme-panel > * + * { margin-top: 16px; }
+
+@keyframes theme-fade { from { opacity: 0; } }
+@keyframes theme-slide-in { from { transform: translateX(24px); opacity: 0; } }
+
+/* -------------------------------------------------------- 預覽用切換器 */
+.theme-switch {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .94);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px rgba(10, 20, 16, .22);
+  font-size: 12px;
+  color: #33403a;
+  backdrop-filter: blur(10px);
+}
+.theme-switch label { font-size: 10px; margin: 0; color: #6b766f; letter-spacing: .5px; }
+.theme-switch select {
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: #fff;
+  color: inherit;
+  min-height: 34px;
+}
+.theme-switch__layout {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 12px;
+}
+.theme-switch__layout[aria-pressed="true"] { background: var(--theme-accent); color: #fff; border-color: transparent; }
+
+/* ----------------------------------------------------------------- RWD */
+@media (max-width: 760px) {
+  html[data-layout="focus"] main { max-width: none; padding-top: 16px; }
+  html[data-layout="focus"] .welcome h1 { font-size: 22px; }
+  .theme-drawer__panel {
+    top: auto;
+    left: 0;
+    height: min(84vh, 100%);
+    width: 100%;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 18px 18px 0 0;
+    animation: theme-slide-up var(--theme-motion);
+  }
+  @keyframes theme-slide-up { from { transform: translateY(28px); opacity: 0; } }
+  .theme-dock { gap: 8px; }
+  .theme-chip { padding: 0 13px; font-size: 12px; }
+  .theme-switch { left: 12px; right: 12px; bottom: 12px; justify-content: center; }
+  /* 手機上預留空間，避免預覽切換器蓋住 chip 列 */
+  html:has(.theme-switch) footer { margin-bottom: 62px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-drawer__scrim,
+  .theme-drawer__panel { animation: none; }
+}
+
+/* focus 版型下，資訊欄的內容已被搬進抽屜，容器本身隱藏 */
+html[data-layout="focus"] .information { display: none; }

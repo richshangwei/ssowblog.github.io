@@ -28,3 +28,7 @@
 ## 開發
 
 portal-src為共用原始碼。從專案根目錄執行`node LoginDemoCode/build.cjs`產生十款；現有Bootstrap5.3.3與jQuery3.7.1從LoginDemoCC本機資源複製。每款是獨立可離線HTML/CSS/JS，無遠端字型、圖片或CDN。verify.cjs驗證共用流程與十款版面；預覽圖與portal-verification.json保留驗證結果。
+
+## 節慶背景與資訊收合
+
+開啟 seasonal.html 預覽新春與中秋模組。十款皆可套用背景、配色及主視覺模式，保留必要登入、目標、狀態與求助。請修改 portal-src/seasonal/config.js 與 assets 後建置；日期排程預設停用。完整說明見 SEASONAL-GUIDE.md。驗證：node LoginDemoCode/portal-src/verify-seasonal.cjs。

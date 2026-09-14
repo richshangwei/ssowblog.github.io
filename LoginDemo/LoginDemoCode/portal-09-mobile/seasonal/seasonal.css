@@ -1,0 +1,107 @@
+/* Shared seasonal skin. No changes to authentication or service state. */
+.seasonal-controls-grid{display:grid;grid-template-columns:1.1fr 1.15fr 1.1fr auto;align-items:start;gap:16px;padding:12px 0}.seasonal-controls-grid label{display:block;font-size:12px;font-weight:600;margin-bottom:5px}.seasonal-controls-grid select,.seasonal-controls-grid input,.seasonal-controls-grid button{width:100%;min-height:44px;border:1px solid #aabacb;border-radius:5px;background:white;color:#213c58;padding:9px;font-size:13px}.seasonal-controls-grid button{margin-top:25px}.seasonal-controls-grid small{font-size:11px;display:block;margin-top:4px}.demo-bar #seasonalControls{border-top:1px solid #c4cfdb}.demo-bar #seasonalControls a{color:#25476e}
+body[data-seasonal-active=true]{background-color:var(--bg);background-image:var(--season-image,none);background-position:var(--season-position,center);background-size:cover;background-attachment:fixed}
+body[data-seasonal-active=true] .panel,body[data-seasonal-active=true] .modal-content{background:var(--surface);color:var(--ink);border-color:var(--line)}
+body[data-seasonal-active=true] .login-submit.btn,body[data-seasonal-active=true] .primary-button.btn,body[data-seasonal-active=true] .modal-done{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+body[data-seasonal-active=true] .org-header,body[data-seasonal-active=true] .portal-intro,body[data-seasonal-active=true] .portal-footer{background:var(--surface);color:var(--ink)}
+body[data-seasonal-active=true] .org-brand,body[data-seasonal-active=true] .portal-intro h1{color:var(--ink)}
+body[data-seasonal-active=true] .context-panel{background:var(--soft);border-color:var(--line);border-left-color:var(--accent)}
+body[data-seasonal-active=true] .form-control{background:var(--surface);color:var(--ink);border-color:var(--line)}
+body[data-seasonal-active=true]{color-scheme:light}
+body[data-seasonal-active=true] .login-panel .form-control:focus{background:var(--surface);color:var(--ink);border-color:var(--accent)}
+body[data-seasonal-active=true] .form-control::placeholder{color:var(--muted)}
+body[data-seasonal-active=true] #resultView{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:30px auto}
+body[data-portal-layout=immersive]{display:block;height:auto;min-height:100dvh;overflow:visible;background-color:var(--bg)}
+body[data-portal-layout=immersive] .demo-bar{max-height:none;overflow:visible;flex:none}
+body[data-portal-layout=immersive] #portalDesign.site-shell{display:block;position:relative;max-width:none;width:100%;height:auto;min-height:0;margin:0;padding:0;overflow:visible}
+#holidayStage{min-height:calc(100dvh - 150px);max-width:1600px;margin:auto;padding:0 52px;color:var(--ink)}
+#holidayStage .holiday-top{border-bottom:1px solid color-mix(in srgb,var(--season-art-ink,var(--ink)) 25%,transparent)}
+#holidayStage .org-header{display:flex;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;position:static;min-height:88px;width:auto;height:auto;margin:0;padding:16px 0;gap:18px;background:none;border:0;border-radius:0;box-shadow:none}
+#holidayStage .org-header .org-brand{color:var(--season-art-ink,var(--ink));display:flex;flex-direction:row;gap:13px;align-items:center}
+#holidayStage .org-brand strong{font-size:20px;color:inherit;display:block;line-height:1.5}
+#holidayStage .org-brand small,#holidayStage .logo-slot{color:var(--season-art-muted,var(--muted));font-size:12px}
+#holidayStage .logo-slot{border:1px dashed currentColor;background:none;border-radius:7px;width:50px;height:46px;display:grid;place-items:center}
+#holidayStage .org-header .header-nav{display:none}
+#holidayStage .holiday-top-help{color:var(--season-art-ink,var(--ink));background:transparent;border:1px solid currentColor;border-radius:30px;padding:8px 18px;min-height:44px;font-size:13px;white-space:nowrap}
+#holidayStage .holiday-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(370px,460px);gap:8%;align-items:start;max-width:1320px;margin:auto;padding:38px 0 44px}
+#holidayStage .holiday-story{min-width:0;align-self:stretch;display:flex;flex-direction:column;min-height:620px;color:var(--season-art-ink,var(--ink))}
+#holidayStage .portal-intro{background:none;padding:0;margin:0;border:0;color:inherit;max-width:none;text-align:left}
+#holidayStage .portal-intro .eyebrow{color:var(--season-art-muted,var(--muted));font-size:11px;letter-spacing:1.7px}
+#holidayStage .portal-intro h1{font-size:clamp(25px,2.4vw,36px);color:inherit;margin:10px 0 12px;line-height:1.4;letter-spacing:1px;max-width:none;font-weight:650}
+#holidayStage .portal-purpose{color:var(--season-art-muted,var(--muted));font-size:14px;line-height:1.9;max-width:28em;margin:0}
+#holidayStage .holiday-greeting{margin:auto 0;padding:70px 0 50px}
+#holidayStage .holiday-kicker{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font:12px/1.7 system-ui;letter-spacing:2px;color:var(--season-art-muted,var(--muted))}
+#holidayStage .holiday-kicker span{font-size:11px;letter-spacing:1px;border-left:1px solid currentColor;padding-left:14px}
+#holidayStage #holidayHeadline{font:500 clamp(32px,4.2vw,60px)/1.5 "Microsoft JhengHei",system-ui;letter-spacing:5px;margin:18px 0;max-width:9em;white-space:pre-line}
+#holidayStage #holidayMessage{font-size:15px;line-height:2;color:var(--season-art-muted,var(--muted));max-width:27em;margin:0;white-space:pre-line}
+#holidayStage .holiday-art-note{font-size:11px;letter-spacing:2px;color:var(--season-art-muted,var(--muted));margin-top:auto}
+#holidayStage .holiday-task{min-width:0;max-width:100%}
+#holidayStage .panel{display:block;position:static;background:var(--surface);color:var(--ink);width:100%;max-width:none;margin:0;padding:26px;border:1px solid var(--line);border-radius:14px;box-shadow:none;grid-area:auto}
+#holidayStage .login-panel{border-top:3px solid var(--accent);box-shadow:0 18px 70px #00000012}
+#holidayStage .panel-heading{display:flex;gap:12px;margin-bottom:16px}
+#holidayStage .panel-heading h2{font-size:21px;line-height:1.5;color:var(--ink);margin:0;font-weight:650}
+#holidayStage .panel-heading .panel-label{font-size:12px;color:var(--muted);margin:3px 0 0}
+#holidayStage .login-panel>.panel-heading .panel-label{display:none}
+#holidayStage .sample-badge{background:var(--soft);color:var(--muted);border:1px solid var(--line);font-size:11px;border-radius:4px}
+#holidayStage .context-panel{margin:0 0 13px;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;background:var(--soft);color:var(--ink)}
+#holidayStage .context-name{font-size:17px;color:var(--ink);margin:2px 0;line-height:1.7}
+#holidayStage .context-label,#holidayStage .context-next{font-size:12px;line-height:1.7;color:var(--muted)}
+#holidayStage .holiday-status{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:0 0 12px;padding:0 0 8px;border-bottom:1px solid var(--line);color:var(--ink)}
+#holidayStage .holiday-status .status-headline{margin:0;gap:8px}
+#holidayStage .holiday-status .status-label{font-size:13px}
+#holidayStage .holiday-status-meta{flex:1;min-width:170px;display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px;flex-wrap:wrap}
+#holidayStage .holiday-status-meta .link-button{margin-left:auto;font-size:12px;min-height:44px;padding:5px 0}
+#holidayStage #loginForm .field-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:15px;margin:0}
+#holidayStage #loginForm .field-grid>.field{margin:0}
+#holidayStage #loginForm>#loginSubmit{width:100%!important}
+#holidayStage .form-label{font-size:14px;color:var(--ink);margin-bottom:6px;display:block}
+#holidayStage .form-control{font-size:16px;height:48px;min-height:48px;border-radius:6px;background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:10px 12px}
+#holidayStage .form-control:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+#holidayStage .form-control.is-invalid{border-color:var(--error,#b3261e)}
+#holidayStage .form-control::placeholder{font-size:13px;color:var(--muted)}
+#holidayStage .password-wrap input{padding-right:54px}
+#holidayStage .password-toggle{color:var(--muted);top:2px;right:2px}
+#holidayStage .login-tools{margin:8px 0 0;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#holidayStage .link-button,#holidayStage .account-actions button,#holidayStage .workstation-note button{color:var(--accent);font-size:13px;min-height:44px}
+#holidayStage .login-submit.btn{width:100%;min-height:50px;border-radius:6px;background:var(--accent);border:1px solid var(--accent);color:var(--on-accent);display:flex;justify-content:space-between;gap:10px;padding:12px 15px;font-size:15px;margin:13px 0 0;line-height:1.6}
+#holidayStage .small-note,#holidayStage .login-status{font-size:11px;line-height:1.8;color:var(--muted);margin:6px 0}
+#holidayStage .field-error{font-size:13px;color:var(--error,#b3261e)}
+#holidayStage .form-feedback .link-button,#holidayStage .impact-alert .link-button{color:inherit}
+#holidayStage .holiday-account{border-top:1px solid var(--line);margin-top:12px}
+#holidayStage .holiday-account>summary{color:var(--muted);padding:12px 0;font-size:12px;min-height:44px}
+#holidayStage .account-guide,#holidayStage .workstation-note{color:var(--muted);font-size:13px}
+#holidayStage .account-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-color:var(--line);margin:10px 0 0;padding-top:7px;gap:3px}
+#holidayStage .holiday-help{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:7px}
+#holidayStage .holiday-help button{background:none;border:0;padding:8px 0;min-height:44px;font-size:12px;color:var(--accent)}
+#holidayStage .holiday-information{display:grid;gap:9px;margin-top:13px}
+#holidayStage .holiday-information>details{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:0 18px}
+#holidayStage .holiday-information>details>summary{padding:13px 0;min-height:48px;color:var(--ink);font-size:13px;line-height:1.7}
+#holidayStage .holiday-information>details>summary span{float:right;font-size:11px;color:var(--muted);margin-left:8px}
+#holidayStage .holiday-information>details[open]>summary span{display:none}
+#holidayStage .holiday-information .panel{padding:12px 0 16px;border:0;border-top:1px solid var(--line);border-radius:0;background:var(--surface)}
+#holidayStage .holiday-information .panel-heading h2{font-size:17px}
+#holidayStage .holiday-information .notice-filters{display:flex}
+#holidayStage .holiday-information .news-list{display:block;border:0;margin:0;padding:0}
+#holidayStage .holiday-information .notice-item::before{display:none}
+#holidayStage .holiday-information .notice-item{display:block;margin:0;padding:13px 0;border:0;border-bottom:1px solid var(--line);background:none}
+#holidayStage .holiday-information .notice-open{color:var(--ink);font-size:14px;display:block;min-height:44px}
+#holidayStage .holiday-information .notice-severity,#holidayStage .support-links button{color:var(--accent)}
+#holidayStage .holiday-information .notice-summary,#holidayStage .holiday-information .contact-lines,#holidayStage .holiday-information p{font-size:13px;color:var(--muted)}
+#holidayStage .holiday-information .support-links{display:flex;gap:8px;flex-wrap:wrap}
+#holidayStage .holiday-information .support-links button{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:9px 12px;min-height:44px}
+#holidayStage .holiday-information .contact-lines strong{color:var(--ink)}
+#holidayStage .portal-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;background:none;color:var(--season-art-muted,var(--muted));border-top:1px solid currentColor;border-bottom:0;border-radius:0;margin:0;padding:14px 0;gap:8px;font-size:12px}
+#holidayStage .footer-tools{display:flex;gap:16px;flex-wrap:wrap}
+#holidayStage .footer-tools button,#holidayStage .footer-tools a{color:var(--season-art-ink,var(--ink));font-size:12px;min-height:44px;background:none}
+#holidayStage .portal-footer{background:var(--surface);color:var(--muted);padding:14px 18px;margin-bottom:18px;border:1px solid var(--line);border-radius:8px;max-width:none;text-align:left}
+#holidayStage .footer-tools button,#holidayStage .footer-tools a{color:var(--ink)}
+#holidayStage .holiday-top-help{background:var(--bg)}
+#holidayStage .org-header .org-brand{background:var(--bg);border-radius:7px;padding:5px 8px}
+body[data-portal-layout=immersive] #resultView{overflow:visible;height:auto;max-width:1000px;width:calc(100% - 36px);padding:30px}
+body[data-portal-layout=immersive] :is(a,button,summary,select):focus-visible{outline:3px solid var(--accent)!important;outline-offset:4px;background-color:var(--surface)!important;color:var(--ink)!important}
+body[data-seasonal-artwork=unavailable]{background-color:var(--surface);--season-art-ink:var(--ink)!important;--season-art-muted:var(--muted)!important}
+@media(min-width:801px){.demo-bar:has(#seasonalControls){display:grid;grid-template-columns:1fr 1fr;padding-top:6px;padding-bottom:6px}.demo-bar:has(#seasonalControls) .demo-bar-head{grid-column:1/-1}.demo-bar:has(#seasonalControls) details[open]{grid-column:1/-1}.demo-bar #seasonalControls{border-top:0}}
+@media(max-width:1100px){#holidayStage{padding:0 30px}#holidayStage .holiday-main{gap:5%;grid-template-columns:minmax(0,1fr) minmax(350px,430px)}#holidayStage #holidayHeadline{font-size:40px}.seasonal-controls-grid{grid-template-columns:1fr 1fr}.seasonal-controls-grid button{margin-top:25px}}
+@media(max-width:800px){body[data-seasonal-active=true]{background-image:var(--season-mobile-image,var(--season-image,none));background-position:var(--season-mobile-position,center top);background-attachment:scroll}#holidayStage{padding:0 22px}#holidayStage .holiday-main{display:flex;flex-direction:column;gap:22px;padding:24px 0 30px;max-width:560px}#holidayStage .holiday-story{min-height:0;align-self:auto;width:100%}#holidayStage .portal-intro h1{font-size:25px;margin:4px 0 8px}#holidayStage .portal-intro .eyebrow{display:none}#holidayStage .portal-purpose{font-size:12px;max-width:none}#holidayStage .portal-purpose br{display:none}#holidayStage .holiday-greeting{display:none}#holidayStage .holiday-art-note{display:none}#holidayStage .holiday-task{width:100%}#holidayStage .org-header{min-height:82px;padding:14px 0;gap:12px}#holidayStage .org-brand strong{font-size:17px}#holidayStage .org-brand small{font-size:11px}#holidayStage .logo-slot{width:40px;height:40px;font-size:11px}#holidayStage .holiday-top-help{padding:7px 12px;font-size:12px}#holidayStage .portal-footer{font-size:11px}#holidayStage .footer-tools{gap:12px}#holidayStage .footer-tools a,#holidayStage .footer-tools button{font-size:11px}}
+@media(max-width:480px){#holidayStage{padding:0 16px}#holidayStage .panel{padding:21px 19px}#holidayStage .holiday-main{padding-top:19px;gap:19px}#holidayStage .holiday-information>details{padding:0 16px}#holidayStage .org-brand{gap:8px}#holidayStage .org-brand strong{font-size:16px}#holidayStage .holiday-top-help{padding:6px 9px}#holidayStage .holiday-status-meta{font-size:11px}.seasonal-controls-grid{grid-template-columns:1fr;gap:13px}.seasonal-controls-grid button{margin-top:0}#holidayStage .portal-footer{padding:13px 0}#holidayStage #loginSubmit{font-size:14px}}
+@media(prefers-reduced-motion:reduce){#holidayStage *,#seasonalControls *{transition:none!important}}

@@ -58,7 +58,7 @@
     }
     function renderStatus() {
       const s = service(); $('.status-label').text(s.label); $('.status-tone').attr('data-severity', s.severity);
-      $('#statusSummary').text(s.summary); $('#statusAction').text(s.action); $('#statusUpdated').text(s.updatedAt || '尚未取得');
+      $('#statusSummary').text(s.summary); $('#statusAction').text(s.action); $('#statusUpdated, .seasonal-updated').text(s.updatedAt || '尚未取得');
       const impacting = s.affected.length > 0 && (!target() || affected(state.target));
       $('#impactAlert').prop('hidden', !impacting).attr('data-severity', s.severity);
       $('#impactTitle').text(s.label + ' · ' + (target() ? target().name : '部分示範系統受影響'));

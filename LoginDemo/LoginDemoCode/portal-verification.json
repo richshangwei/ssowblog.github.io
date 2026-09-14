@@ -42,7 +42,16 @@
     }
   ],
   "lastRegression": [
-    "portal-09-mobile"
+    "portal-01-service-desk",
+    "portal-02-focus-window",
+    "portal-03-night-command",
+    "portal-04-bulletin",
+    "portal-05-guided",
+    "portal-06-conversation",
+    "portal-07-index",
+    "portal-08-workstation",
+    "portal-09-mobile",
+    "portal-10-layered"
   ],
   "pageErrors": [],
   "remoteRequests": [],

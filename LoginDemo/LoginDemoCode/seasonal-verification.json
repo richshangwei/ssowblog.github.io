@@ -1,0 +1,618 @@
+{
+  "results": [
+    {
+      "id": "portal-01-service-desk",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-02-focus-window",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-03-night-command",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-04-bulletin",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-05-guided",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-06-conversation",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-07-index",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-08-workstation",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-09-mobile",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "portal-10-layered",
+      "themes": [
+        {
+          "theme": "spring",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        },
+        {
+          "theme": "midautumn",
+          "passed": true,
+          "viewports": [
+            [
+              1440,
+              1050
+            ],
+            [
+              768,
+              1024
+            ],
+            [
+              375,
+              850
+            ],
+            [
+              812,
+              375
+            ]
+          ]
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "sharedChecks": [
+    {
+      "name": "Taipei day before UTC+8 midnight",
+      "actual": "2035-01-09",
+      "expected": "2035-01-09",
+      "passed": true
+    },
+    {
+      "name": "Taipei day at UTC+8 midnight",
+      "actual": "2035-01-10",
+      "expected": "2035-01-10",
+      "passed": true
+    },
+    {
+      "name": "Global schedule disabled",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "Start is inclusive",
+      "actual": "base",
+      "expected": "base",
+      "passed": true
+    },
+    {
+      "name": "End is inclusive",
+      "actual": "base",
+      "expected": "base",
+      "passed": true
+    },
+    {
+      "name": "Before range",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "After range",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "Invalid calendar date",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "Invalid format",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "Higher priority wins",
+      "actual": "high",
+      "expected": "high",
+      "passed": true
+    },
+    {
+      "name": "Equal priority uses id",
+      "actual": "a",
+      "expected": "a",
+      "passed": true
+    },
+    {
+      "name": "Disabled, unknown, reversed and invalid rules ignored",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "Invalid timezone is explicit null",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "Configured fixture date preview and neutral fallback",
+      "passed": true
+    },
+    {
+      "name": "Unknown URL theme and layout fall back",
+      "passed": true
+    },
+    {
+      "name": "Missing local artwork has usable solid fallback",
+      "passed": true
+    },
+    {
+      "name": "Artwork only uses configured local paths",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "remoteRequests": [],
+  "passed": true,
+  "checks": [
+    "two local seasonal themes across selected designs",
+    "1440/768/375 and 812x375 landscape",
+    "essential login, compact live status and no-login help",
+    "secondary disclosures and critical pre-submit impact",
+    "required fields, visibility, processing and duplicate prevention",
+    "failed authentication and service failure report",
+    "direct allowed system list and denied target",
+    "same DOM nodes, original positions and demo inputs on mode restoration",
+    "result view survives theme and mode changes",
+    "timezone, inclusive dates, precedence, invalid rules and preview dates",
+    "local missing-image fallback and rejected external artwork",
+    "no credentials persisted and no remote requests"
+  ],
+  "note": "Automated frontend prototype checks; fixture dates are not holiday dates. Not user testing or complete accessibility certification."
+}
